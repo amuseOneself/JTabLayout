@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="navigation_bg">#00000000</color>
+    <color name="menu_badge_bg">#ff262d</color>
+    <color name="menu_badge_text">#ff262d</color>
+    <color name="menu_bg">#00000000</color>
+    <color name="menu_line">#ff262d</color>
+</resources>
