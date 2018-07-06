@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = views.get(position);
+        ((TextView) view.findViewById(R.id.TextView)).setText(getPageTitle(position));
         container.addView(view);
         return view;
     }
@@ -42,5 +44,10 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return "Tab: " + position;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

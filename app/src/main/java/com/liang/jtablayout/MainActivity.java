@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.liang.jtab.JIndicator;
 import com.liang.jtab.JTabLayout;
+import com.liang.jtab.OnTabSelectedListener;
 import com.liang.jtab.SlidingTabStrip;
 import com.liang.jtab.TabView;
 
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
 
+    int i;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,41 +52,68 @@ public class MainActivity extends AppCompatActivity {
 //        scrollView.addView(layout, new ViewGroup.LayoutParams(
 //                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        scrollView.setViewPager(viewPager);
-
+        scrollView.setupWithViewPager(viewPager, false);
+        i = 0;
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                scrollView.addTab(getLayoutInflater().inflate(R.layout.flash_one, null));
-//                views.add(getLayoutInflater().inflate(R.layout.flash_one, null));
-//                adapter.notifyDataSetChanged();
-
                 String str = editText1.getText().toString();
                 if (str.isEmpty()) {
-                    scrollView.addTab(new TabView(MainActivity.this).setTitle("123456").setTitleColor(Color.GRAY, Color.BLUE));
+                    views.add(getLayoutInflater().inflate(R.layout.flash_one, null));
+                    adapter.notifyDataSetChanged();
+                    scrollView.addTab(new TabView(MainActivity.this).setTitle("Tab:" + i).setTitleColor(Color.GRAY, Color.BLUE)
+                            .setIcon(android.R.drawable.ic_media_pause,android.R.drawable.ic_media_play));
+                    i++;
+
                 } else {
-                    scrollView.addTab(new TabView(MainActivity.this).setTitle("添加"), Integer.parseInt(str));
+                    i = Integer.parseInt(str);
+                    views.add(Integer.parseInt(str), getLayoutInflater().inflate(R.layout.flash_one, null));
+                    adapter.notifyDataSetChanged();
+                    scrollView.addTab(new TabView(MainActivity.this).setTitle("添加:" + i), Integer.parseInt(str));
                 }
-
-
             }
         });
+
+        JIndicator indicator = new JIndicator();
+        indicator.setTransitionScroll(true);
+        scrollView.setIndicator(indicator);
 
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                scrollView.addTab(getLayoutInflater().inflate(R.layout.flash_one, null));
-//                if (views.size() > 0) {
-//                    views.remove(views.size() - 1);
-//                    adapter.notifyDataSetChanged();
-//                }
 
                 String str = editText2.getText().toString();
                 if (str.isEmpty()) {
+                    views.clear();
+                    adapter.notifyDataSetChanged();
                     scrollView.removeAllTabs();
+                    i = 0;
                 } else {
                     scrollView.removeTabAt(Integer.parseInt(str));
+                    if (views.size() > 0) {
+                        views.remove(Integer.parseInt(str));
+                        adapter.notifyDataSetChanged();
+                    }
                 }
+            }
+        });
+
+        scrollView.addOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position) {
+                Log.e("OnTabSelectedListener", "onTabSelected: ..." + position);
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
+                Log.e("OnTabSelectedListener", "onTabUnselected: ..." + position);
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+                Log.e("OnTabSelectedListener", "onTabReselected: ..." + position);
             }
         });
     }

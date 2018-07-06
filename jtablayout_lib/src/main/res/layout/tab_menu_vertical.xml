@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingTop="3dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/navigation_icon"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/navigation_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:gravity="center"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navigation_icon" />
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/navigation_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/navigation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="12sp" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/navigation_badge"
         android:layout_width="14dp"
         android:layout_height="14dp"
+        android:layout_alignTop="@+id/linearLayout"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/linearLayout"
         android:background="@drawable/badge_bg"
-        android:visibility="gone"
         android:gravity="center"
-        android:text="99"
-        android:textSize="10sp"
+        android:text="65"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="10sp"
+        android:visibility="visible" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
