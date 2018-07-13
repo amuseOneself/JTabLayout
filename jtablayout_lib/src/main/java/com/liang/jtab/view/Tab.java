@@ -1,4 +1,4 @@
-package com.liang.jtab;
+package com.liang.jtab.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -101,9 +101,5 @@ public abstract class Tab extends FrameLayout {
         colors[i] = defaultColor;
         i++;
         return new ColorStateList(states, colors);
-    }
-
-    public void select() {
-
     }
 }

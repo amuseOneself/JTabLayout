@@ -6,11 +6,13 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.liang.jtab.indicator.Indicator;
 
 public class SlidingTabStrip extends LinearLayout {
 
@@ -22,13 +24,31 @@ public class SlidingTabStrip extends LinearLayout {
     private Indicator indicator;
     private float mSelectionOffset;
 
+    private int dividerWidth;
+    private int dividerHeight;
+    private int dividerColor;
+    private Paint dividerPaint;
+
     public SlidingTabStrip(Context context) {
         super(context);
         setWillNotDraw(false);
+        dividerPaint = new Paint();
     }
 
     public void setIndicator(Indicator indicator) {
         this.indicator = indicator;
+    }
+
+    public void setDividerWidth(int dividerWidth) {
+        this.dividerWidth = dividerWidth;
+    }
+
+    public void setDividerHeight(int dividerHeight) {
+        this.dividerHeight = dividerHeight;
+    }
+
+    public void setDividerColor(int dividerColor) {
+        this.dividerColor = dividerColor;
     }
 
     @Override
@@ -171,6 +191,16 @@ public class SlidingTabStrip extends LinearLayout {
             super.draw(canvas);
             return;
         }
+
+        if (dividerWidth > 0) {
+            dividerPaint.setStrokeWidth(dividerWidth);
+            dividerPaint.setColor(dividerColor);
+            for (int i = 0; i < getChildCount() - 1; i++) {
+                View tab = getChildAt(i);
+                canvas.drawLine(tab.getRight() + dividerWidth / 2, (getHeight() - dividerHeight) / 2, tab.getRight() + dividerWidth / 2, (getHeight() - dividerHeight) / 2 + dividerHeight, dividerPaint);
+            }
+        }
+
         if (indicator != null && mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
             if (indicator.isForeground()) {
                 super.draw(canvas);

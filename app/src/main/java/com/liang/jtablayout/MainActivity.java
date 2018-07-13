@@ -5,18 +5,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import com.liang.jtab.JIndicator;
+import com.liang.jtab.indicator.JIndicator;
 import com.liang.jtab.JTabLayout;
-import com.liang.jtab.OnTabSelectedListener;
-import com.liang.jtab.SlidingTabStrip;
-import com.liang.jtab.TabView;
+import com.liang.jtab.listener.OnTabSelectedListener;
+import com.liang.jtab.view.TabView;
 
 import java.util.ArrayList;
 import java.util.List;

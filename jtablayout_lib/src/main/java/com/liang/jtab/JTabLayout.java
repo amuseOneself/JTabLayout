@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -20,6 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import com.liang.jtab.indicator.Indicator;
+import com.liang.jtab.view.Tab;
+import com.liang.jtab.view.TabView;
+import com.liang.jtab.listener.OnTabSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +64,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
 
     private int dividerWidth;
-    private int dividerHeight;
-    private int dividerColor;
-    private Paint dividerPaint;
 
     private boolean autoRefresh;
 
@@ -94,10 +95,14 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
         mode = typedArray.getInt(R.styleable.JTabLayout_tabMode, MODE_FIXED);
         dividerWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerWidth, 0);
-        dividerHeight = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerHeight, 50);
-        dividerColor = typedArray.getColor(R.styleable.JTabLayout_dividerColor, Color.BLACK);
+        int dividerHeight = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerHeight, 50);
+        int dividerColor = typedArray.getColor(R.styleable.JTabLayout_dividerColor, Color.BLACK);
 
         typedArray.recycle();
+
+        tabStrip.setDividerWidth(dividerWidth);
+        tabStrip.setDividerHeight(dividerHeight);
+        tabStrip.setDividerColor(dividerColor);
     }
 
     public void addOnTabSelectedListener(@NonNull OnTabSelectedListener listener) {
@@ -156,6 +161,22 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void setTabTextColors(ColorStateList tabTextColors) {
         this.tabTextColors = tabTextColors;
+        updateTabViews(true);
+    }
+
+    public void setDividerWidth(int dividerWidth) {
+        this.dividerWidth = dividerWidth;
+        tabStrip.setDividerWidth(dividerWidth);
+        updateTabViews(true);
+    }
+
+    public void setDividerHeight(int dividerHeight) {
+        tabStrip.setDividerHeight(dividerHeight);
+        updateTabViews(true);
+    }
+
+    public void setDividerColor(int dividerColor) {
+        tabStrip.setDividerColor(dividerColor);
         updateTabViews(true);
     }
 
@@ -355,8 +376,8 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
         tab.setPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
 
-        LinearLayout.LayoutParams params = mode == MODE_SCROLLABLE ? new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT) :
-                new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+        updateTabViewLayoutParams(params, tab.getPosition() == 0 ? 0 : dividerWidth);
         tabStrip.addView(tab, tab.getPosition(), params);
 
         if (tab.getTitleColor() != null && tabTextColors != null) {
@@ -377,6 +398,34 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
                 }
             }
         });
+    }
+
+    @Override
+    public void addView(View child) {
+        addViewInternal(child);
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        addViewInternal(child);
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        addViewInternal(child);
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        addViewInternal(child);
+    }
+
+    private void addViewInternal(final View child) {
+        if (child instanceof Tab) {
+            addTab((Tab) child);
+        } else {
+            throw new IllegalArgumentException("Only TabItem instances can be added to TabLayout");
+        }
     }
 
     public void removeTab(Tab tab) {
@@ -423,7 +472,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             scrollAnimator.start();
         }
 
-        // Now animate the interpolator
         tabStrip.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
     }
 
@@ -436,9 +484,8 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
             final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
-            // base scroll amount: places center of tab in center of parent
             int scrollBase = selectedChild.getLeft() + (selectedWidth / 2) - (getWidth() / 2);
-            // offset amount: fraction of the distance between centers of tabs
+
             int scrollOffset = (int) ((selectedWidth + nextWidth + dividerWidth * 2) * 0.5f * positionOffset);
 
             return (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR)
@@ -468,10 +515,8 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             return;
         }
 
-        // Set the indicator position, if enabled
         tabStrip.setIndicatorPositionFromTabPosition(position, positionOffset);
 
-        // Now update the scroll position, canceling any running animation
         if (scrollAnimator != null && scrollAnimator.isRunning()) {
             scrollAnimator.cancel();
         }

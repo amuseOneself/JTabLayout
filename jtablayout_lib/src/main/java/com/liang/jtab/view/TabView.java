@@ -1,8 +1,7 @@
-package com.liang.jtab;
+package com.liang.jtab.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -14,8 +13,9 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.liang.jtab.R;
 
 public class TabView extends Tab {
 

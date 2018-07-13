@@ -1,4 +1,4 @@
-package com.liang.jtab;
+package com.liang.jtab.listener;
 
 public interface OnTabSelectedListener {
     void onTabSelected(int position);

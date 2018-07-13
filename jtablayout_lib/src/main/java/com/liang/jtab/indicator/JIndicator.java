@@ -1,4 +1,4 @@
-package com.liang.jtab;
+package com.liang.jtab.indicator;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
@@ -103,26 +103,6 @@ public class JIndicator extends Indicator {
     @SuppressLint("NewApi")
     @Override
     public void draw(Canvas canvas, float left, float right, int tabHeight) {
-//        if (type == TYPE_LINE) {
-////            indicatorPaint.setStrokeWidth(getHeight());
-////            if (gravity == Gravity.TOP) {
-////                canvas.drawLine(left, 0, right, 0, indicatorPaint);
-////            } else {
-////                canvas.drawLine(left, tabHeight, right, tabHeight, indicatorPaint);
-////            }
-////        }
-////
-////        if (type == TYPE_RECT) {
-////            if (gravity == Gravity.TOP) {
-////                indicatorDrawable.setBounds((int) left, 0, (int) right, getHeight());
-////            } else if (gravity == Gravity.BOTTOM) {
-////                indicatorDrawable.setBounds((int) left, tabHeight - getHeight(), (int) right, tabHeight);
-////            } else {
-////                indicatorDrawable.setBounds((int) left, (tabHeight - getHeight()) / 2, (int) right, (tabHeight - getHeight()) / 2 + getHeight());
-////            }
-////            indicatorDrawable.draw(canvas);
-//////            canvas.drawRoundRect(left, (tabHeight - height) / 2, right, (tabHeight - height) / 2 + height, radius, radius, indicatorPaint);
-////        }
 
         if (type == TYPE_TRIANGLE) {
             if (trianglePath == null) {

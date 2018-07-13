@@ -1,4 +1,4 @@
-package com.liang.jtab;
+package com.liang.jtab.indicator;
 
 import android.graphics.Canvas;
 
@@ -11,7 +11,6 @@ public abstract class Indicator {
 
     private boolean transitionScroll;
 
-    //    public abstract void draw(Canvas canvas, float left, float top, float right, float bottom);
     public abstract void draw(Canvas canvas, float left, float right, int tabHeight);
 
     public boolean isForeground() {
