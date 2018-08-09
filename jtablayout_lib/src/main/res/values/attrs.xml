@@ -10,5 +10,11 @@
         <attr name="dividerHeight" format="dimension" />
         <attr name="dividerColor" format="color" />
 
+        <attr name="textColorTransition">
+            <enum name="normal" value="0" />
+            <enum name="shadow" value="1" />
+        </attr>
+
+        <attr name="tabTextSize" format="dimension" />
     </declare-styleable>
 </resources>

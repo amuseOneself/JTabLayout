@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import com.liang.jtab.indicator.JIndicator;
 import com.liang.jtab.JTabLayout;
 import com.liang.jtab.listener.OnTabSelectedListener;
-import com.liang.jtab.view.TabView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 if (str.isEmpty()) {
                     views.add(getLayoutInflater().inflate(R.layout.flash_one, null));
                     adapter.notifyDataSetChanged();
-                    scrollView.addTab(new TabView(MainActivity.this).setTitle("Tab:" + i).setTitleColor(Color.GRAY, Color.BLUE)
+                    scrollView.addTab(scrollView.newTab().setTitle("Tab:" + i).setTitleColor(Color.MAGENTA, Color.GREEN)
                             .setIcon(android.R.drawable.ic_media_pause,android.R.drawable.ic_media_play));
                     i++;
 
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     i = Integer.parseInt(str);
                     views.add(Integer.parseInt(str), getLayoutInflater().inflate(R.layout.flash_one, null));
                     adapter.notifyDataSetChanged();
-                    scrollView.addTab(new TabView(MainActivity.this).setTitle("添加:" + i), Integer.parseInt(str));
+                    scrollView.addTab(scrollView.newTab().setTitle("添加:" + i), Integer.parseInt(str));
                 }
             }
         });

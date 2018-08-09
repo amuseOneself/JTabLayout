@@ -13,7 +13,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +70,10 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     private int scrollState;
     private int previousScrollState;
 
+    private int textTransitionMode;
+
+    private int tabTextSize;
+
     public JTabLayout(Context context) {
         this(context, null);
     }
@@ -94,9 +97,12 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
 
         mode = typedArray.getInt(R.styleable.JTabLayout_tabMode, MODE_FIXED);
+        textTransitionMode = typedArray.getInt(R.styleable.JTabLayout_textColorTransition, 0);
         dividerWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerWidth, 0);
         int dividerHeight = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerHeight, 50);
         int dividerColor = typedArray.getColor(R.styleable.JTabLayout_dividerColor, Color.BLACK);
+
+        tabTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabTextSize, 12);
 
         typedArray.recycle();
 
@@ -161,7 +167,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void setTabTextColors(ColorStateList tabTextColors) {
         this.tabTextColors = tabTextColors;
-        updateTabViews(true);
+        updateTabViews(false);
     }
 
     public void setDividerWidth(int dividerWidth) {
@@ -180,6 +186,16 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         updateTabViews(true);
     }
 
+    public void setTextTransitionMode(int textTransitionMode) {
+        this.textTransitionMode = textTransitionMode;
+
+    }
+
+    public void setTabTextSize(int tabTextSize) {
+        this.tabTextSize = tabTextSize;
+        updateTabViews(true);
+    }
+
     public void updateTabViews(boolean requestLayout) {
         switch (mode) {
             case MODE_FIXED:
@@ -190,11 +206,13 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
                 break;
         }
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            Tab child = (Tab) tabStrip.getChildAt(i);
-            child.setPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
-            if (child.getTitleColor() != null && tabTextColors != null) {
-                child.setTitleColor(tabTextColors);
+            View child = tabStrip.getChildAt(i);
+            ((Tab) child).setTabPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+            if (((Tab) child).getTitleColor() != null && tabTextColors != null) {
+                ((Tab) child).setTitleColor(tabTextColors);
             }
+            ((Tab) child).setTextTransitionMode(textTransitionMode);
+            ((Tab) child).setTextSize(tabTextSize);
             updateTabViewLayoutParams((LinearLayout.LayoutParams) child.getLayoutParams(), i == 0 ? 0 : dividerWidth);
             if (requestLayout) {
                 child.requestLayout();
@@ -303,15 +321,18 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     private void selectTab(Tab tab) {
-        if (selectedTab != null) {
-            selectedTab.setSelected(false);
-            dispatchTabUnselected(selectedTab);
-        }
+        tabUnselected();
 
         tab.setSelected(true);
 
         dispatchTabSelected(tab);
+    }
 
+    private void tabUnselected() {
+        if (selectedTab != null) {
+            selectedTab.setSelected(false);
+            dispatchTabUnselected(selectedTab);
+        }
     }
 
     private void setViewPageCurrent(Tab tab) {
@@ -372,19 +393,18 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     private void addTabView(Tab tab) {
-        Log.e("addTabView", "tab: ..." + tab.getPosition());
-
-        tab.setPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
-
+        tab.setTabPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+        tab.setTextTransitionMode(textTransitionMode);
+        tab.setTextSize(tabTextSize);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         updateTabViewLayoutParams(params, tab.getPosition() == 0 ? 0 : dividerWidth);
-        tabStrip.addView(tab, tab.getPosition(), params);
+        tabStrip.addView(tab.getView(), tab.getPosition(), params);
 
         if (tab.getTitleColor() != null && tabTextColors != null) {
             tab.setTitleColor(tabTextColors);
         }
 
-        tab.setOnClickListener(new OnClickListener() {
+        tab.getView().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -398,34 +418,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
                 }
             }
         });
-    }
-
-    @Override
-    public void addView(View child) {
-        addViewInternal(child);
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        addViewInternal(child);
-    }
-
-    @Override
-    public void addView(View child, ViewGroup.LayoutParams params) {
-        addViewInternal(child);
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        addViewInternal(child);
-    }
-
-    private void addViewInternal(final View child) {
-        if (child instanceof Tab) {
-            addTab((Tab) child);
-        } else {
-            throw new IllegalArgumentException("Only TabItem instances can be added to TabLayout");
-        }
     }
 
     public void removeTab(Tab tab) {
@@ -522,10 +514,12 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
         scrollTo(calculateScrollXForTab(position, positionOffset), 0);
 
-        // Update the 'selected state' view as we scroll, if enabled
-//        if (updateSelectedText) {
-//            setSelectedTabView(roundedPosition);
-//        }
+        if (positionOffset > 0 && textTransitionMode > 0) {
+            if (position + 1 < tabStrip.getChildCount()) {
+                ((Tab) tabStrip.getChildAt(position)).transition(textTransitionMode, 1.0f - positionOffset);
+                ((Tab) tabStrip.getChildAt(position + 1)).transition(textTransitionMode, positionOffset);
+            }
+        }
     }
 
     @Override
