@@ -111,5 +111,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("OnTabSelectedListener", "onTabReselected: ..." + position);
             }
         });
+
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

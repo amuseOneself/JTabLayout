@@ -25,19 +25,10 @@
     </LinearLayout>
 
 
-    <TextView
+    <com.liang.jtab.view.BadgeView
         android:id="@+id/navigation_badge"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_alignTop="@+id/linearLayout"
-        android:layout_marginLeft="-3dp"
-        android:layout_marginTop="3dp"
-        android:layout_toRightOf="@+id/linearLayout"
-        android:background="@drawable/badge_bg"
-        android:gravity="center"
-        android:text="65"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="visible" />
 
 </RelativeLayout>

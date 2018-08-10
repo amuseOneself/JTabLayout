@@ -70,11 +70,11 @@ public class TabView extends FrameLayout implements Tab {
                 mode == VERTICAL ? R.layout.tab_menu_vertical : R.layout.tab_menu_horizontal, null, true);
         iconView = view.findViewById(R.id.navigation_icon);
         titleView = view.findViewById(R.id.navigation_title);
-        badgeView = view.findViewById(R.id.navigation_badge);
+//        badgeView = view.findViewById(R.id.navigation_badge);
         titleView.setSingleLine(true);
         titleView.setEllipsize(TextUtils.TruncateAt.END);
-        badgeView.setSingleLine(true);
-        badgeView.setEllipsize(TextUtils.TruncateAt.END);
+//        badgeView.setSingleLine(true);
+//        badgeView.setEllipsize(TextUtils.TruncateAt.END);
         params.gravity = Gravity.CENTER;
         addView(view, 0, params);
         updateView();
@@ -126,7 +126,7 @@ public class TabView extends FrameLayout implements Tab {
             if (bold) {
                 titleView.setTypeface(Typeface.defaultFromStyle(isSelected() ? Typeface.BOLD : Typeface.NORMAL));
             }
-            if (textTransitionMode == TRANSITION_MODE_SHADOW) {
+            if (getTitleColor() != null && textTransitionMode == TRANSITION_MODE_SHADOW) {
                 titleView.setTextColor(isSelected() ? getTitleColor().getColorForState(SELECTED_STATE_SET, Color.GRAY) :
                         getTitleColor().getColorForState(EMPTY_STATE_SET, Color.GRAY));
             }
@@ -230,7 +230,7 @@ public class TabView extends FrameLayout implements Tab {
 
     @Override
     public void transition(int textTransitionMode, float positionOffset) {
-        if (textTransitionMode == TRANSITION_MODE_NORMAL) {
+        if (getTitleColor() == null || textTransitionMode == TRANSITION_MODE_NORMAL) {
             return;
         }
 
