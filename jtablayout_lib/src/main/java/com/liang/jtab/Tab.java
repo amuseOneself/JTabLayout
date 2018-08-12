@@ -1,7 +1,8 @@
-package com.liang.jtab.view;
+package com.liang.jtab;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.view.View;
 
 public interface Tab {
@@ -43,4 +44,16 @@ public interface Tab {
     Tab setBold(boolean b);
 
     Tab setTextSize(float size);
+
+    Tab setBadgeTextColor(@ColorInt int color);
+
+    Tab setBadgeTextSize(float size);
+
+    Tab setBadgeColor(@ColorInt int color);
+
+    Tab setBadgeStroke(int width, @ColorInt int color);
+
+    void showBadgeMsg(String msg, boolean showDot);
+
+    void hideBadgeMsg();
 }

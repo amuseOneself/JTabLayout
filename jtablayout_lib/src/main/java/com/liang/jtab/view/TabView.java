@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.liang.jtab.R;
+import com.liang.jtab.Tab;
 import com.liang.jtab.utils.ColorUtils;
 
 public class TabView extends FrameLayout implements Tab {
@@ -29,7 +30,7 @@ public class TabView extends FrameLayout implements Tab {
 
     private TextView titleView;
     private ImageView iconView;
-    private TextView badgeView;
+    private BadgeView badgeView;
 
     private boolean bold;
 
@@ -70,11 +71,11 @@ public class TabView extends FrameLayout implements Tab {
                 mode == VERTICAL ? R.layout.tab_menu_vertical : R.layout.tab_menu_horizontal, null, true);
         iconView = view.findViewById(R.id.navigation_icon);
         titleView = view.findViewById(R.id.navigation_title);
-//        badgeView = view.findViewById(R.id.navigation_badge);
+        badgeView = view.findViewById(R.id.navigation_badge);
         titleView.setSingleLine(true);
         titleView.setEllipsize(TextUtils.TruncateAt.END);
-//        badgeView.setSingleLine(true);
-//        badgeView.setEllipsize(TextUtils.TruncateAt.END);
+        badgeView.setSingleLine(true);
+        badgeView.setEllipsize(TextUtils.TruncateAt.END);
         params.gravity = Gravity.CENTER;
         addView(view, 0, params);
         updateView();
@@ -256,6 +257,57 @@ public class TabView extends FrameLayout implements Tab {
     public Tab setTextSize(float size) {
         titleView.setTextSize(size);
         return this;
+    }
+
+    @Override
+    public Tab setBadgeTextColor(int color) {
+        if (badgeView != null) {
+            badgeView.setTextColor(color);
+        }
+        return this;
+    }
+
+    @Override
+    public Tab setBadgeTextSize(float size) {
+        if (badgeView != null) {
+            badgeView.setTextSize(size);
+        }
+        return this;
+    }
+
+    @Override
+    public Tab setBadgeColor(int color) {
+        if (badgeView != null) {
+            badgeView.setBackgroundColor(color);
+        }
+        return this;
+    }
+
+    @Override
+    public Tab setBadgeStroke(int width, int color) {
+        if (badgeView != null) {
+            badgeView.setStroke(width, color);
+        }
+        return this;
+    }
+
+
+    @Override
+    public void showBadgeMsg(String msg, boolean showDot) {
+        if (badgeView == null) {
+            return;
+        }
+        badgeView.show(showDot ? "" : msg);
+
+    }
+
+    @Override
+    public void hideBadgeMsg() {
+        if (badgeView == null) {
+            return;
+        }
+
+        badgeView.hide();
     }
 
     private ColorStateList createColorStateList(int defaultColor, int selectedColor) {

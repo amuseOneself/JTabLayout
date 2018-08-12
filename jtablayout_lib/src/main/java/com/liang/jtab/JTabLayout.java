@@ -20,7 +20,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.liang.jtab.indicator.Indicator;
-import com.liang.jtab.view.Tab;
 import com.liang.jtab.view.TabView;
 import com.liang.jtab.listener.OnTabSelectedListener;
 
@@ -194,6 +193,61 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     public void setTabTextSize(int tabTextSize) {
         this.tabTextSize = tabTextSize;
         updateTabViews(true);
+    }
+
+    public void setTabMsgDot(int position) {
+        setTabMsg(position, "dot", true);
+    }
+
+    public void setTabMsg(int position, int count) {
+        setTabMsg(position, count, false);
+    }
+
+    public void setTabMsg(int position, int count, boolean showDot) {
+        setTabMsg(position, count > 0 ? count + "" : "", showDot);
+    }
+
+    public void setTabMsg(int position, String msg) {
+        setTabMsg(position, msg, false);
+    }
+
+    public void setTabMsg(int position, String msg, boolean showDot) {
+        Tab tab = (Tab) tabStrip.getChildAt(position);
+        if (tab != null) {
+            if (msg.isEmpty()) {
+                tab.hideBadgeMsg();
+                return;
+            }
+            tab.showBadgeMsg(msg, showDot);
+        }
+    }
+
+    public void setBadgeTextColor(int position, int color) {
+        Tab tab = (Tab) tabStrip.getChildAt(position);
+        if (tab != null) {
+            tab.setBadgeTextColor(color);
+        }
+    }
+
+    public void setBadgeTextSize(int position, float size) {
+        Tab tab = (Tab) tabStrip.getChildAt(position);
+        if (tab != null) {
+            tab.setBadgeTextSize(size);
+        }
+    }
+
+    public void setBadgeColor(int position, int color) {
+        Tab tab = (Tab) tabStrip.getChildAt(position);
+        if (tab != null) {
+            tab.setBadgeColor(color);
+        }
+    }
+
+    public void setBadgeStroke(int position, int width, int color) {
+        Tab tab = (Tab) tabStrip.getChildAt(position);
+        if (tab != null) {
+            tab.setBadgeStroke(width, color);
+        }
     }
 
     public void updateTabViews(boolean requestLayout) {
