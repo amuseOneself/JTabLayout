@@ -20,8 +20,8 @@
             android:id="@+id/navigation_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="12sp" />
+            android:layout_marginLeft="5dp"
+            android:gravity="center" />
     </LinearLayout>
 
 
@@ -29,6 +29,10 @@
         android:id="@+id/navigation_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/linearLayout"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/linearLayout"
         android:visibility="gone" />
 
 </RelativeLayout>

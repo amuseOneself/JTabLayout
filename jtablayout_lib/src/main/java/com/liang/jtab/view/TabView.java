@@ -57,18 +57,16 @@ public class TabView extends FrameLayout implements Tab {
         updateLayout();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        final int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);
-        }
+    protected View initTabView() {
+        return null;
     }
 
     private void updateLayout() {
-        View view = LayoutInflater.from(getContext()).inflate(
-                mode == VERTICAL ? R.layout.tab_menu_vertical : R.layout.tab_menu_horizontal, null, true);
+        View view = initTabView();
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(
+                    mode == VERTICAL ? R.layout.tab_menu_vertical : R.layout.tab_menu_horizontal, null, true);
+        }
         iconView = view.findViewById(R.id.navigation_icon);
         titleView = view.findViewById(R.id.navigation_title);
         badgeView = view.findViewById(R.id.navigation_badge);
@@ -77,6 +75,7 @@ public class TabView extends FrameLayout implements Tab {
         badgeView.setSingleLine(true);
         badgeView.setEllipsize(TextUtils.TruncateAt.END);
         params.gravity = Gravity.CENTER;
+        removeAllViews();
         addView(view, 0, params);
         updateView();
     }
@@ -144,8 +143,8 @@ public class TabView extends FrameLayout implements Tab {
         initTitleColors();
     }
 
-
-    public TabView setMode(int mode) {
+    @Override
+    public Tab setOrientationMode(int mode) {
         this.mode = mode;
         updateLayout();
         return this;
@@ -167,7 +166,7 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
-    public TabView setTitle(CharSequence title) {
+    public Tab setTitle(CharSequence title) {
         this.title = title;
         updateView();
         return this;

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.liang.jtab.JTabLayout
+        android:id="@+id/tabLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:itemLayoutOrientation="vertical"
+        app:tabTextColor="@drawable/text_color_tab" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout1" />
+
+    <com.liang.jtab.JTabLayout
+        android:id="@+id/tabLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:itemLayoutOrientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        app:tabTextColor="@drawable/text_color_tab" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout2" />
+
+    <com.liang.jtab.JTabLayout
+        android:id="@+id/tabLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:dividerColor="@android:color/holo_orange_dark"
+        app:dividerWidth="2dp"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:tabMode="fixed"
+        app:tabTextColor="@drawable/text_color_tab" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout3" />
+
+    <com.liang.jtab.JTabLayout
+        android:id="@+id/tabLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:tabTextColor="@drawable/text_color_tab"
+        app:dividerColor="@android:color/holo_orange_dark"
+        app:dividerWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:tabMode="scrollable"
+        />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout4" />
+
+    <com.liang.jtab.JTabLayout
+        android:id="@+id/tabLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:tabTextColor="@drawable/text_color_tab"
+        app:dividerColor="@android:color/holo_orange_dark"
+        app:dividerWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/line4"
+        app:tabMode="scrollable"
+        app:textColorTransition="shadow" />
+
+
+</android.support.constraint.ConstraintLayout>

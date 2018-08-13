@@ -15,6 +15,17 @@
             <enum name="shadow" value="1" />
         </attr>
 
+        <attr name="itemLayoutOrientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+
         <attr name="tabTextSize" format="dimension" />
+
+        <attr name="badgeColor" format="color" />
+        <attr name="badgeTextColor" format="color" />
+        <attr name="badgeTextSize" format="dimension" />
+        <attr name="badgeStrokeColor" format="color" />
+        <attr name="badgeStrokeWidth" format="dimension" />
     </declare-styleable>
 </resources>

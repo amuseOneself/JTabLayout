@@ -7,6 +7,8 @@ import android.view.View;
 
 public interface Tab {
 
+    Tab setOrientationMode(int mode);
+
     int getPosition();
 
     void setPosition(int position);

@@ -1,5 +1,6 @@
 package com.liang.jtablayout;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -79,19 +80,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                scrollView.addTab(getLayoutInflater().inflate(R.layout.flash_one, null));
 
-                String str = editText2.getText().toString();
-                if (str.isEmpty()) {
-                    views.clear();
-                    adapter.notifyDataSetChanged();
-                    scrollView.removeAllTabs();
-                    i = 0;
-                } else {
-                    scrollView.removeTabAt(Integer.parseInt(str));
-                    if (views.size() > 0) {
-                        views.remove(Integer.parseInt(str));
-                        adapter.notifyDataSetChanged();
-                    }
-                }
+                startActivity(new Intent(MainActivity.this, TabActivity.class));
+
+//                String str = editText2.getText().toString();
+//                if (str.isEmpty()) {
+//                    views.clear();
+//                    adapter.notifyDataSetChanged();
+//                    scrollView.removeAllTabs();
+//                    i = 0;
+//                } else {
+//                    scrollView.removeTabAt(Integer.parseInt(str));
+//                    if (views.size() > 0) {
+//                        views.remove(Integer.parseInt(str));
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                }
             }
         });
 

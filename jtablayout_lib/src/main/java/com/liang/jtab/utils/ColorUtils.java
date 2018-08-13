@@ -3,14 +3,6 @@ package com.liang.jtab.utils;
 import android.graphics.Color;
 
 public class ColorUtils {
-    /**
-     * 取两个颜色间的渐变区间 中的某一点的颜色
-     *
-     * @param startColor
-     * @param endColor
-     * @param radio
-     * @return
-     */
     public static int getColorFrom(int startColor, int endColor, float radio) {
         int redStart = Color.red(startColor);
         int blueStart = Color.blue(startColor);

@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -13,6 +14,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +75,14 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     private int tabTextSize;
 
+    private int itemLayoutOrientation;
+
+    private int badgeColor;
+    private int badgeTextColor;
+    private int badgeTextSize;
+    private int badgeStrokeColor;
+    private int badgeStrokeWidth;
+
     public JTabLayout(Context context) {
         this(context, null);
     }
@@ -97,11 +107,19 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
         mode = typedArray.getInt(R.styleable.JTabLayout_tabMode, MODE_FIXED);
         textTransitionMode = typedArray.getInt(R.styleable.JTabLayout_textColorTransition, 0);
+        itemLayoutOrientation = typedArray.getInt(R.styleable.JTabLayout_itemLayoutOrientation, 0);
         dividerWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerWidth, 0);
         int dividerHeight = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_dividerHeight, 50);
         int dividerColor = typedArray.getColor(R.styleable.JTabLayout_dividerColor, Color.BLACK);
 
         tabTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabTextSize, 12);
+
+        badgeColor = typedArray.getColor(R.styleable.JTabLayout_badgeColor, Color.RED);
+        badgeTextColor = typedArray.getColor(R.styleable.JTabLayout_badgeTextColor, Color.WHITE);
+        badgeStrokeColor = typedArray.getColor(R.styleable.JTabLayout_badgeStrokeColor, Color.WHITE);
+
+        badgeTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 8);
+        badgeStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 2);
 
         typedArray.recycle();
 
@@ -153,6 +171,11 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void setMode(int mode) {
         this.mode = mode;
+        updateTabViews(true);
+    }
+
+    public void setItemLayoutOrientation(int itemLayoutOrientation) {
+        this.itemLayoutOrientation = itemLayoutOrientation;
         updateTabViews(true);
     }
 
@@ -222,7 +245,13 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
     }
 
-    public void setBadgeTextColor(int position, int color) {
+    public void setBadgeTextColor(@ColorInt int color) {
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            setBadgeTextColor(i, color);
+        }
+    }
+
+    public void setBadgeTextColor(int position, @ColorInt int color) {
         Tab tab = (Tab) tabStrip.getChildAt(position);
         if (tab != null) {
             tab.setBadgeTextColor(color);
@@ -236,14 +265,26 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
     }
 
-    public void setBadgeColor(int position, int color) {
+    public void setBadgeColor(@ColorInt int color) {
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            setBadgeColor(i, color);
+        }
+    }
+
+    public void setBadgeColor(int position, @ColorInt int color) {
         Tab tab = (Tab) tabStrip.getChildAt(position);
         if (tab != null) {
             tab.setBadgeColor(color);
         }
     }
 
-    public void setBadgeStroke(int position, int width, int color) {
+    public void setBadgeStroke(int width, @ColorInt int color) {
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            setBadgeStroke(i, width, color);
+        }
+    }
+
+    public void setBadgeStroke(int position, int width, @ColorInt int color) {
         Tab tab = (Tab) tabStrip.getChildAt(position);
         if (tab != null) {
             tab.setBadgeStroke(width, color);
@@ -262,6 +303,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
             View child = tabStrip.getChildAt(i);
             ((Tab) child).setTabPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+            ((Tab) child).setOrientationMode(itemLayoutOrientation);
             if (((Tab) child).getTitleColor() != null && tabTextColors != null) {
                 ((Tab) child).setTitleColor(tabTextColors);
             }
@@ -448,13 +490,18 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     private void addTabView(Tab tab) {
         tab.setTabPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+        tab.setOrientationMode(itemLayoutOrientation);
         tab.setTextTransitionMode(textTransitionMode);
         tab.setTextSize(tabTextSize);
+        tab.setBadgeColor(badgeColor);
+        tab.setBadgeTextColor(badgeTextColor);
+        tab.setBadgeTextSize(badgeTextSize);
+        tab.setBadgeStroke(badgeStrokeWidth,badgeStrokeColor);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         updateTabViewLayoutParams(params, tab.getPosition() == 0 ? 0 : dividerWidth);
         tabStrip.addView(tab.getView(), tab.getPosition(), params);
 
-        if (tab.getTitleColor() != null && tabTextColors != null) {
+        if (tab.getTitleColor() == null && tabTextColors != null) {
             tab.setTitleColor(tabTextColors);
         }
 
