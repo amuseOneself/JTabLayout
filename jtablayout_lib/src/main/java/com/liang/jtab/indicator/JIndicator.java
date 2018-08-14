@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.ColorInt;
 import android.view.Gravity;
 
 @SuppressLint("WrongConstant")
@@ -53,7 +54,7 @@ public class JIndicator extends Indicator {
         return this;
     }
 
-    public JIndicator setColor(int color) {
+    public JIndicator setColor(@ColorInt int color) {
         this.color = color;
         update();
         return this;

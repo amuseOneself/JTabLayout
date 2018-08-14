@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -37,6 +38,7 @@ public class SlidingTabStrip extends LinearLayout {
 
     public void setIndicator(Indicator indicator) {
         this.indicator = indicator;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
     public void setDividerWidth(int dividerWidth) {
@@ -58,10 +60,10 @@ public class SlidingTabStrip extends LinearLayout {
             return;
         }
         if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
-            mIndicatorAnimator.cancel();
-            final long duration = mIndicatorAnimator.getDuration();
-            animateIndicatorToPosition(mSelectedPosition,
-                    Math.round((1f - mIndicatorAnimator.getAnimatedFraction()) * duration));
+//            mIndicatorAnimator.cancel();
+//            final long duration = mIndicatorAnimator.getDuration();
+//            animateIndicatorToPosition(mSelectedPosition,
+//                    Math.round((1f - mIndicatorAnimator.getAnimatedFraction()) * duration));
         } else {
             updateIndicatorPosition(-1);
         }
@@ -69,6 +71,7 @@ public class SlidingTabStrip extends LinearLayout {
 
     public void animateIndicatorToPosition(final int newPosition, int duration) {
         if (indicator == null) {
+            mSelectedPosition = newPosition;
             return;
         }
         if (newPosition != mSelectedPosition) {
@@ -112,7 +115,6 @@ public class SlidingTabStrip extends LinearLayout {
     }
 
     private void updateIndicatorPosition(int position) {
-
         if (position < 0) {
             position = mSelectedPosition + 1;
         }

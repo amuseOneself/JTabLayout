@@ -33,7 +33,7 @@ public interface Tab {
 
     Tab setIcon(Drawable defaultIcon, Drawable selectedIcon);
 
-    void setTabPadding(int paddingStart, int paddingTop, int paddingEnd, int paddingBottom);
+    void setTabPadding(int left, int top, int right, int bottom);
 
     void transition(int textTransitionMode, float positionOffset);
 

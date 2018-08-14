@@ -51,9 +51,9 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     private List<Tab> tabViews;
     private Tab selectedTab;
 
-    private int tabPaddingStart = 10;
+    private int tabPaddingLeft = 10;
     private int tabPaddingTop = 0;
-    private int tabPaddingEnd = 10;
+    private int tabPaddingRight = 10;
     private int tabPaddingBottom = 0;
 
     private ColorStateList tabTextColors;
@@ -82,6 +82,8 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     private int badgeTextSize;
     private int badgeStrokeColor;
     private int badgeStrokeWidth;
+
+    private boolean textBold;
 
     public JTabLayout(Context context) {
         this(context, null);
@@ -120,6 +122,8 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
         badgeTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 8);
         badgeStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 2);
+
+        textBold = typedArray.getBoolean(R.styleable.JTabLayout_textBold, false);
 
         typedArray.recycle();
 
@@ -171,51 +175,56 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void setMode(int mode) {
         this.mode = mode;
-        updateTabViews(true);
+        updateTabViews();
     }
 
     public void setItemLayoutOrientation(int itemLayoutOrientation) {
         this.itemLayoutOrientation = itemLayoutOrientation;
-        updateTabViews(true);
+        updateTabViews();
     }
 
-    public void setTabPadding(int mTabPaddingStart, int mTabPaddingTop, int mTabPaddingEnd, int mTabPaddingBottom) {
-        this.tabPaddingStart = mTabPaddingStart;
-        this.tabPaddingTop = mTabPaddingTop;
-        this.tabPaddingEnd = mTabPaddingEnd;
-        this.tabPaddingBottom = mTabPaddingBottom;
-        updateTabViews(true);
+    public void setTabPadding(int left, int top, int right, int bottom) {
+        this.tabPaddingLeft = left;
+        this.tabPaddingTop = top;
+        this.tabPaddingRight = right;
+        this.tabPaddingBottom = bottom;
+        updateTabViews();
     }
 
     public void setTabTextColors(ColorStateList tabTextColors) {
         this.tabTextColors = tabTextColors;
-        updateTabViews(false);
+        updateTabViews();
+    }
+
+    public void setTabTextSize(int tabTextSize) {
+        this.tabTextSize = tabTextSize;
+        updateTabViews();
+    }
+
+    public void setTextBold(boolean textBold) {
+        this.textBold = textBold;
+        updateTabViews();
+    }
+
+    public void setTextTransitionMode(int textTransitionMode) {
+        this.textTransitionMode = textTransitionMode;
+        updateTabViews();
     }
 
     public void setDividerWidth(int dividerWidth) {
         this.dividerWidth = dividerWidth;
         tabStrip.setDividerWidth(dividerWidth);
-        updateTabViews(true);
+        updateTabViews();
     }
 
     public void setDividerHeight(int dividerHeight) {
         tabStrip.setDividerHeight(dividerHeight);
-        updateTabViews(true);
+        updateTabViews();
     }
 
     public void setDividerColor(int dividerColor) {
         tabStrip.setDividerColor(dividerColor);
-        updateTabViews(true);
-    }
-
-    public void setTextTransitionMode(int textTransitionMode) {
-        this.textTransitionMode = textTransitionMode;
-
-    }
-
-    public void setTabTextSize(int tabTextSize) {
-        this.tabTextSize = tabTextSize;
-        updateTabViews(true);
+        updateTabViews();
     }
 
     public void setTabMsgDot(int position) {
@@ -291,7 +300,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
     }
 
-    public void updateTabViews(boolean requestLayout) {
+    public void updateTabViews() {
         switch (mode) {
             case MODE_FIXED:
                 tabStrip.setGravity(Gravity.CENTER);
@@ -302,17 +311,15 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
             View child = tabStrip.getChildAt(i);
-            ((Tab) child).setTabPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+            ((Tab) child).setTabPadding(tabPaddingLeft, tabPaddingTop, tabPaddingRight, tabPaddingBottom);
             ((Tab) child).setOrientationMode(itemLayoutOrientation);
-            if (((Tab) child).getTitleColor() != null && tabTextColors != null) {
+            if (tabTextColors != null) {
                 ((Tab) child).setTitleColor(tabTextColors);
             }
             ((Tab) child).setTextTransitionMode(textTransitionMode);
             ((Tab) child).setTextSize(tabTextSize);
+            ((Tab) child).setBold(textBold);
             updateTabViewLayoutParams((LinearLayout.LayoutParams) child.getLayoutParams(), i == 0 ? 0 : dividerWidth);
-            if (requestLayout) {
-                child.requestLayout();
-            }
         }
     }
 
@@ -416,6 +423,14 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
     }
 
+    public void setCurrentItem(int position) {
+        Tab tab = (Tab) tabStrip.getChildAt(position);
+        if (tab != null) {
+            selectTab(tab);
+            animateToTab(tab.getPosition());
+        }
+    }
+
     private void selectTab(Tab tab) {
         tabUnselected();
 
@@ -433,7 +448,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     private void setViewPageCurrent(Tab tab) {
         if (viewPager != null) {
-            viewPager.setCurrentItem(tab.getPosition(), true);
+            viewPager.setCurrentItem(tab.getPosition(), false);
         }
     }
 
@@ -489,21 +504,21 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     private void addTabView(Tab tab) {
-        tab.setTabPadding(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+        tab.setTabPadding(tabPaddingLeft, tabPaddingTop, tabPaddingRight, tabPaddingBottom);
         tab.setOrientationMode(itemLayoutOrientation);
         tab.setTextTransitionMode(textTransitionMode);
         tab.setTextSize(tabTextSize);
+        tab.setBold(textBold);
         tab.setBadgeColor(badgeColor);
         tab.setBadgeTextColor(badgeTextColor);
         tab.setBadgeTextSize(badgeTextSize);
-        tab.setBadgeStroke(badgeStrokeWidth,badgeStrokeColor);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        updateTabViewLayoutParams(params, tab.getPosition() == 0 ? 0 : dividerWidth);
-        tabStrip.addView(tab.getView(), tab.getPosition(), params);
-
+        tab.setBadgeStroke(badgeStrokeWidth, badgeStrokeColor);
         if (tab.getTitleColor() == null && tabTextColors != null) {
             tab.setTitleColor(tabTextColors);
         }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+        updateTabViewLayoutParams(params, tab.getPosition() == 0 ? 0 : dividerWidth);
+        tabStrip.addView(tab.getView(), tab.getPosition(), params);
 
         tab.getView().setOnClickListener(new OnClickListener() {
             @Override
@@ -552,17 +567,20 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     private void animateToTab(int newPosition) {
-        if (newPosition == TabView.INVALID_POSITION || mode == MODE_FIXED) {
+
+        if (newPosition == TabView.INVALID_POSITION) {
             return;
         }
 
-        final int startScrollX = getScrollX();
-        final int targetScrollX = calculateScrollXForTab(newPosition, 0);
+        if (mode == MODE_SCROLLABLE) {
+            final int startScrollX = getScrollX();
+            final int targetScrollX = calculateScrollXForTab(newPosition, 0);
 
-        if (startScrollX != targetScrollX) {
-            ensureScrollAnimator();
-            scrollAnimator.setIntValues(startScrollX, targetScrollX);
-            scrollAnimator.start();
+            if (startScrollX != targetScrollX) {
+                ensureScrollAnimator();
+                scrollAnimator.setIntValues(startScrollX, targetScrollX);
+                scrollAnimator.start();
+            }
         }
 
         tabStrip.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);

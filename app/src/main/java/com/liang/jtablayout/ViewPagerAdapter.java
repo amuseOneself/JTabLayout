@@ -1,8 +1,11 @@
 package com.liang.jtablayout;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,15 +13,18 @@ import android.widget.TextView;
 import java.util.List;
 
 public class ViewPagerAdapter extends PagerAdapter {
-    List<View> views;
 
-    public ViewPagerAdapter(List<View> views) {
-        this.views = views;
+    private Context context;
+    private List<String> titles;
+
+    public ViewPagerAdapter(Context context, List<String> titles) {
+        this.context = context;
+        this.titles = titles;
     }
 
     @Override
     public int getCount() {
-        return views.size();
+        return titles.size();
     }
 
     @Override
@@ -29,10 +35,12 @@ public class ViewPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View view = views.get(position);
-        ((TextView) view.findViewById(R.id.TextView)).setText(getPageTitle(position));
-        container.addView(view);
-        return view;
+        TextView textView = new TextView(context);
+        textView.setText(getPageTitle(position));
+        textView.setGravity(Gravity.CENTER);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        container.addView(textView, layoutParams);
+        return textView;
     }
 
     @Override
@@ -43,7 +51,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tab: " + position;
+        return titles.get(position);
     }
 
     @Override

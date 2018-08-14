@@ -111,6 +111,7 @@ public class TabView extends FrameLayout implements Tab {
                 return;
             }
             titleView.setTextColor(getTitleColor());
+            titleView.setSelected(isSelected());
         }
     }
 
@@ -122,10 +123,10 @@ public class TabView extends FrameLayout implements Tab {
             sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
         }
         if (titleView != null && titleView.getVisibility() != GONE) {
-            titleView.setSelected(selected);
             if (bold) {
                 titleView.setTypeface(Typeface.defaultFromStyle(isSelected() ? Typeface.BOLD : Typeface.NORMAL));
             }
+            titleView.setSelected(selected);
             if (getTitleColor() != null && textTransitionMode == TRANSITION_MODE_SHADOW) {
                 titleView.setTextColor(isSelected() ? getTitleColor().getColorForState(SELECTED_STATE_SET, Color.GRAY) :
                         getTitleColor().getColorForState(EMPTY_STATE_SET, Color.GRAY));
@@ -224,8 +225,8 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
-    public void setTabPadding(int start, int top, int end, int bottom) {
-        ViewCompat.setPaddingRelative(this, start, top, end, bottom);
+    public void setTabPadding(int left, int top, int right, int bottom) {
+        setPadding(left, top, right, bottom);
     }
 
     @Override
