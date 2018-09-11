@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TabActivity" />
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".OperationActivity"></activity>
     </application>
 
 </manifest>

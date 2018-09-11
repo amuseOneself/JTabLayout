@@ -3,6 +3,8 @@ package com.liang.jtab;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.view.View;
 
 public interface Tab {
@@ -23,13 +25,19 @@ public interface Tab {
 
     ColorStateList getTitleColor();
 
-    Tab setTitleColor(int defaultColor, int selectedColor);
+    Tab setTitleColor(@ColorInt int defaultColor, @ColorInt int selectedColor);
 
     Tab setTitleColor(ColorStateList titleColor);
 
+    Tab setBackgroundRes(@DrawableRes int resId);
+
+    Tab setBackgroundDraw(Drawable background);
+
+    Drawable getBackground();
+
     Drawable[] getIcons();
 
-    Tab setIcon(int defaultIcon, int selectedIcon);
+    Tab setIcon(@DrawableRes int defaultIcon, @DrawableRes int selectedIcon);
 
     Tab setIcon(Drawable defaultIcon, Drawable selectedIcon);
 

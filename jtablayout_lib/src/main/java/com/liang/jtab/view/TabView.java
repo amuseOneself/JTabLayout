@@ -1,15 +1,19 @@
 package com.liang.jtab.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +54,9 @@ public class TabView extends FrameLayout implements Tab {
 
     private FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+    private Drawable background;
+
+    private View tabView;
 
     public TabView(@NonNull Context context) {
         super(context);
@@ -62,22 +69,38 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     private void updateLayout() {
-        View view = initTabView();
-        if (view == null) {
-            view = LayoutInflater.from(getContext()).inflate(
+        tabView = initTabView();
+        if (tabView == null) {
+            tabView = LayoutInflater.from(getContext()).inflate(
                     mode == VERTICAL ? R.layout.tab_menu_vertical : R.layout.tab_menu_horizontal, null, true);
         }
-        iconView = view.findViewById(R.id.navigation_icon);
-        titleView = view.findViewById(R.id.navigation_title);
-        badgeView = view.findViewById(R.id.navigation_badge);
-        titleView.setSingleLine(true);
-        titleView.setEllipsize(TextUtils.TruncateAt.END);
-        badgeView.setSingleLine(true);
-        badgeView.setEllipsize(TextUtils.TruncateAt.END);
+
+        iconView = setTabIconView();
+        titleView = setTabTitleView();
+        badgeView = setTabBadgeView();
+
         params.gravity = Gravity.CENTER;
         removeAllViews();
-        addView(view, 0, params);
+        addView(tabView, 0, params);
         updateView();
+    }
+
+    protected TextView setTabTitleView() {
+        TextView title = tabView.findViewById(R.id.navigation_title);
+        title.setSingleLine(true);
+        title.setEllipsize(TextUtils.TruncateAt.END);
+        return title;
+    }
+
+    protected ImageView setTabIconView() {
+        return tabView.findViewById(R.id.navigation_icon);
+    }
+
+    protected BadgeView setTabBadgeView() {
+        BadgeView badge = tabView.findViewById(R.id.navigation_badge);
+        badge.setSingleLine(true);
+        badge.setEllipsize(TextUtils.TruncateAt.END);
+        return badge;
     }
 
     private void updateView() {
@@ -190,7 +213,7 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
-    public Tab setTitleColor(int defaultColor, int selectedColor) {
+    public Tab setTitleColor(@ColorInt int defaultColor, @ColorInt int selectedColor) {
         return setTitleColor(createColorStateList(defaultColor, selectedColor));
     }
 
@@ -202,12 +225,31 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
+    public Tab setBackgroundRes(int resId) {
+        return setBackgroundDraw(ContextCompat.getDrawable(getContext(), resId));
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public Tab setBackgroundDraw(Drawable background) {
+        this.background = background;
+        setBackground(background);
+        setSelected(isSelected());
+        return this;
+    }
+
+    @Override
+    public Drawable getBackground() {
+        return background;
+    }
+
+    @Override
     public Drawable[] getIcons() {
         return icons;
     }
 
     @Override
-    public Tab setIcon(int defaultIcon, int selectedIcon) {
+    public Tab setIcon(@DrawableRes int defaultIcon, @DrawableRes int selectedIcon) {
         Drawable defaultDrawable = ContextCompat.getDrawable(getContext(), defaultIcon);
         Drawable selectedDrawable = ContextCompat.getDrawable(getContext(), selectedIcon);
         return setIcon(defaultDrawable, selectedDrawable);
@@ -260,7 +302,7 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
-    public Tab setBadgeTextColor(int color) {
+    public Tab setBadgeTextColor(@ColorInt int color) {
         if (badgeView != null) {
             badgeView.setTextColor(color);
         }
@@ -276,7 +318,7 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
-    public Tab setBadgeColor(int color) {
+    public Tab setBadgeColor(@ColorInt int color) {
         if (badgeView != null) {
             badgeView.setBackgroundColor(color);
         }
@@ -284,7 +326,7 @@ public class TabView extends FrameLayout implements Tab {
     }
 
     @Override
-    public Tab setBadgeStroke(int width, int color) {
+    public Tab setBadgeStroke(int width, @ColorInt int color) {
         if (badgeView != null) {
             badgeView.setStroke(width, color);
         }

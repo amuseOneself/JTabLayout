@@ -1,15 +1,11 @@
 package com.liang.jtablayout
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.view.ActionMode
-import com.liang.jtab.JTabLayout
 import com.liang.jtab.indicator.JIndicator
-import com.liang.jtab.view.TabView
 import kotlinx.android.synthetic.main.activity_tab.*
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -31,21 +27,22 @@ class TabActivity : AppCompatActivity() {
         initTab3()
         initTab4()
         initTab5()
-
+        initTab6()
         initViewPager()
 
     }
 
     private fun initTab1() {
-        tabLayout1.addTab(tabLayout1.newTab().setIcon(R.mipmap.icon_qipaishi_normal, R.mipmap.icon_qipaishi_press).setTitle("娱乐"))
-        tabLayout1.addTab(tabLayout1.newTab().setIcon(R.mipmap.icon_zhanji_normal, R.mipmap.icon_zhanji_press).setTitle("排名"))
-        tabLayout1.addTab(tabLayout1.newTab().setIcon(R.mipmap.icon_xiaoxi_normal, R.mipmap.icon_xiaoxi_press).setTitle("消息"))
-        tabLayout1.addTab(tabLayout1.newTab().setIcon(R.mipmap.icon_wode_normal, R.mipmap.icon_wode_press).setTitle("我的"))
-        tabLayout1.setBadgeColor(0, Color.YELLOW)
-        tabLayout1.setBadgeTextColor(0, Color.RED)
-        tabLayout1.setTabMsg(0, "火热")
-        tabLayout1.setTabMsg(2, 5)
-        tabLayout1.setTabMsgDot(3)
+
+        tabLayout1.addTab(TabMenu(this).setTitle("娱乐").setBackgroundRes(R.drawable.tab_bgl))
+        tabLayout1.addTab(TabMenu(this).setTitle("游戏").setBackgroundRes(R.drawable.tab_bgc))
+        tabLayout1.addTab(TabMenu(this).setTitle("排名").setBackgroundRes(R.drawable.tab_bgc))
+        tabLayout1.addTab(TabMenu(this).setTitle("最新").setBackgroundRes(R.drawable.tab_bgr))
+
+        tabLayout1.setTabMsg(0, 6)
+        tabLayout1.setTabMsgDot(2)
+        tabLayout1.setTabMsg(3, "新")
+
     }
 
     private fun initTab2() {
@@ -76,6 +73,12 @@ class TabActivity : AppCompatActivity() {
             tabLayout4.addTab(tabLayout4.newTab().setTitle(title))
         }
 
+        tabLayout4.getTabAt(2)?.setTitleColor(Color.GRAY, Color.RED)
+
+        tabLayout4.getTabAt(3)?.setTitleColor(Color.GRAY, Color.GREEN)
+
+        tabLayout4.getTabAt(1)?.setTitleColor(Color.GRAY, Color.MAGENTA)
+
         tabLayout4.setTabTextSize(15)
 
         val indicator = JIndicator()
@@ -98,6 +101,19 @@ class TabActivity : AppCompatActivity() {
         tabLayout5.setIndicator(indicator)
         tabLayout5.setTabPadding(50, 0, 50, 0)
 
+    }
+
+    private fun initTab6() {
+        tabLayout6.addTab(tabLayout6.newTab().setIcon(R.mipmap.icon_qipaishi_normal, R.mipmap.icon_qipaishi_press).setTitle("娱乐"))
+        tabLayout6.addTab(tabLayout6.newTab().setIcon(R.mipmap.icon_zhanji_normal, R.mipmap.icon_zhanji_press).setTitle("排名"))
+        tabLayout6.addTab(tabLayout6.newTab().setIcon(R.mipmap.icon_xiaoxi_normal, R.mipmap.icon_xiaoxi_press).setTitle("消息"))
+        tabLayout6.addTab(tabLayout6.newTab().setIcon(R.mipmap.icon_wode_normal, R.mipmap.icon_wode_press).setTitle("我的"))
+        tabLayout6.setBadgeColor(0, Color.YELLOW)
+        tabLayout6.setBadgeTextColor(0, Color.RED)
+        tabLayout6.setTabMsg(0, "火热")
+        tabLayout6.setTabMsg(2, 5)
+        tabLayout6.setTabMsgDot(3)
+        tabLayout6.setBadgeStroke(0, 1, Color.GRAY)
     }
 
     private fun initViewPager() {

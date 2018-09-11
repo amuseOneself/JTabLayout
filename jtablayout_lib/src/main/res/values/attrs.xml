@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="JTabLayout">
         <attr name="tabTextColor" format="color|reference" />
+        <attr name="tabBackground" format="reference" />
         <attr name="tabMode">
             <enum name="scrollable" value="0" />
             <enum name="fixed" value="1" />

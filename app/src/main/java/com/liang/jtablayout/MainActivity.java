@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.liang.jtab.indicator.JIndicator;
 import com.liang.jtab.JTabLayout;
 import com.liang.jtab.listener.OnTabSelectedListener;
+import com.liang.jtab.view.BadgeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 //        adapter = new ViewPagerAdapter(views);
 //        viewPager.setAdapter(adapter);
         layout = scrollView.getTabStrip();
+
 
 //        scrollView.addView(layout, new ViewGroup.LayoutParams(
 //                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -80,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                scrollView.addTab(getLayoutInflater().inflate(R.layout.flash_one, null));
 
-                startActivity(new Intent(MainActivity.this, TabActivity.class));
+//                startActivity(new Intent(MainActivity.this, TabActivity.class));
+                startActivity(new Intent(MainActivity.this, OperationActivity.class));
 
 //                String str = editText2.getText().toString();
 //                if (str.isEmpty()) {

@@ -8,12 +8,14 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 
 import com.liang.jtab.R;
+import com.liang.jtab.utils.DensityUtils;
 
 public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
@@ -39,11 +41,12 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setStroke(2, Color.WHITE);
 
-        setTextSize(10);
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
         setText("");
         setTextColor(Color.WHITE);
         setGravity(Gravity.CENTER);
-        setPadding(10, 5, 10, 5);
+        setPadding(DensityUtils.dip2px(getContext(), 3), 0,
+                DensityUtils.dip2px(getContext(), 3), 0);
     }
 
     public void setBackgroundColor(@ColorInt int color) {
@@ -61,7 +64,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
         if (getText().toString().isEmpty()) {
-            setMeasuredDimension(30, 30);
+            setMeasuredDimension(DensityUtils.dip2px(getContext(), 10), DensityUtils.dip2px(getContext(), 10));
             return;
         }
 
@@ -76,7 +79,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
         } else {
-            width = (int) (getPaint().measureText(getText().toString()) + getPaddingLeft() + getPaddingRight()) + stroke;
+            width = (int) (getPaint().measureText(getText().toString()) + getPaddingLeft() + getPaddingRight()) + stroke * 2;
         }
 
         if (heightMode == MeasureSpec.EXACTLY) {
@@ -84,7 +87,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         } else {
             Paint.FontMetrics fontMetrics = getPaint().getFontMetrics();
             int value = (int) Math.ceil(Math.abs((fontMetrics.bottom - fontMetrics.top)));
-            height = value + getPaddingTop() + getPaddingBottom() + stroke;
+            height = value + getPaddingTop() + getPaddingBottom() + stroke * 2;
         }
 
         if (height > width) {
@@ -100,10 +103,8 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        Log.e("onMeasure", "height: ..." + getHeight());
         gradientDrawable.setCornerRadius(getHeight() / 2);
         gradientDrawable.setBounds(0, 0, getWidth(), getHeight());
-
         setBackgroundDrawable(gradientDrawable);
     }
 

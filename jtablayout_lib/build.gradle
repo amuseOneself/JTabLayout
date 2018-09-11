@@ -1,9 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 27
-
-
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         minSdkVersion 15
@@ -22,6 +24,14 @@ android {
         }
     }
 
+}
+publish {
+    userOrg = '15191851980'
+    groupId = 'com.liang.jtab'
+    artifactId = 'jtablayout_lib'
+    publishVersion = '1.0.0'
+    desc = 'Oh hi,this is a nice description for a project,right?'
+    website = 'https://github.com/18317084205/JTabLayout'
 }
 
 dependencies {
