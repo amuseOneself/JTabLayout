@@ -39,9 +39,9 @@ class TabActivity : AppCompatActivity() {
         tabLayout1.addTab(TabMenu(this).setTitle("排名").setBackgroundRes(R.drawable.tab_bgc))
         tabLayout1.addTab(TabMenu(this).setTitle("最新").setBackgroundRes(R.drawable.tab_bgr))
 
-        tabLayout1.setTabMsg(0, 6)
-        tabLayout1.setTabMsgDot(2)
-        tabLayout1.setTabMsg(3, "新")
+        tabLayout1.showBadgeMsg(0, 6)
+        tabLayout1.showBadgeMsg(2)
+        tabLayout1.showBadgeMsg(3, "新")
 
     }
 
@@ -54,10 +54,10 @@ class TabActivity : AppCompatActivity() {
         tabLayout2.setBadgeColor(0, Color.YELLOW)
         tabLayout2.setBadgeTextColor(0, Color.RED)
         tabLayout2.setBadgeStroke(0, 3, Color.RED)
-        tabLayout2.setTabMsg(0, "火热")
-        tabLayout2.setTabMsg(1, "新")
-        tabLayout2.setTabMsg(2, 952)
-        tabLayout2.setTabMsgDot(3)
+        tabLayout2.showBadgeMsg(0, "火热")
+        tabLayout2.showBadgeMsg(1, "新")
+        tabLayout2.showBadgeMsg(2, 952)
+        tabLayout2.showBadgeMsg(3)
     }
 
     private fun initTab3() {
@@ -86,7 +86,7 @@ class TabActivity : AppCompatActivity() {
         indicator.height = 10
         tabLayout4.setIndicator(indicator)
 
-        tabLayout4.setTabMsgDot(8)
+        tabLayout4.showBadgeMsg(8)
 
     }
 
@@ -110,9 +110,9 @@ class TabActivity : AppCompatActivity() {
         tabLayout6.addTab(tabLayout6.newTab().setIcon(R.mipmap.icon_wode_normal, R.mipmap.icon_wode_press).setTitle("我的"))
         tabLayout6.setBadgeColor(0, Color.YELLOW)
         tabLayout6.setBadgeTextColor(0, Color.RED)
-        tabLayout6.setTabMsg(0, "火热")
-        tabLayout6.setTabMsg(2, 5)
-        tabLayout6.setTabMsgDot(3)
+        tabLayout6.showBadgeMsg(0, "火热")
+        tabLayout6.showBadgeMsg(2, 5)
+        tabLayout6.showBadgeMsg(3)
         tabLayout6.setBadgeStroke(0, 1, Color.GRAY)
     }
 

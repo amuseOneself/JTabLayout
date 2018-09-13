@@ -37,6 +37,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         TextView textView = new TextView(context);
         textView.setText("ViewPager_" + getPageTitle(position));
+        textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         container.addView(textView, layoutParams);

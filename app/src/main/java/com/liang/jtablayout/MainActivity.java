@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
 import com.liang.jtab.indicator.JIndicator;
 import com.liang.jtab.JTabLayout;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 //                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 //        scrollView.setupWithViewPager(viewPager, false);
+
         i = 0;
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,38 +120,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollView.setTabMsg(1, 2);
-                scrollView.setTabMsg(2, 95);
-                scrollView.setTabMsgDot(3);
-                scrollView.setTabMsg(4, "新");
-                scrollView.setBadgeColor(3, Color.BLUE);
-
-                scrollView.setTabMsg(5, "火热");
-            }
-        });
-
-        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollView.setTabMsg(2, 0);
-
-                scrollView.setBadgeColor(4, Color.YELLOW);
-
-                scrollView.setBadgeColor(5, Color.YELLOW);
-
-                scrollView.setBadgeColor(1, Color.GREEN);
-
-                scrollView.setBadgeTextColor(4, Color.GREEN);
-                scrollView.setBadgeTextColor(5, Color.RED);
-
-                scrollView.setBadgeStroke(4, 5, Color.GREEN);
-
-                scrollView.setBadgeStroke(5, 10, Color.GREEN);
-
-            }
-        });
     }
 }

@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -297,7 +298,7 @@ public class TabView extends FrameLayout implements Tab {
 
     @Override
     public Tab setTextSize(float size) {
-        titleView.setTextSize(size);
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         return this;
     }
 
@@ -312,7 +313,7 @@ public class TabView extends FrameLayout implements Tab {
     @Override
     public Tab setBadgeTextSize(float size) {
         if (badgeView != null) {
-            badgeView.setTextSize(size);
+            badgeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         }
         return this;
     }

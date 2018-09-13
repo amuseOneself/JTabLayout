@@ -25,6 +25,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.liang.jtab.indicator.Indicator;
+import com.liang.jtab.utils.DensityUtils;
 import com.liang.jtab.view.TabView;
 import com.liang.jtab.listener.OnTabSelectedListener;
 
@@ -122,12 +123,12 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         int dividerColor = typedArray.getColor(R.styleable.JTabLayout_dividerColor, Color.BLACK);
 
         tabTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabTextSize, 12);
-
+        Log.e("typedArray", "tabTextSize: ..." + tabTextSize);
         badgeColor = typedArray.getColor(R.styleable.JTabLayout_badgeColor, Color.RED);
         badgeTextColor = typedArray.getColor(R.styleable.JTabLayout_badgeTextColor, Color.WHITE);
         badgeStrokeColor = typedArray.getColor(R.styleable.JTabLayout_badgeStrokeColor, Color.WHITE);
 
-        badgeTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 10);
+        badgeTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, DensityUtils.sp2px(getContext(), 10));
         badgeStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 2);
 
         textBold = typedArray.getBoolean(R.styleable.JTabLayout_textBold, false);
@@ -280,23 +281,23 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         updateTabViews();
     }
 
-    public void setTabMsgDot(int position) {
-        setTabMsg(position, "dot", true);
+    public void showBadgeMsg(int position) {
+        showBadgeMsg(position, "dot", true);
     }
 
-    public void setTabMsg(int position, int count) {
-        setTabMsg(position, count, false);
+    public void showBadgeMsg(int position, int count) {
+        showBadgeMsg(position, count, false);
     }
 
-    public void setTabMsg(int position, int count, boolean showDot) {
-        setTabMsg(position, count > 0 ? count + "" : "", showDot);
+    public void showBadgeMsg(int position, int count, boolean showDot) {
+        showBadgeMsg(position, count > 0 ? count + "" : "", showDot);
     }
 
-    public void setTabMsg(int position, String msg) {
-        setTabMsg(position, msg, false);
+    public void showBadgeMsg(int position, String msg) {
+        showBadgeMsg(position, msg, false);
     }
 
-    public void setTabMsg(int position, String msg, boolean showDot) {
+    public void showBadgeMsg(int position, String msg, boolean showDot) {
         Tab tab = (Tab) tabStrip.getChildAt(position);
         if (tab != null) {
             if (msg.isEmpty()) {
@@ -305,6 +306,10 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             }
             tab.showBadgeMsg(msg, showDot);
         }
+    }
+
+    public void hideBadgeMsg(int position) {
+        showBadgeMsg(position, "", false);
     }
 
     public void setBadgeTextColor(@ColorInt int color) {
@@ -421,11 +426,13 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             this.viewPager.removeOnAdapterChangeListener(this);
         }
 
-        if (viewPager != null) {
-            this.viewPager = viewPager;
-            viewPager.addOnPageChangeListener(this);
-            viewPager.addOnAdapterChangeListener(this);
+        if (viewPager == null) {
+            return;
         }
+
+        this.viewPager = viewPager;
+        viewPager.addOnPageChangeListener(this);
+        viewPager.addOnAdapterChangeListener(this);
 
         final PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null) {
@@ -493,7 +500,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     private void setViewPageCurrent(Tab tab) {
         if (viewPager != null) {
-            viewPager.setCurrentItem(tab.getPosition(), false);
+            viewPager.setCurrentItem(tab.getPosition());
         }
     }
 
@@ -604,14 +611,12 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     private void removeTabViewAt(int position) {
         tabStrip.removeViewAt(position);
-        requestLayout();
     }
 
     public void removeAllTabs() {
         tabStrip.removeAllViews();
         tabViews.clear();
         selectedTab = null;
-        requestLayout();
     }
 
     private void animateToTab(int newPosition) {
@@ -707,7 +712,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     public void onPageScrollStateChanged(int state) {
         previousScrollState = scrollState;
         scrollState = state;
-
         if (scrollState == SCROLL_STATE_DRAGGING) {
             autoScroll = true;
         }
