@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -29,7 +29,7 @@ publish {
     userOrg = '15191851980'
     groupId = 'com.liang.jtab'
     artifactId = 'jtablayout_lib'
-    publishVersion = '1.0.0'
+    publishVersion = '1.1.0'
     desc = 'Oh hi,this is a nice description for a project,right?'
     website = 'https://github.com/18317084205/JTabLayout'
 }
