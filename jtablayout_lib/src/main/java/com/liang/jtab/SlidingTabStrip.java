@@ -15,20 +15,10 @@ public class SlidingTabStrip extends LinearLayout {
     private int dividerColor;
     private Paint dividerPaint;
 
-    private OnChildChangeListener childChangeListener;
-
-    public interface OnChildChangeListener {
-        void onChanged(boolean changed);
-    }
-
     public SlidingTabStrip(Context context) {
         super(context);
         setWillNotDraw(false);
         dividerPaint = new Paint();
-    }
-
-    public void setChildChangeListener(OnChildChangeListener childChangeListener) {
-        this.childChangeListener = childChangeListener;
     }
 
     public void setDividerWidth(int dividerWidth) {
@@ -46,15 +36,6 @@ public class SlidingTabStrip extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if (childChangeListener != null) {
-            childChangeListener.onChanged(true);
-        }
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-
     }
 
     @Override

@@ -42,7 +42,7 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
 
 public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPageChangeListener,
-        ViewPager.OnAdapterChangeListener, ValueAnimator.AnimatorUpdateListener, SlidingTabStrip.OnChildChangeListener {
+        ViewPager.OnAdapterChangeListener, ValueAnimator.AnimatorUpdateListener {
 
     public static final int MODE_SCROLLABLE = 0;
     public static final int MODE_FIXED = 1;
@@ -113,7 +113,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
         addView(tabStrip, 0, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        tabStrip.setChildChangeListener(this);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.JTabLayout,
                 defStyleAttr, 0);
@@ -770,11 +769,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         indicator.left = p.left;
         indicator.right = p.right;
         invalidate();
-    }
-
-    @Override
-    public void onChanged(boolean changed) {
-
     }
 
     private class PagerAdapterObserver extends DataSetObserver {
