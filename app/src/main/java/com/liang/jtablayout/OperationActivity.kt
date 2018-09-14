@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.liang.jtab.JTabLayout
 import com.liang.jtab.indicator.JIndicator
 import com.liang.jtab.listener.OnTabSelectedListener
+import com.liang.jtab.view.TabView
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.*
 
@@ -84,7 +85,8 @@ class OperationActivity : AppCompatActivity() {
                     views.add(title)
                     adapter?.notifyDataSetChanged();
                 } else {
-                    jTabLayout.addTab(jTabLayout.newTab().setTitle(title))
+                    val tabView = jTabLayout.newTab().setTitle(title);
+                    jTabLayout.addTab(tabView)
                 }
                 inx++
             } else {

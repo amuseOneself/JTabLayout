@@ -3,8 +3,8 @@ package com.liang.jtab.indicator;
 import android.graphics.Canvas;
 
 public abstract class Indicator {
-
-    private boolean foreground;
+    public float left = 0;
+    public float right = 0;
     private float widthScale = 0.5f;
     private int width = -1;
     private int height = 10;
@@ -12,14 +12,6 @@ public abstract class Indicator {
     private boolean transitionScroll;
 
     public abstract void draw(Canvas canvas, float left, float right, int tabHeight);
-
-    public boolean isForeground() {
-        return foreground;
-    }
-
-    public void setForeground(boolean foreground) {
-        this.foreground = foreground;
-    }
 
     public float getWidthScale() {
         return widthScale;
