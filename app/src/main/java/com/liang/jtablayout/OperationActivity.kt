@@ -137,10 +137,6 @@ class OperationActivity : AppCompatActivity() {
                 textView.text = "onTabSelected position: $position"
             }
 
-            override fun onTabUnselected(position: Int) {
-                Log.e("OnTabSelectedListener", "onTabUnselected: ...$position")
-            }
-
             override fun onTabReselected(position: Int) {
                 textView.text = "onTabReselected position: $position"
             }
