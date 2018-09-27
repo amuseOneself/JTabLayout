@@ -1,8 +1,5 @@
 package com.liang.jtab.indicator;
 
-
-import android.util.Log;
-
 public class TransitionIndicatorEvaluator extends IndicatorTypeEvaluator<IndicatorPoint> {
     @Override
     public IndicatorPoint evaluate(float fraction, IndicatorPoint startValue, IndicatorPoint endValue) {

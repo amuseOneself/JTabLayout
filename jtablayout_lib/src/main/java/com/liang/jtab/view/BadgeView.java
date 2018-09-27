@@ -49,11 +49,22 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
                 DensityUtils.dip2px(getContext(), 3), 0);
     }
 
+    /**
+     * 设置BadgeView的背景颜色
+     *
+     * @param color
+     */
     public void setBackgroundColor(@ColorInt int color) {
         gradientDrawable.setColor(color);
         setBackgroundDrawable(gradientDrawable);
     }
 
+    /**
+     * 设置BadgeView的边框
+     *
+     * @param width 边框宽度
+     * @param color 边框颜色
+     */
     public void setStroke(int width, @ColorInt int color) {
         stroke = width;
         gradientDrawable.setStroke(width, color);
@@ -108,6 +119,11 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         setBackgroundDrawable(gradientDrawable);
     }
 
+    /**
+     * 显示BadgeView
+     *
+     * @param msg
+     */
     public void show(String msg) {
 
         setText(msg);
@@ -121,6 +137,10 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         startAnimation(animation);
     }
 
+    /**
+     * 隐藏BadgeView
+     *
+     */
     public void hide() {
         if (getVisibility() == GONE) {
             return;

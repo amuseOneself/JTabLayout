@@ -11,12 +11,31 @@ import android.view.Gravity;
 
 @SuppressLint("WrongConstant")
 public class JIndicator extends Indicator {
-
+    /**
+     * Type is a line
+     */
     public static final int TYPE_LINE = 0;
+
+    /**
+     * Type is a rect
+     */
     public static final int TYPE_RECT = 1;
+
+    /**
+     * Type is a triangle
+     */
     public static final int TYPE_TRIANGLE = 2;
+
+    /**
+     * Type is a ring.
+     */
     public static final int TYPE_RING = 3;
+
+    /**
+     * Type is an ellipse
+     */
     public static final int TYPE_OVAL = 4;
+
     private int type = TYPE_LINE;
     private int radius = 0;
     private int color = Color.GRAY;
@@ -37,23 +56,43 @@ public class JIndicator extends Indicator {
         initGradientDrawable();
     }
 
+    /**
+     * 设置Indicator的形状
+     *
+     * @param type
+     */
     public JIndicator setType(int type) {
         this.type = type;
         update();
         return this;
     }
 
+    /**
+     * 设置Indicator的位置（上、中、下）
+     *
+     * @param gravity Gravity.TOP、Gravity.CENTER、Gravity.BOTTOM
+     */
     public JIndicator setGravity(int gravity) {
         this.gravity = gravity;
         return this;
     }
 
+    /**
+     * 设置Indicator的圆角角度
+     * 对TYPE_RECT有效
+     * @param radius
+     */
     public JIndicator setRadius(int radius) {
         this.radius = radius;
         update();
         return this;
     }
 
+    /**
+     * 设置Indicator的颜色
+     *
+     * @param color
+     */
     public JIndicator setColor(@ColorInt int color) {
         this.color = color;
         update();

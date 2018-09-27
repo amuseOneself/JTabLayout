@@ -1,7 +1,5 @@
 package com.liang.jtab.indicator;
 
-import android.animation.TypeEvaluator;
-import android.util.Log;
 
 public class DefIndicatorEvaluator extends IndicatorTypeEvaluator<IndicatorPoint> {
     @Override

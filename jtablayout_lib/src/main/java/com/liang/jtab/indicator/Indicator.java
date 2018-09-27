@@ -17,6 +17,11 @@ public abstract class Indicator {
         return widthScale;
     }
 
+    /**
+     * 设置Indicator的宽度占Tab宽度的比列
+     *
+     * @param widthScale
+     */
     public Indicator setWidthScale(float widthScale) {
         this.widthScale = widthScale;
         return this;
@@ -26,6 +31,11 @@ public abstract class Indicator {
         return width;
     }
 
+    /**
+     * 设置Indicator的宽度
+     *
+     * @param width
+     */
     public Indicator setWidth(int width) {
         this.width = width;
         return this;
@@ -35,11 +45,21 @@ public abstract class Indicator {
         return height;
     }
 
+    /**
+     * 设置Indicator的高度
+     *
+     * @param height
+     */
     public Indicator setHeight(int height) {
         this.height = height;
         return this;
     }
 
+    /**
+     * 设置Indicator移动方式
+     *
+     * @param transitionScroll true为蛇爬行方式  false为默认
+     */
     public Indicator setTransitionScroll(boolean transitionScroll) {
         this.transitionScroll = transitionScroll;
         return this;

@@ -215,7 +215,7 @@ public class TabView extends FrameLayout implements Tab {
 
     @Override
     public Tab setTitleColor(@ColorInt int defaultColor, @ColorInt int selectedColor) {
-        return setTitleColor(createColorStateList(defaultColor, selectedColor));
+        return setTitleColor(ColorUtils.createColorStateList(defaultColor, selectedColor));
     }
 
     @Override
@@ -351,19 +351,5 @@ public class TabView extends FrameLayout implements Tab {
         }
 
         badgeView.hide();
-    }
-
-    private ColorStateList createColorStateList(int defaultColor, int selectedColor) {
-        final int[][] states = new int[2][];
-        final int[] colors = new int[2];
-        int i = 0;
-        states[i] = SELECTED_STATE_SET;
-        colors[i] = selectedColor;
-        i++;
-
-        states[i] = EMPTY_STATE_SET;
-        colors[i] = defaultColor;
-        i++;
-        return new ColorStateList(states, colors);
     }
 }
