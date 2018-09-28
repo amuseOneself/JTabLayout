@@ -20,6 +20,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
 public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPageChangeListener,
         ViewPager.OnAdapterChangeListener, ValueAnimator.AnimatorUpdateListener {
-
+    private static final String TAG = JTabLayout.class.getSimpleName();
     public static final int MODE_SCROLLABLE = 0;
     public static final int MODE_FIXED = 1;
 
@@ -98,6 +99,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     private int tabPaddingTop = 0;
     private int tabPaddingRight = 10;
     private int tabPaddingBottom = 0;
+
 
     public JTabLayout(Context context) {
         this(context, null);
@@ -652,6 +654,8 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         if (mSelectedTab != null) {
             mSelectedTab.setSelected(false);
         }
+
+        Log.d(TAG, "selectTab: "+ tab.getPosition());
         tab.setSelected(true);
         mSelectedTab = tab;
         dispatchTabSelected(tab, isCallBack);
@@ -694,11 +698,14 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void addTab(Tab tab, int position, boolean setSelected) {
         isIndicatorScroll = true;
+
+        configureTab(tab, position);
+        addTabView(tab);
+
         if (setSelected) {
             selectTab(tab, true);
         }
-        configureTab(tab, position);
-        addTabView(tab);
+        Log.d(TAG, "addTab: "+ tab.getPosition());
     }
 
     private void configureTab(Tab tab, int position) {

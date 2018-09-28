@@ -91,13 +91,17 @@ class OperationActivity : AppCompatActivity() {
                 inx++
             } else {
                 inx = Integer.parseInt(position)
-                if (inx > views.size) {
-                    return@setOnClickListener
-                }
+
                 if (withViewPager) {
+                    if (inx > views.size) {
+                        return@setOnClickListener
+                    }
                     views.add(inx, title)
                     adapter?.notifyDataSetChanged();
                 } else {
+                    if (inx > jTabLayout.tabCount) {
+                        return@setOnClickListener
+                    }
                     jTabLayout.addTab(jTabLayout.newTab().setTitle(title), inx)
                 }
             }
