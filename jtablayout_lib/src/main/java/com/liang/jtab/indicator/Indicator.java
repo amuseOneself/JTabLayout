@@ -11,7 +11,7 @@ public abstract class Indicator {
 
     private boolean transitionScroll;
 
-    public abstract void draw(Canvas canvas, float left, float right, int tabHeight);
+    public abstract void draw(Canvas canvas, int tabHeight);
 
     public float getWidthScale() {
         return widthScale;

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.liang.jtab.view.BadgeView;
@@ -30,6 +31,11 @@ public class TabMenu extends TabView {
         title.setSingleLine(true);
         title.setEllipsize(TextUtils.TruncateAt.END);
         return title;
+    }
+
+    @Override
+    protected ImageView setTabIconView() {
+        return null;
     }
 
     @Override

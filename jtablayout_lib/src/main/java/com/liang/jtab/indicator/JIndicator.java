@@ -142,7 +142,7 @@ public class JIndicator extends Indicator {
 
     @SuppressLint("NewApi")
     @Override
-    public void draw(Canvas canvas, float left, float right, int tabHeight) {
+    public void draw(Canvas canvas, int tabHeight) {
 
         if (type == TYPE_TRIANGLE) {
             if (trianglePath == null) {

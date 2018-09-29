@@ -185,7 +185,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     /**
      * TabLayout
      *
-     * @param mode  MODE_SCROLLABLE-可滚动、MODE_FIXED-固定
+     * @param mode MODE_SCROLLABLE-可滚动、MODE_FIXED-固定
      */
     public void setMode(int mode) {
         this.mode = mode;
@@ -208,7 +208,6 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     /**
      * TabItem的Padding
-     *
      */
     public void setTabPadding(int left, int top, int right, int bottom) {
         this.tabPaddingLeft = left;
@@ -655,7 +654,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             mSelectedTab.setSelected(false);
         }
 
-        Log.d(TAG, "selectTab: "+ tab.getPosition());
+        Log.d(TAG, "selectTab: " + tab.getPosition());
         tab.setSelected(true);
         mSelectedTab = tab;
         dispatchTabSelected(tab, isCallBack);
@@ -705,7 +704,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         if (setSelected) {
             selectTab(tab, true);
         }
-        Log.d(TAG, "addTab: "+ tab.getPosition());
+        Log.d(TAG, "addTab: " + tab.getPosition());
     }
 
     private void configureTab(Tab tab, int position) {
@@ -1057,7 +1056,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
 
         if (mIndicator != null && mIndicator.left >= 0 && mIndicator.right > mIndicator.left) {
-            mIndicator.draw(canvas, mIndicator.left, mIndicator.right, getHeight());
+            mIndicator.draw(canvas, getHeight());
         }
     }
 
