@@ -18,7 +18,7 @@ public abstract class Indicator {
     }
 
     /**
-     * 设置Indicator的宽度占Tab宽度的比列
+     * Set the ratio of the width of Indicator to the width of Tab
      *
      * @param widthScale
      */
@@ -32,7 +32,7 @@ public abstract class Indicator {
     }
 
     /**
-     * 设置Indicator的宽度
+     * Set the width of Indicator
      *
      * @param width
      */
@@ -46,7 +46,7 @@ public abstract class Indicator {
     }
 
     /**
-     * 设置Indicator的高度
+     * Setting Indicator Height
      *
      * @param height
      */
@@ -56,9 +56,9 @@ public abstract class Indicator {
     }
 
     /**
-     * 设置Indicator移动方式
+     * Setting Indicator Mobility
      *
-     * @param transitionScroll true为蛇爬行方式  false为默认
+     * @param transitionScroll True is the snake crawl mode false is the default
      */
     public Indicator setTransitionScroll(boolean transitionScroll) {
         this.transitionScroll = transitionScroll;

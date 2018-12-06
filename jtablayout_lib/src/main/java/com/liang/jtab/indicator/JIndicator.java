@@ -57,7 +57,7 @@ public class JIndicator extends Indicator {
     }
 
     /**
-     * 设置Indicator的形状
+     * Set the shape of Indicator
      *
      * @param type
      */
@@ -68,7 +68,7 @@ public class JIndicator extends Indicator {
     }
 
     /**
-     * 设置Indicator的位置（上、中、下）
+     * Set the location of Indicator (top, middle and bottom)
      *
      * @param gravity Gravity.TOP、Gravity.CENTER、Gravity.BOTTOM
      */
@@ -78,8 +78,8 @@ public class JIndicator extends Indicator {
     }
 
     /**
-     * 设置Indicator的圆角角度
-     * 对TYPE_RECT有效
+     * Setting the corner angle of Indicator
+     * Effective for TYPE_RECT
      * @param radius
      */
     public JIndicator setRadius(int radius) {
@@ -89,7 +89,7 @@ public class JIndicator extends Indicator {
     }
 
     /**
-     * 设置Indicator的颜色
+     * Setting Indicator's color
      *
      * @param color
      */

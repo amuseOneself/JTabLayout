@@ -3,14 +3,14 @@ package com.liang.jtab.listener;
 public interface OnTabSelectedListener {
 
     /**
-     * 当Tab进入选定状态时调用
+     * Called when Tab enters the selected state
      *
      * @param position The tab that was selected
      */
     void onTabSelected(int position);
 
     /**
-     * 当用户再次选择已经选择的Tab时调用
+     * Called when the user selects the selected Tab again
      *
      * @param position The tab that was reselected
      */

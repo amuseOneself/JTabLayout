@@ -185,7 +185,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     /**
      * TabLayout
      *
-     * @param mode MODE_SCROLLABLE-可滚动、MODE_FIXED-固定
+     * @param mode MODE_SCROLLABLE-Scrollable, MODE_FIXED-Fixed
      */
     public void setMode(int mode) {
         this.mode = mode;
@@ -193,7 +193,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置TabItem的排列方式
+     * Setting TabItem's Arrangement
      *
      * @param itemLayoutOrientation
      */
@@ -221,7 +221,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * Tab的标题切换颜色
+     * Tab Title Switching Colors
      *
      * @param defaultColor
      * @param selectedColor
@@ -256,7 +256,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置指定TabItem的背景
+     * Setting the background of the specified TabItem
      *
      * @param position
      * @param resId
@@ -266,7 +266,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置指定TabItem的背景
+     * Setting the background of the specified TabItem
      *
      * @param position
      * @param tabBackground
@@ -279,7 +279,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置TabItem的标题字体大小
+     * Set the header font size of TabItem
      *
      * @param tabTextSize
      */
@@ -292,7 +292,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置TabItem的标题选中时变粗
+     * Setting TabItem Title Selection Time-varying Coarseness
      *
      * @param textBold
      */
@@ -305,7 +305,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置TabItem的标题颜色切换方式
+     * Setting TabItem Title Color Switching Mode
      *
      * @param textTransitionMode
      */
@@ -318,7 +318,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置Tab的分割线的宽度
+     * Set the width of Tab's partition line
      *
      * @param dividerWidth
      */
@@ -329,7 +329,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置Tab的分割线的高度
+     * Set the height of Tab's partition line
      *
      * @param dividerHeight
      */
@@ -339,7 +339,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置Tab的分割线的颜色
+     * Set the color of Tab's splitter
      *
      * @param dividerColor
      */
@@ -349,7 +349,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 显示Badge
+     * Show Badge
      *
      * @param position
      */
@@ -358,7 +358,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 显示Badge
+     * Show Badge
      *
      * @param position
      * @param count
@@ -368,7 +368,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 显示Badge
+     * Show Badge
      *
      * @param position
      * @param count
@@ -379,7 +379,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 显示Badge
+     * Show Badge
      *
      * @param position
      * @param msg
@@ -389,7 +389,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 显示Badge
+     * Show Badge
      *
      * @param position
      * @param msg
@@ -407,7 +407,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 隐藏Badge
+     * Hidden Badge
      *
      * @param position
      */
@@ -416,7 +416,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置Badge的字体颜色
+     * Setting the font color of Badge
      *
      * @param color
      */
@@ -427,7 +427,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置指定Badge的字体颜色
+     * Set the font color of the specified Badge
      *
      * @param position
      * @param color
@@ -440,7 +440,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置指定Badge的字体大小
+     * Set the font size of the specified Badge
      *
      * @param position
      * @param textSize
@@ -453,7 +453,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置Badge的背景颜色
+     * Setting the background color of Badge
      *
      * @param color
      */
@@ -464,7 +464,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置指定Badge的背景颜色
+     * Set the background color of the specified Badge
      *
      * @param position
      * @param color
@@ -477,7 +477,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置Badge的边框和颜色
+     * Set the border and color of the Badge
      *
      * @param width
      * @param color
@@ -489,7 +489,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     /**
-     * 设置指定Badge的边框和颜色
+     * Set the border and color of the specified Badge
      *
      * @param width
      * @param color

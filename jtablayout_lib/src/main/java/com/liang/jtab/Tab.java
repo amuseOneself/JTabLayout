@@ -10,7 +10,7 @@ import android.view.View;
 public interface Tab {
 
     /**
-     * 设置Tab的排列方式
+     * Setting Tab's Arrangement
      *
      * @param mode
      */
@@ -23,7 +23,7 @@ public interface Tab {
     CharSequence getTitle();
 
     /**
-     * 设置Tab的标题
+     * Set the title of Tab.
      *
      * @param title
      */
@@ -32,7 +32,7 @@ public interface Tab {
     Object getContentDesc();
 
     /**
-     * Tab的自定义扩展内容
+     * Tab's custom extension content
      *
      * @param contentDesc
      */
@@ -41,7 +41,7 @@ public interface Tab {
     ColorStateList getTitleColor();
 
     /**
-     * Tab的标题切换颜色
+     * Tab Title Switching Colors
      *
      * @param defaultColor
      * @param selectedColor
@@ -49,7 +49,7 @@ public interface Tab {
     Tab setTitleColor(@ColorInt int defaultColor, @ColorInt int selectedColor);
 
     /**
-     * Tab的标题切换颜色
+     * Tab Title Switching Colors
      *
      * @param titleColor
      */
@@ -64,7 +64,7 @@ public interface Tab {
     Drawable[] getIcons();
 
     /**
-     * Tab的切换图标
+     * Tab toggle Icon
      *
      * @param defaultIcon
      * @param selectedIcon
@@ -72,7 +72,7 @@ public interface Tab {
     Tab setIcon(@DrawableRes int defaultIcon, @DrawableRes int selectedIcon);
 
     /**
-     * Tab的切换图标
+     * Tab toggle Icon
      *
      * @param defaultIcon
      * @param selectedIcon
@@ -88,14 +88,14 @@ public interface Tab {
     void setSelected(boolean b);
 
     /**
-     * Tab的标题颜色切换方式
+     * Tab's Title Color Switching Mode
      *
      * @param textTransitionMode
      */
     void setTextTransitionMode(int textTransitionMode);
 
     /**
-     * 设置Tab的标题选中时变粗
+     * Setting Tab Title Selection Time-Varying Coarseness
      *
      * @param b
      */
@@ -104,28 +104,28 @@ public interface Tab {
     Tab setTextSize(float size);
 
     /**
-     * 设置Badge的字体颜色
+     * Setting the font color of Badge
      *
      * @param color
      */
     Tab setBadgeTextColor(@ColorInt int color);
 
     /**
-     * 设置Badge的字体大小
+     * Set the font size of Badge
      *
      * @param size
      */
     Tab setBadgeTextSize(float size);
 
     /**
-     * 设置Badge的背景颜色
+     * Setting the background color of Badge
      *
      * @param color
      */
     Tab setBadgeColor(@ColorInt int color);
 
     /**
-     * 设置Badge的边框和颜色
+     * Set the border and color of the Badge
      *
      * @param width
      * @param color

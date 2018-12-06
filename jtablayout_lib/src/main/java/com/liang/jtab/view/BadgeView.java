@@ -50,7 +50,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     }
 
     /**
-     * 设置BadgeView的背景颜色
+     * Setting the background color of BadgeView
      *
      * @param color
      */
@@ -60,10 +60,10 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     }
 
     /**
-     * 设置BadgeView的边框
+     * Setting the border of BadgeView
      *
-     * @param width 边框宽度
-     * @param color 边框颜色
+     * @param width
+     * @param color
      */
     public void setStroke(int width, @ColorInt int color) {
         stroke = width;

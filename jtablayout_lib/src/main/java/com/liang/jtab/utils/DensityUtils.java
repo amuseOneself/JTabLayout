@@ -6,7 +6,7 @@ import android.util.TypedValue;
 public class DensityUtils {
 
     /**
-     * 根据手机的分辨率从 dip 的单位 转成为 px(像素)
+     * Change from dip unit to PX (pixel) according to the resolution of mobile phone
      */
     public static int dip2px(Context context, float dp) {
         return (int) TypedValue.applyDimension(
@@ -15,7 +15,7 @@ public class DensityUtils {
     }
 
     /**
-     * 将sp值转换为px值，保证文字大小不变
+     * Convert the SP value to PX value to keep the text size unchanged
      */
     public static int sp2px(Context context, float sp) {
         return (int) TypedValue.applyDimension(

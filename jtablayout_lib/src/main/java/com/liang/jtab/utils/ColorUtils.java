@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 
 /**
- * 计算开始颜色向结束颜色渐变的过度颜色
+ * Calculate the excess color of the start color gradient to the end color gradient
  */
 public class ColorUtils {
     public static int getColorFrom(int startColor, int endColor, float positionOffset) {
