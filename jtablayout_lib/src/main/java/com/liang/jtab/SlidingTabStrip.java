@@ -46,7 +46,7 @@ public class SlidingTabStrip extends LinearLayout {
             dividerPaint.setColor(dividerColor);
             for (int i = 0; i < getChildCount() - 1; i++) {
                 View tab = getChildAt(i);
-                canvas.drawLine(tab.getRight() + dividerWidth / 2, (getHeight() - dividerHeight) / 2, tab.getRight() + dividerWidth / 2, (getHeight() - dividerHeight) / 2 + dividerHeight, dividerPaint);
+                canvas.drawRect(tab.getRight(), (getHeight() - dividerHeight) / 2, tab.getRight() + dividerWidth, (getHeight() - dividerHeight) / 2 + dividerHeight, dividerPaint);
             }
         }
     }
