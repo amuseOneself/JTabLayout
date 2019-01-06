@@ -82,10 +82,10 @@ class OperationActivity : AppCompatActivity() {
 
             if (position.isEmpty()) {
                 if (withViewPager) {
-                    views.add(title)
+                    views.add(title+inx)
                     adapter?.notifyDataSetChanged();
                 } else {
-                    val tabView = jTabLayout.newTab().setTitle(title);
+                    val tabView = jTabLayout.newTab().setTitle(title+inx);
                     jTabLayout.addTab(tabView)
                 }
                 inx++
@@ -96,13 +96,13 @@ class OperationActivity : AppCompatActivity() {
                     if (inx > views.size) {
                         return@setOnClickListener
                     }
-                    views.add(inx, title)
+                    views.add(inx, title+inx)
                     adapter?.notifyDataSetChanged();
                 } else {
                     if (inx > jTabLayout.tabCount) {
                         return@setOnClickListener
                     }
-                    jTabLayout.addTab(jTabLayout.newTab().setTitle(title), inx)
+                    jTabLayout.addTab(jTabLayout.newTab().setTitle(title+inx), inx)
                 }
             }
         }
@@ -118,14 +118,16 @@ class OperationActivity : AppCompatActivity() {
                 }
                 inx = 0
             } else {
-                if (views.size > Integer.parseInt(position)) {
-                    inx = if (withViewPager) {
+                if (withViewPager){
+                    if (views.size > Integer.parseInt(position)) {
                         views.removeAt(Integer.parseInt(position))
                         adapter?.notifyDataSetChanged()
-                        views.size
-                    } else {
+                        inx = views.size
+                    }
+                }else{
+                    if (jTabLayout.tabCount > Integer.parseInt(position)) {
                         jTabLayout.removeTabAt(Integer.parseInt(position))
-                        jTabLayout.tabCount
+                        inx  = jTabLayout.tabCount
                     }
                 }
             }
@@ -145,5 +147,9 @@ class OperationActivity : AppCompatActivity() {
                 textView.text = "onTabReselected position: $position"
             }
         })
+
+        button3.setOnClickListener {
+            jTabLayout.setCurrentItem(3)
+        }
     }
 }

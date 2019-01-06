@@ -587,23 +587,21 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void setupWithViewPager(ViewPager viewPager, boolean autoRefresh) {
         this.autoRefresh = autoRefresh;
-        if (this.mViewPager != null) {
-            this.mViewPager.removeOnPageChangeListener(this);
-            this.mViewPager.removeOnAdapterChangeListener(this);
+        if (mViewPager != null) {
+            mViewPager.removeOnPageChangeListener(this);
+            mViewPager.removeOnAdapterChangeListener(this);
         }
 
         if (viewPager == null) {
             return;
         }
 
-        this.mViewPager = viewPager;
-        viewPager.addOnPageChangeListener(this);
-        viewPager.addOnAdapterChangeListener(this);
+        mViewPager = viewPager;
+        mViewPager.addOnPageChangeListener(this);
+        mViewPager.addOnAdapterChangeListener(this);
 
-        final PagerAdapter adapter = viewPager.getAdapter();
-        if (adapter != null) {
-            setPagerAdapter(adapter, autoRefresh);
-        }
+        PagerAdapter adapter = mViewPager.getAdapter();
+        setPagerAdapter(adapter, autoRefresh);
     }
 
     private void setPagerAdapter(PagerAdapter adapter, boolean autoRefresh) {
@@ -612,9 +610,9 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             mPagerAdapter.unregisterDataSetObserver(mAdapterObserver);
         }
 
-        mPagerAdapter = mViewPager.getAdapter();
+        mPagerAdapter = adapter;
 
-        if (autoRefresh && adapter != null) {
+        if (autoRefresh && mPagerAdapter != null) {
             if (mAdapterObserver == null) {
                 mAdapterObserver = new PagerAdapterObserver();
             }
@@ -737,6 +735,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         }
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         updateTabViewLayoutParams(params, tab.getPosition() == 0 ? 0 : dividerWidth);
+        tab.getView().setSelected(false);
         mSlidingTabStrip.addView(tab.getView(), tab.getPosition(), params);
 
         tab.getView().setOnClickListener(new OnClickListener() {
@@ -761,20 +760,25 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
 
     public void removeTabAt(int position) {
         final int selectedTabPosition = mSelectedTab != null ? mSelectedTab.getPosition() : 0;
-        removeTabViewAt(position);
+        if (mSlidingTabStrip.getChildCount() <= position) {
+            return;
+        }
         mTabViews.remove(position);
-        final int newTabCount = mTabViews.size();
-        for (int i = position; i < newTabCount; i++) {
-            mTabViews.get(i).setPosition(i);
+        List<Tab> newTabViews = new ArrayList<>();
+        newTabViews.addAll(mTabViews);
+        removeAllTabs();
+        for (Tab tab : newTabViews) {
+            addTab(tab);
         }
 
-        if (selectedTabPosition == position) {
-            selectTab(mTabViews.isEmpty() ? null : mTabViews.get(Math.max(0, position - 1)), true);
-        }
+        Tab newSelectedTab = mTabViews.get(selectedTabPosition == position ? Math.max(0, position - 1)
+                : selectedTabPosition < position ? selectedTabPosition : selectedTabPosition - 1);
 
-        if (mSlidingTabStrip.getChildCount() == 0) {
-            mSelectedPosition = 0;
+        if (newSelectedTab==null){
+            return;
         }
+        selectTab(newSelectedTab, true);
+        animateToTab(newSelectedTab.getPosition());
     }
 
     private void removeTabViewAt(int position) {
@@ -797,11 +801,13 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         if (mode == MODE_SCROLLABLE) {
             final int startScrollX = getScrollX();
             final int targetScrollX = calculateScrollXForTab(newPosition, 0);
-
+            Log.e(TAG, "startScrollX: " + startScrollX);
+            Log.e(TAG, "targetScrollX: " + targetScrollX);
             if (startScrollX != targetScrollX) {
                 ensureScrollAnimator();
                 mScrollAnimator.setIntValues(startScrollX, targetScrollX);
                 mScrollAnimator.start();
+                Log.e(TAG, "animateToTab: " + newPosition);
             }
         }
         animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
@@ -817,7 +823,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
             int scrollBase = selectedChild.getLeft() + (selectedWidth / 2) - (getWidth() / 2);
-
+            Log.e(TAG, "scrollBase: " + scrollBase);
             int scrollOffset = (int) ((selectedWidth + nextWidth + dividerWidth * 2) * 0.5f * positionOffset);
 
             return (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR)
@@ -939,6 +945,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             mIndicatorAnimator.setEvaluator(new DefIndicatorEvaluator());
         }
 
+
         View currentTab = mSlidingTabStrip.getChildAt(mSelectedPosition);
         if (currentTab != null && currentTab.getWidth() > 0) {
             int indicatorWidth = getIndicatorWidth(currentTab);
@@ -961,6 +968,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
             mIndicatorAnimator.start();
         }
         mSelectedPosition = newPosition;
+        Log.e(TAG, "animateIndicatorToPosition: " + newPosition);
     }
 
     private void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
