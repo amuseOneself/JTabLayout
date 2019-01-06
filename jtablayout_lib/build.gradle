@@ -17,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.1.6"
+        versionCode 9
+        versionName "1.1.7"
     }
 
     buildTypes {
@@ -34,7 +34,7 @@ android {
 publish {
     groupId = 'com.liang.jtab'
     artifactId = 'jtablayout'
-    publishVersion = '1.1.6'
+    publishVersion = '1.1.7'
     desc = 'Oh hi,this is a nice description for a project,right?'
     website = 'https://github.com/18317084205/JTabLayout'
     bintrayUser = BINTRAY_USER
