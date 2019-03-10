@@ -31,4 +31,10 @@
         <attr name="badgeStrokeColor" format="color" />
         <attr name="badgeStrokeWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="BadgeView">
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
 </resources>

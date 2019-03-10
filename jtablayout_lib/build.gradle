@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
-//apply plugin: "maven"
 
 repositories {
     mavenCentral()
@@ -17,8 +15,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 9
-        versionName "1.1.7"
+        versionCode 10
+        versionName "1.1.8"
     }
 
     buildTypes {
@@ -30,29 +28,6 @@ android {
 
 }
 
-
-publish {
-    groupId = 'com.liang.jtab'
-    artifactId = 'jtablayout'
-    publishVersion = '1.1.7'
-    desc = 'Oh hi,this is a nice description for a project,right?'
-    website = 'https://github.com/18317084205/JTabLayout'
-    bintrayUser = BINTRAY_USER
-    userOrg = BINTRAY_USER
-    bintrayKey = BINTRAY_KEY
-    dryRun = false
-}
-
-
-//uploadArchives {
-//    repositories.mavenDeployer {
-//        repository(url: uri('../repo'))
-//        pom.groupId = 'com.liang.jtab'//你的包名
-//        pom.artifactId = 'jtablayout'//在需要引用插件时用到
-//        pom.version = '1.1.4'
-//    }
-//}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -62,5 +37,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-//apply from: "bintrayUpload.gradle"
-//apply from: "https://raw.githubusercontent.com/xiaopansky/android-library-publish-to-jcenter/master/bintrayUpload.gradle"
+apply from: "../bintrayUpload.gradle"

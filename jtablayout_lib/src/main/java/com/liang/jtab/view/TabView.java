@@ -101,6 +101,7 @@ public class TabView extends FrameLayout implements Tab {
         BadgeView badge = tabView.findViewById(R.id.navigation_badge);
         badge.setSingleLine(true);
         badge.setEllipsize(TextUtils.TruncateAt.END);
+        badge.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         return badge;
     }
 

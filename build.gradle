@@ -9,14 +9,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-
         classpath 'com.novoda:bintray-release:0.9'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-//        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
     }
 }
 
@@ -25,10 +20,15 @@ allprojects {
         google()
         jcenter()
     }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    //添加 utf-8 的支持，避免中文注释生成 Javadoc 文件出现编码错误
+    tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
 }
 
 tasks.withType(Javadoc) {

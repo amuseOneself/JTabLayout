@@ -41,9 +41,6 @@ public class TabMenu extends TabView {
     @Override
     protected BadgeView setTabBadgeView() {
         BadgeView badge = tabView.findViewById(R.id.navigation_badge);
-        badge.setSingleLine(true);
-        badge.setEllipsize(TextUtils.TruncateAt.END);
-        badge.setTextSize(30);
         return badge;
     }
 }

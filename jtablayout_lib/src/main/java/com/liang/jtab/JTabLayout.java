@@ -140,7 +140,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         badgeTextColor = typedArray.getColor(R.styleable.JTabLayout_badgeTextColor, Color.WHITE);
         badgeStrokeColor = typedArray.getColor(R.styleable.JTabLayout_badgeStrokeColor, Color.WHITE);
 
-        badgeTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, DensityUtils.sp2px(getContext(), 10));
+        badgeTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, DensityUtils.sp2px(getContext(), 11));
         badgeStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_badgeTextSize, 2);
 
         textBold = typedArray.getBoolean(R.styleable.JTabLayout_textBold, false);
@@ -449,6 +449,12 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         Tab tab = (Tab) mSlidingTabStrip.getChildAt(position);
         if (tab != null) {
             tab.setBadgeTextSize(DensityUtils.sp2px(getContext(), textSize));
+        }
+    }
+
+    public void setBadgeTextSize(int textSize) {
+        for (int i = 0; i < mSlidingTabStrip.getChildCount(); i++) {
+            setBadgeTextSize(i, textSize);
         }
     }
 
@@ -774,7 +780,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         Tab newSelectedTab = mTabViews.get(selectedTabPosition == position ? Math.max(0, position - 1)
                 : selectedTabPosition < position ? selectedTabPosition : selectedTabPosition - 1);
 
-        if (newSelectedTab==null){
+        if (newSelectedTab == null) {
             return;
         }
         selectTab(newSelectedTab, true);

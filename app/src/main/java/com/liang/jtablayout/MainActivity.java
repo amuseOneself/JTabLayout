@@ -21,12 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    BadgeView badgeView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        
+
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        badgeView = findViewById(R.id.badgeView);
+        badgeView.show("234");
 
     }
 }
