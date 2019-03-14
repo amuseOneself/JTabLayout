@@ -1,24 +1,11 @@
 package com.liang.jtablayout;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.TableLayout;
 
-import com.liang.jtab.indicator.JIndicator;
-import com.liang.jtab.JTabLayout;
-import com.liang.jtab.listener.OnTabSelectedListener;
-import com.liang.jtab.view.BadgeView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.liang.widget.BadgeView;
 
 public class MainActivity extends AppCompatActivity {
 

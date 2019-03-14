@@ -2,12 +2,9 @@ package com.liang.jtablayout
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.annotation.IntegerRes
-import android.util.Log
 import android.widget.CompoundButton
 import android.widget.RadioGroup
-import android.widget.Toast
-import com.liang.jtab.JTabLayout
+import com.liang.widget.JTabLayout
 import com.liang.jtab.indicator.JIndicator
 import com.liang.jtab.listener.OnTabSelectedListener
 import kotlinx.android.synthetic.main.activity_operation.*

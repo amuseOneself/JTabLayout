@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.liang.jtab.view.BadgeView;
 import com.liang.jtab.view.TabView;
+import com.liang.widget.BadgeView;
 
 public class TabMenu extends TabView {
 

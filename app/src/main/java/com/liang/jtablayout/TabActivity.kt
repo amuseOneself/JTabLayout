@@ -37,8 +37,8 @@ class TabActivity : AppCompatActivity() {
         tabLayout1.addTab(TabMenu(this).setTitle("游戏").setBackgroundRes(R.drawable.tab_bgc))
         tabLayout1.addTab(TabMenu(this).setTitle("排名").setBackgroundRes(R.drawable.tab_bgc))
         tabLayout1.addTab(TabMenu(this).setTitle("最新").setBackgroundRes(R.drawable.tab_bgr))
-        tabLayout1.setBadgeTextSize(15)
-        tabLayout1.showBadgeMsg(0, 6)
+        tabLayout1.setBadgeTextSize(10)
+        tabLayout1.showBadgeMsg(0, 8)
         tabLayout1.showBadgeMsg(2)
         tabLayout1.showBadgeMsg(3, "新")
     }
@@ -50,9 +50,10 @@ class TabActivity : AppCompatActivity() {
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setTitle("我的"))
 
         tabLayout2.setBadgeColor(0, Color.YELLOW)
+        tabLayout2.setBadgeColor(1, Color.MAGENTA)
         tabLayout2.setBadgeTextColor(0, Color.RED)
-        tabLayout2.setBadgeStroke(0, 3, Color.RED)
-        tabLayout2.showBadgeMsg(0, "火热")
+//        tabLayout2.setBadgeStroke(0, 3, Color.RED)
+        tabLayout2.showBadgeMsg(0, "HOT !")
         tabLayout2.showBadgeMsg(1, "新")
         tabLayout2.showBadgeMsg(2, 952)
         tabLayout2.showBadgeMsg(3)
@@ -108,10 +109,10 @@ class TabActivity : AppCompatActivity() {
         tabLayout6.addTab(tabLayout6.newTab().setIcon(R.mipmap.icon_wode_normal, R.mipmap.icon_wode_press).setTitle("我的"))
         tabLayout6.setBadgeColor(0, Color.YELLOW)
         tabLayout6.setBadgeTextColor(0, Color.RED)
-        tabLayout6.showBadgeMsg(0, "火热")
+        tabLayout6.showBadgeMsg(0, "NEW")
         tabLayout6.showBadgeMsg(2, 5)
         tabLayout6.showBadgeMsg(3)
-        tabLayout6.setBadgeStroke(0, 1, Color.GRAY)
+        tabLayout6.setBadgeStroke(0, 3, Color.RED)
     }
 
     private fun initViewPager() {

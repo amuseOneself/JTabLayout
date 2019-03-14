@@ -11,9 +11,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +24,7 @@ import android.widget.TextView;
 import com.liang.jtab.R;
 import com.liang.jtab.Tab;
 import com.liang.jtab.utils.ColorUtils;
+import com.liang.widget.BadgeView;
 
 public class TabView extends FrameLayout implements Tab {
 
@@ -352,5 +351,19 @@ public class TabView extends FrameLayout implements Tab {
         }
 
         badgeView.hide();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TabView)) {
+            return false;
+        }
+        TabView tab = (TabView) obj;
+        return tab.getPosition() == getPosition();
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(getPosition()).hashCode();
     }
 }

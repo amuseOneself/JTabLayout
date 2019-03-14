@@ -134,4 +134,6 @@ public interface Tab {
     void showBadgeMsg(String msg, boolean showDot);
 
     void hideBadgeMsg();
+
+
 }
