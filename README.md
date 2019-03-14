@@ -19,6 +19,8 @@
 
 ## 最新版本
 
+### 1.1.9
+  优化JTabLayout 可直接XML布局里添加Item
 ### 1.1.8
   优化BadgeView
 ### 1.1.7
