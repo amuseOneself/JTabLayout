@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="BadgeView">
-        <attr name="strokeColor" format="color" />
-        <attr name="strokeWidth" format="dimension" />
-        <attr name="backgroundColor" format="color" />
-    </declare-styleable>
-</resources>
