@@ -15,7 +15,33 @@
         app:dividerWidth="1dp"
         app:layout_constraintTop_toTopOf="parent"
         app:tabMode="fixed"
-        app:tabTextColor="@drawable/text_color_tab" />
+        app:tabTextColor="@drawable/text_color_tab">
+
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgl"
+            app:tabTitle="娱乐" />
+
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgc"
+            app:tabTitle="游戏" />
+
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgc"
+            app:tabTitle="排名" />
+
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgr"
+            app:tabTitle="最新" />
+
+    </com.liang.widget.JTabLayout>
 
     <View
         android:id="@+id/line1"

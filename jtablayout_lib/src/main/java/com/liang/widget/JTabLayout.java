@@ -166,7 +166,7 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
     }
 
     private void dispatchTabSelected(Tab tab, boolean isCallBack) {
-        if (tab == null && isCallBack) {
+        if (tab == null || !isCallBack) {
             return;
         }
 

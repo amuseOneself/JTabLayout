@@ -33,10 +33,10 @@ class TabActivity : AppCompatActivity() {
     }
 
     private fun initTab1() {
-        tabLayout1.addTab(TabMenu(this).setTitle("娱乐").setBackgroundRes(R.drawable.tab_bgl))
-        tabLayout1.addTab(TabMenu(this).setTitle("游戏").setBackgroundRes(R.drawable.tab_bgc))
-        tabLayout1.addTab(TabMenu(this).setTitle("排名").setBackgroundRes(R.drawable.tab_bgc))
-        tabLayout1.addTab(TabMenu(this).setTitle("最新").setBackgroundRes(R.drawable.tab_bgr))
+//        tabLayout1.addTab(TabMenu(this).setTitle("娱乐").setBackgroundRes(R.drawable.tab_bgl))
+//        tabLayout1.addTab(TabMenu(this).setTitle("游戏").setBackgroundRes(R.drawable.tab_bgc))
+//        tabLayout1.addTab(TabMenu(this).setTitle("排名").setBackgroundRes(R.drawable.tab_bgc))
+//        tabLayout1.addTab(TabMenu(this).setTitle("最新").setBackgroundRes(R.drawable.tab_bgr))
         tabLayout1.setBadgeTextSize(10)
         tabLayout1.showBadgeMsg(0, 8)
         tabLayout1.showBadgeMsg(2)

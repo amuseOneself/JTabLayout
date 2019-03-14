@@ -15,8 +15,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 11
-        versionName "1.1.9"
+        versionCode 12
+        versionName "1.2.0"
     }
 
     buildTypes {
@@ -25,7 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -35,7 +34,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    api project(':badgelibrary')
+//    api project(':badgelibrary')
 }
 
 apply from: "bintrayUpload.gradle"

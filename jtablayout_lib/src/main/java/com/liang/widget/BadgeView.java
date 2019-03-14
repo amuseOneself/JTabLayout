@@ -32,6 +32,8 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
+import com.liang.jtab.R;
+
 
 public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 

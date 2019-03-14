@@ -3,6 +3,7 @@ package com.liang.jtab.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -10,8 +11,10 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -59,8 +62,36 @@ public class TabView extends FrameLayout implements Tab {
     private View tabView;
 
     public TabView(@NonNull Context context) {
-        super(context);
+        this(context, null);
+
+    }
+
+    public TabView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public TabView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         setFocusable(true);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Tab,
+                defStyleAttr, 0);
+
+        if (typedArray.hasValue(R.styleable.Tab_tabTitleColor)) {
+            titleColor = typedArray.getColorStateList(com.liang.jtab.R.styleable.Tab_tabTitleColor);
+        }
+
+        Drawable normalIcon = typedArray.getDrawable(R.styleable.Tab_tabNormalIcon);
+        Drawable selectedIcon = typedArray.getDrawable(R.styleable.Tab_tabSelectedIcon);
+
+        if (normalIcon != null || selectedIcon != null) {
+            icons = new Drawable[2];
+            icons[0] = normalIcon != null ? normalIcon : selectedIcon;
+            icons[1] = selectedIcon != null ? selectedIcon : normalIcon;
+        }
+
+        mode = typedArray.getInt(R.styleable.Tab_layoutOrientation, HORIZONTAL);
+        title = typedArray.getText(R.styleable.Tab_tabTitle);
+
         updateLayout();
     }
 

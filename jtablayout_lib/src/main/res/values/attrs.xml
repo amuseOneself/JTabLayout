@@ -32,4 +32,22 @@
         <attr name="badgeStrokeWidth" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="Tab">
+        <attr name="tabTitleColor" format="color|reference" />
+        <attr name="tabNormalIcon" format="reference|color" />
+        <attr name="tabSelectedIcon" format="reference|color" />
+        <attr name="tabTitle" format="string" />
+        <attr name="layoutOrientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="BadgeView">
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
+
 </resources>
