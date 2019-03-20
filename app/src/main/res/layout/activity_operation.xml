@@ -12,14 +12,14 @@
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:background="@color/color_tab_bg"
-        app:dividerColor="@android:color/holo_orange_dark"
-        app:dividerWidth="2dp"
+        app:jDividerColor="@android:color/holo_orange_dark"
+        app:jDividerWidth="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabMode="fixed"
-        app:tabTextColor="@drawable/text_color_tab"
-        app:tabTextSize="16sp"/>
+        app:jTabMode="fixed"
+        app:jTabTextColor="@drawable/text_color_tab"
+        app:jTabTextSize="16sp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/ViewPager"

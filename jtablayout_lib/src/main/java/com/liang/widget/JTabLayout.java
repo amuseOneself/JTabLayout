@@ -122,30 +122,30 @@ public class JTabLayout extends HorizontalScrollView implements ViewPager.OnPage
         TypedArray typedArray = context.obtainStyledAttributes(attrs, com.liang.jtab.R.styleable.JTabLayout,
                 defStyleAttr, 0);
 
-        if (typedArray.hasValue(com.liang.jtab.R.styleable.JTabLayout_tabTextColor)) {
-            mTabTextColors = typedArray.getColorStateList(com.liang.jtab.R.styleable.JTabLayout_tabTextColor);
+        if (typedArray.hasValue(com.liang.jtab.R.styleable.JTabLayout_jTabTextColor)) {
+            mTabTextColors = typedArray.getColorStateList(com.liang.jtab.R.styleable.JTabLayout_jTabTextColor);
         }
 
-        if (typedArray.hasValue(com.liang.jtab.R.styleable.JTabLayout_tabBackground)) {
-            mTabBackground = typedArray.getDrawable(com.liang.jtab.R.styleable.JTabLayout_tabBackground);
+        if (typedArray.hasValue(com.liang.jtab.R.styleable.JTabLayout_jTabBackground)) {
+            mTabBackground = typedArray.getDrawable(com.liang.jtab.R.styleable.JTabLayout_jTabBackground);
         }
 
-        mode = typedArray.getInt(com.liang.jtab.R.styleable.JTabLayout_tabMode, MODE_FIXED);
-        textTransitionMode = typedArray.getInt(com.liang.jtab.R.styleable.JTabLayout_textColorTransition, 0);
-        itemLayoutOrientation = typedArray.getInt(com.liang.jtab.R.styleable.JTabLayout_itemLayoutOrientation, 0);
-        dividerWidth = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_dividerWidth, 0);
-        int dividerHeight = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_dividerHeight, 50);
-        int dividerColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_dividerColor, Color.BLACK);
+        mode = typedArray.getInt(com.liang.jtab.R.styleable.JTabLayout_jTabMode, MODE_FIXED);
+        textTransitionMode = typedArray.getInt(com.liang.jtab.R.styleable.JTabLayout_jTextColorTransition, 0);
+        itemLayoutOrientation = typedArray.getInt(com.liang.jtab.R.styleable.JTabLayout_jItemLayoutOrientation, 0);
+        dividerWidth = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_jDividerWidth, 0);
+        int dividerHeight = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_jDividerHeight, 50);
+        int dividerColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_jDividerColor, Color.BLACK);
 
-        tabTextSize = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_tabTextSize, DensityUtils.sp2px(getContext(), 13));
-        badgeColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_badgeColor, Color.RED);
-        badgeTextColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_badgeTextColor, Color.WHITE);
-        badgeStrokeColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_badgeStrokeColor, Color.WHITE);
+        tabTextSize = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_jTabTextSize, DensityUtils.sp2px(getContext(), 13));
+        badgeColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_jBadgeColor, Color.RED);
+        badgeTextColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_jBadgeTextColor, Color.WHITE);
+        badgeStrokeColor = typedArray.getColor(com.liang.jtab.R.styleable.JTabLayout_jBadgeStrokeColor, Color.WHITE);
 
-        badgeTextSize = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_badgeTextSize, DensityUtils.sp2px(getContext(), 11));
-        badgeStrokeWidth = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_badgeTextSize, 2);
+        badgeTextSize = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_jBadgeTextSize, DensityUtils.sp2px(getContext(), 11));
+        badgeStrokeWidth = typedArray.getDimensionPixelSize(com.liang.jtab.R.styleable.JTabLayout_jBadgeTextSize, 2);
 
-        textBold = typedArray.getBoolean(R.styleable.JTabLayout_textBold, false);
+        textBold = typedArray.getBoolean(R.styleable.JTabLayout_jTextBold, false);
 
         typedArray.recycle();
 

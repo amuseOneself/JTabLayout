@@ -73,15 +73,15 @@ public class TabView extends FrameLayout implements Tab {
     public TabView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setFocusable(true);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Tab,
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.JTab,
                 defStyleAttr, 0);
 
-        if (typedArray.hasValue(R.styleable.Tab_tabTitleColor)) {
-            titleColor = typedArray.getColorStateList(com.liang.jtab.R.styleable.Tab_tabTitleColor);
+        if (typedArray.hasValue(R.styleable.JTab_jTabTitleColor)) {
+            titleColor = typedArray.getColorStateList(com.liang.jtab.R.styleable.JTab_jTabTitleColor);
         }
 
-        Drawable normalIcon = typedArray.getDrawable(R.styleable.Tab_tabNormalIcon);
-        Drawable selectedIcon = typedArray.getDrawable(R.styleable.Tab_tabSelectedIcon);
+        Drawable normalIcon = typedArray.getDrawable(R.styleable.JTab_jTabNormalIcon);
+        Drawable selectedIcon = typedArray.getDrawable(R.styleable.JTab_jTabSelectedIcon);
 
         if (normalIcon != null || selectedIcon != null) {
             icons = new Drawable[2];
@@ -89,8 +89,8 @@ public class TabView extends FrameLayout implements Tab {
             icons[1] = selectedIcon != null ? selectedIcon : normalIcon;
         }
 
-        mode = typedArray.getInt(R.styleable.Tab_layoutOrientation, HORIZONTAL);
-        title = typedArray.getText(R.styleable.Tab_tabTitle);
+        mode = typedArray.getInt(R.styleable.JTab_jLayoutOrientation, HORIZONTAL);
+        title = typedArray.getText(R.styleable.JTab_jTabTitle);
 
         updateLayout();
     }

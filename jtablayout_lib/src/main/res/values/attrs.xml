@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="JTabLayout">
-        <attr name="tabTextColor" format="color|reference" />
-        <attr name="tabBackground" format="reference" />
-        <attr name="tabMode">
+        <attr name="jTabTextColor" format="color|reference" />
+        <attr name="jTabBackground" format="reference" />
+        <attr name="jTabMode">
             <enum name="scrollable" value="0" />
             <enum name="fixed" value="1" />
         </attr>
-        <attr name="dividerWidth" format="dimension" />
-        <attr name="dividerHeight" format="dimension" />
-        <attr name="dividerColor" format="color" />
+        <attr name="jDividerWidth" format="dimension" />
+        <attr name="jDividerHeight" format="dimension" />
+        <attr name="jDividerColor" format="color" />
 
-        <attr name="textColorTransition">
+        <attr name="jTextColorTransition">
             <enum name="normal" value="0" />
             <enum name="shadow" value="1" />
         </attr>
 
-        <attr name="textBold" format="boolean" />
+        <attr name="jTextBold" format="boolean" />
 
-        <attr name="itemLayoutOrientation">
+        <attr name="jItemLayoutOrientation">
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
 
-        <attr name="tabTextSize" format="dimension" />
+        <attr name="jTabTextSize" format="dimension" />
 
-        <attr name="badgeColor" format="color" />
-        <attr name="badgeTextColor" format="color" />
-        <attr name="badgeTextSize" format="dimension" />
-        <attr name="badgeStrokeColor" format="color" />
-        <attr name="badgeStrokeWidth" format="dimension" />
+        <attr name="jBadgeColor" format="color" />
+        <attr name="jBadgeTextColor" format="color" />
+        <attr name="jBadgeTextSize" format="dimension" />
+        <attr name="jBadgeStrokeColor" format="color" />
+        <attr name="jBadgeStrokeWidth" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="Tab">
-        <attr name="tabTitleColor" format="color|reference" />
-        <attr name="tabNormalIcon" format="reference|color" />
-        <attr name="tabSelectedIcon" format="reference|color" />
-        <attr name="tabTitle" format="string" />
-        <attr name="layoutOrientation">
+    <declare-styleable name="JTab">
+        <attr name="jTabTitleColor" format="color|reference" />
+        <attr name="jTabNormalIcon" format="reference|color" />
+        <attr name="jTabSelectedIcon" format="reference|color" />
+        <attr name="jTabTitle" format="string" />
+        <attr name="jLayoutOrientation">
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
 
     </declare-styleable>
 
-    <declare-styleable name="BadgeView">
-        <attr name="strokeColor" format="color" />
-        <attr name="strokeWidth" format="dimension" />
-        <attr name="backgroundColor" format="color" />
+    <declare-styleable name="JBadgeView">
+        <attr name="jStrokeColor" format="color" />
+        <attr name="jStrokeWidth" format="dimension" />
+        <attr name="jBackgroundColor" format="color" />
     </declare-styleable>
 
 </resources>
