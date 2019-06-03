@@ -18,7 +18,8 @@
   使用TabLayout请参考[Android快速开发库之TabLayout](https://www.jianshu.com/p/eb1329c5438b "简书").
 
 ## 最新版本
-
+### 1.2.1
+  优化分隔线
 ### 1.2.0
   解决包冲突
 ### 1.1.9
