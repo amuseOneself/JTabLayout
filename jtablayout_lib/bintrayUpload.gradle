@@ -1,0 +1,30 @@
+apply plugin: 'com.novoda.bintray-release'
+
+def groupName = 'com.liang.jtab'//组名
+def artifactName = 'jtablayout'//项目名
+def version = '1.2.1'
+def libDesc = 'Oh hi,this is a nice description for a project,right?'
+def website_Git = 'https://github.com/18317084205/JTabLayout'
+def bintray_user = '15191851980'
+def bintray_key = '4c679a9a370cf3a1c82f60e8a9c5721a33a316e0'
+
+publish {
+    groupId = "${groupName}"
+    artifactId = "${artifactName}"
+    publishVersion = "${version}"
+    desc = "${libDesc}"
+    website = "${website_Git}"
+    bintrayUser = "${bintray_user}"
+    userOrg = "${bintray_user}"
+    bintrayKey = "${bintray_key}"
+    dryRun = false
+}
+
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        repository(url: uri('../repo'))
+//        pom.groupId = 'com.liang.jtab'//你的包名
+//        pom.artifactId = 'jtablayout'//在需要引用插件时用到
+//        pom.version = '1.1.4'
+//    }
+//}

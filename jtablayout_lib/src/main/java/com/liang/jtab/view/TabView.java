@@ -91,7 +91,7 @@ public class TabView extends FrameLayout implements Tab {
 
         mode = typedArray.getInt(R.styleable.JTab_jLayoutOrientation, HORIZONTAL);
         title = typedArray.getText(R.styleable.JTab_jTabTitle);
-
+        typedArray.recycle();
         updateLayout();
     }
 

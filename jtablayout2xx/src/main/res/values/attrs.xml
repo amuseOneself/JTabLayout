@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JTabLayout">
+        <attr name="tabIndicatorColor" format="color" />
+        <attr name="tabIndicatorWidth" format="dimension" />
+        <attr name="tabIndicatorWidthScale" format="float" />
+        <attr name="tabIndicatorHeight" format="dimension" />
+
+        <attr name="tabContentStart" format="dimension" />
+        <attr name="tabBackground" format="reference" />
+        <attr name="tabIndicator" format="reference" />
+        <attr name="tabIndicatorGravity">
+
+            <enum name="bottom" value="0" />
+
+            <enum name="center" value="1" />
+
+            <enum name="top" value="2" />
+
+            <enum name="stretch" value="3" />
+        </attr>
+        <attr name="tabIndicatorAnimationDuration" format="integer" />
+        <attr name="tabIndicatorFullWidth" format="boolean" />
+        <attr name="tabMode">
+            <enum name="scrollable" value="0" />
+            <enum name="fixed" value="1" />
+        </attr>
+        <attr name="tabGravity">
+            <enum name="fill" value="0" />
+            <enum name="center" value="1" />
+        </attr>
+
+        <attr name="tabDividerWidth" format="dimension" />
+        <attr name="tabDividerHeight" format="dimension" />
+        <attr name="tabDividerColor" format="color" />
+
+        <attr name="tabInlineLabel" format="boolean" />
+        <attr name="tabMinWidth" format="dimension" />
+        <attr name="tabMaxWidth" format="dimension" />
+        <attr name="tabTextColor" format="color|reference" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="tabPaddingStart" format="dimension" />
+        <attr name="tabPaddingTop" format="dimension" />
+        <attr name="tabPaddingEnd" format="dimension" />
+        <attr name="tabPaddingBottom" format="dimension" />
+        <attr name="tabPadding" format="dimension" />
+        <attr name="tabIconTint" format="color" />
+        <attr name="tabIconTintMode">
+            <enum name="src_over" value="3" />
+            <enum name="src_in" value="5" />
+            <enum name="src_atop" value="9" />
+            <enum name="multiply" value="14" />
+            <enum name="screen" value="15" />
+            <enum name="add" value="16" />
+        </attr>
+        <attr name="tabRippleColor" format="color" />
+        <attr name="tabUnboundedRipple" format="boolean" />
+    </declare-styleable>
+
+
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Tab2Activity">
+
+    <com.liang.jtablayout.JTabLayout
+        android:id="@+id/jTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabDividerColor="@color/menu_line"
+        app:tabDividerWidth="10dp"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="5dp"
+        app:tabIndicatorWidthScale="0.8"
+        app:tabInlineLabel="false"
+        app:tabMode="scrollable"
+        app:tabTextColor="@drawable/text_color_tab" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintTop_toBottomOf="@id/jTabLayout" />
+
+</android.support.constraint.ConstraintLayout>
