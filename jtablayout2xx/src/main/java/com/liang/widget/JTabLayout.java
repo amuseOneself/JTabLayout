@@ -1,4 +1,4 @@
-package com.liang.jtablayout;
+package com.liang.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -17,6 +17,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.BoolRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -38,13 +39,16 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 
+import com.liang.jtablayout.adapter.TabAdapter;
+import com.liang.jtablayout.indicator.DefIndicatorEvaluator;
 import com.liang.jtablayout.indicator.IndicatorPoint;
 import com.liang.jtablayout.indicator.TransitionIndicatorEvaluator;
 import com.liang.jtablayout.tab.Tab;
+import com.liang.jtablayout.tab.TabChild;
 import com.liang.jtablayout.tab.TabItem;
-import com.liang.jtablayout.tab.TabView;
 import com.liang.jtablayout.utils.ColorUtils;
 import com.liang.jtablayout.utils.MaterialResources;
+import com.liang.jtablayout.utils.ViewUtils;
 import com.liang.jtablayoutx.R;
 
 import java.lang.annotation.Retention;
@@ -81,7 +85,7 @@ public class JTabLayout extends HorizontalScrollView {
     static final int FIXED_WRAP_GUTTER_MIN = 16;
     private static final int INVALID_WIDTH = -1;
     private static final int ANIMATION_DURATION = 300;
-    private static final Pools.Pool<Tab<? extends TabItem>> tabPool = new Pools.SynchronizedPool<>(16);
+    private static final Pools.Pool<Tab<? extends TabChild>> tabPool = new Pools.SynchronizedPool<>(16);
     public static final int MODE_SCROLLABLE = 0;
     public static final int MODE_FIXED = 1;
     public static final int GRAVITY_FILL = 0;
@@ -90,22 +94,22 @@ public class JTabLayout extends HorizontalScrollView {
     public static final int INDICATOR_GRAVITY_CENTER = 1;
     public static final int INDICATOR_GRAVITY_TOP = 2;
     public static final int INDICATOR_GRAVITY_STRETCH = 3;
-    private final ArrayList<Tab<TabItem>> tabs;
-    private Tab<TabItem> selectedTab;
+    private final ArrayList<Tab<TabChild>> tabs;
+    private Tab<TabChild> selectedTab;
     private final RectF tabViewContentBounds;
     private final SlidingTabIndicator slidingTabIndicator;
-    public int tabPaddingStart;
-    public int tabPaddingTop;
-    public int tabPaddingEnd;
-    public int tabPaddingBottom;
-    ColorStateList tabTextColors;
-    ColorStateList tabIconTint;
-    ColorStateList tabRippleColorStateList;
+    private int tabPaddingStart;
+    private int tabPaddingTop;
+    private int tabPaddingEnd;
+    private int tabPaddingBottom;
+    private ColorStateList tabTextColors;
+    private ColorStateList tabIconTint;
+    private ColorStateList tabRippleColorStateList;
+    android.graphics.PorterDuff.Mode tabIconTintMode;
     @Nullable
     Drawable tabSelectedIndicator;
-    float tabTextSize;
-    float tabTextMultiLineSize;
-    final int tabBackgroundResId;
+    private float tabTextSize;
+    private final int tabBackgroundResId;
     int tabMaxWidth;
     private final int requestedTabMinWidth;
     private final int requestedTabMaxWidth;
@@ -117,7 +121,8 @@ public class JTabLayout extends HorizontalScrollView {
     int mode;
     boolean inlineLabel;
     boolean tabIndicatorFullWidth;
-    boolean unboundedRipple;
+    boolean tabIndicatorTransitionScroll;
+    private boolean unboundedRipple;
     private BaseOnTabSelectedListener selectedListener;
     private final ArrayList<BaseOnTabSelectedListener> selectedListeners;
     private BaseOnTabSelectedListener currentVpSelectedListener;
@@ -128,8 +133,7 @@ public class JTabLayout extends HorizontalScrollView {
     private TabLayoutOnPageChangeListener pageChangeListener;
     private AdapterChangeListener adapterChangeListener;
     private boolean setupViewPagerImplicitly;
-    private final Pools.Pool<TabItem> tabViewPool;
-    private ColorStateList mTabTextColors;
+    private final Pools.Pool<TabChild> tabViewPool;
 
     private int tabDividerWidth;
     private int tabDividerHeight;
@@ -183,12 +187,15 @@ public class JTabLayout extends HorizontalScrollView {
         this.tabIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabIndicatorWidth, 0);
         this.tabIndicatorWidthScale = typedArray.getFloat(R.styleable.JTabLayout_tabIndicatorWidthScale, 0);
 
-
         if (typedArray.hasValue(R.styleable.JTabLayout_tabTextColor)) {
-            mTabTextColors = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabTextColor);
+            tabTextColors = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabTextColor);
         }
 
         this.tabTextSize = (float) typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabTextSize, 0);
+        this.tabIconTint = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabIconTint);
+        this.tabIconTintMode = ViewUtils.parseTintMode(typedArray.getInt(R.styleable.JTabLayout_tabIconTintMode, -1), (android.graphics.PorterDuff.Mode) null);
+        this.tabIndicatorFullWidth = typedArray.getBoolean(R.styleable.JTabLayout_tabIndicatorFullWidth, false);
+        this.tabIndicatorTransitionScroll = typedArray.getBoolean(R.styleable.JTabLayout_tabIndicatorTransitionScroll, false);
 
         this.tabRippleColorStateList = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabRippleColor);
         this.tabIndicatorAnimationDuration = typedArray.getInt(R.styleable.JTabLayout_tabIndicatorAnimationDuration, 300);
@@ -203,7 +210,6 @@ public class JTabLayout extends HorizontalScrollView {
         typedArray.recycle();
 
         Resources res = this.getResources();
-        this.tabTextMultiLineSize = (float) res.getDimensionPixelSize(R.dimen.design_tab_text_size_2line);
         this.scrollableTabMinWidth = res.getDimensionPixelSize(R.dimen.design_tab_scrollable_min_width);
         this.applyModeAndGravity();
     }
@@ -243,6 +249,47 @@ public class JTabLayout extends HorizontalScrollView {
         }
     }
 
+    /**
+     * Show Badge
+     *
+     * @param position
+     */
+    public void showBadgeMsg(int position) {
+        showBadgeMsg(position, "", true);
+    }
+
+    /**
+     * Show Badge
+     *
+     * @param position
+     * @param count
+     */
+    public void showBadgeMsg(int position, int count) {
+        showBadgeMsg(position, count + "", count > 0);
+    }
+
+    public void showBadgeMsg(int position, @NonNull String msg) {
+        showBadgeMsg(position, msg, msg.trim().length() > 0);
+    }
+
+    /**
+     * Show Badge
+     *
+     * @param position
+     * @param msg
+     * @param showDot
+     */
+    public void showBadgeMsg(int position, String msg, boolean showDot) {
+        TabChild tab = (TabChild) slidingTabIndicator.getChildAt(position);
+        if (tab != null) {
+            if (showDot) {
+                tab.showBadge(msg);
+            } else {
+                tab.hideBadge();
+            }
+        }
+    }
+
     public void addTab(@NonNull Tab tab) {
         this.addTab(tab, this.tabs.isEmpty());
     }
@@ -256,7 +303,7 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     public void addTab(@NonNull Tab tab, int position, boolean setSelected) {
-        if (tab.parent != this) {
+        if (tab.getParent() != this) {
             throw new IllegalArgumentException("Tab belongs to a different TabLayout.");
         } else {
             this.configureTab(tab, position);
@@ -269,21 +316,17 @@ public class JTabLayout extends HorizontalScrollView {
 
     private void addTabFromItemView(@NonNull TabItem item) {
         Tab tab = this.newTab();
-//        if (item.text != null) {
-//            tab.setText(item.text);
-//        }
-//
-//        if (item.icon != null) {
-//            tab.setIcon(item.icon);
-//        }
-//
-//        if (item.customLayout != 0) {
-//            tab.setCustomView(item.customLayout);
-//        }
-//
-//        if (!TextUtils.isEmpty(item.getContentDescription())) {
-//            tab.setContentDescription(item.getContentDescription());
-//        }
+        if (item.text != null) {
+            tab.setText(item.text);
+        }
+
+        if (item.icon != null) {
+            tab.setIcon(item.icon);
+        }
+
+        if (!TextUtils.isEmpty(item.getContentDescription())) {
+            tab.setContentDescription(item.getContentDescription());
+        }
 
         this.addTab(tab);
     }
@@ -301,14 +344,12 @@ public class JTabLayout extends HorizontalScrollView {
         if (listener != null) {
             this.addOnTabSelectedListener(listener);
         }
-
     }
 
     public void addOnTabSelectedListener(@NonNull BaseOnTabSelectedListener listener) {
         if (!this.selectedListeners.contains(listener)) {
             this.selectedListeners.add(listener);
         }
-
     }
 
     public void removeOnTabSelectedListener(@NonNull BaseOnTabSelectedListener listener) {
@@ -322,8 +363,8 @@ public class JTabLayout extends HorizontalScrollView {
     @NonNull
     public Tab newTab() {
         Tab tab = this.createTabFromPool();
-        tab.parent = this;
-        tab.tabItem = this.createTabView(tab);
+        tab.setParent(this);
+        tab.setTabItem(this.createTabView(tab));
         return tab;
     }
 
@@ -353,7 +394,7 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     public void removeTab(Tab tab) {
-        if (tab.parent != this) {
+        if (tab.getParent() != this) {
             throw new IllegalArgumentException("Tab does not belong to this TabLayout.");
         } else {
             this.removeTabAt(tab.getPosition());
@@ -415,7 +456,6 @@ public class JTabLayout extends HorizontalScrollView {
             this.tabGravity = gravity;
             this.applyModeAndGravity();
         }
-
     }
 
     public int getTabGravity() {
@@ -449,8 +489,8 @@ public class JTabLayout extends HorizontalScrollView {
 
             for (int i = 0; i < this.slidingTabIndicator.getChildCount(); ++i) {
                 View child = this.slidingTabIndicator.getChildAt(i);
-                if (child instanceof TabItem) {
-                    ((TabItem) child).updateOrientation(inlineLabel);
+                if (child instanceof TabChild) {
+                    ((TabChild) child).updateOrientation(inlineLabel);
                 }
             }
             this.applyModeAndGravity();
@@ -465,13 +505,32 @@ public class JTabLayout extends HorizontalScrollView {
         return this.inlineLabel;
     }
 
+    public void setUnboundedRipple(boolean unboundedRipple) {
+        if (this.unboundedRipple != unboundedRipple) {
+            this.unboundedRipple = unboundedRipple;
+
+            for (int i = 0; i < this.slidingTabIndicator.getChildCount(); ++i) {
+                View child = this.slidingTabIndicator.getChildAt(i);
+                if (child instanceof TabChild) {
+                    ((TabChild) child).updateBackgroundDrawable(this.getContext());
+                }
+            }
+        }
+    }
+
+    public void setUnboundedRippleResource(@BoolRes int unboundedRippleResourceId) {
+        this.setUnboundedRipple(this.getResources().getBoolean(unboundedRippleResourceId));
+    }
+
+    public boolean hasUnboundedRipple() {
+        return this.unboundedRipple;
+    }
 
     public void setTabTextColors(@Nullable ColorStateList textColor) {
         if (this.tabTextColors != textColor) {
             this.tabTextColors = textColor;
             this.updateAllTabs();
         }
-
     }
 
     @Nullable
@@ -481,6 +540,52 @@ public class JTabLayout extends HorizontalScrollView {
 
     public void setTabTextColors(int normalColor, int selectedColor) {
         this.setTabTextColors(ColorUtils.createColorStateList(normalColor, selectedColor));
+    }
+
+    public void setTabTextSize(float tabTextSize) {
+        if (this.tabTextSize != tabTextSize) {
+            this.tabTextSize = tabTextSize;
+            this.updateAllTabs();
+        }
+    }
+
+    public void setTabIconTint(@Nullable ColorStateList iconTint) {
+        if (this.tabIconTint != iconTint) {
+            this.tabIconTint = iconTint;
+            this.updateAllTabs();
+        }
+
+    }
+
+    public void setTabIconTintResource(@ColorRes int iconTintResourceId) {
+        this.setTabIconTint(AppCompatResources.getColorStateList(this.getContext(), iconTintResourceId));
+    }
+
+    @Nullable
+    public ColorStateList getTabIconTint() {
+        return this.tabIconTint;
+    }
+
+    @Nullable
+    public ColorStateList getTabRippleColor() {
+        return this.tabRippleColorStateList;
+    }
+
+    public void setTabRippleColor(@Nullable ColorStateList color) {
+        if (this.tabRippleColorStateList != color) {
+            this.tabRippleColorStateList = color;
+
+            for (int i = 0; i < this.slidingTabIndicator.getChildCount(); ++i) {
+                View child = this.slidingTabIndicator.getChildAt(i);
+                if (child instanceof TabChild) {
+                    ((TabChild) child).updateBackgroundDrawable(this.getContext());
+                }
+            }
+        }
+    }
+
+    public void setTabRippleColorResource(@ColorRes int tabRippleColorResourceId) {
+        this.setTabRippleColor(AppCompatResources.getColorStateList(this.getContext(), tabRippleColorResourceId));
     }
 
     @Nullable
@@ -499,9 +604,8 @@ public class JTabLayout extends HorizontalScrollView {
         if (tabSelectedIndicatorResourceId != 0) {
             this.setSelectedTabIndicator(AppCompatResources.getDrawable(this.getContext(), tabSelectedIndicatorResourceId));
         } else {
-            this.setSelectedTabIndicator((Drawable) null);
+            this.setSelectedTabIndicator(null);
         }
-
     }
 
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
@@ -618,7 +722,11 @@ public class JTabLayout extends HorizontalScrollView {
 
             int curItem;
             for (curItem = 0; curItem < adapterCount; ++curItem) {
-                this.addTab(this.newTab().setText(this.pagerAdapter.getPageTitle(curItem)), false);
+                if (pagerAdapter instanceof TabAdapter) {
+                    this.addTab(((TabAdapter) pagerAdapter).getTab(curItem), false);
+                } else {
+                    this.addTab(this.newTab().setText(this.pagerAdapter.getPageTitle(curItem)), false);
+                }
             }
 
             if (this.viewPager != null && adapterCount > 0) {
@@ -628,20 +736,25 @@ public class JTabLayout extends HorizontalScrollView {
                 }
             }
         }
-
     }
 
     private void updateAllTabs() {
         int i = 0;
 
         for (int z = this.tabs.size(); i < z; ++i) {
-            (this.tabs.get(i)).updateView();
+            if (tabs.get(i).getTextColor() == null) {
+                tabs.get(i).setTextColor(this.tabTextColors);
+            }
+
+            if (tabs.get(i).getTextColor() == null) {
+                tabs.get(i).setTabIconTint(this.tabIconTint);
+            }
         }
 
     }
 
     private TabView createTabView(@NonNull Tab tab) {
-        TabItem tabItem = this.tabViewPool != null ? this.tabViewPool.acquire() : null;
+        TabChild tabItem = this.tabViewPool != null ? this.tabViewPool.acquire() : null;
         TabView tabView = (tabItem instanceof TabView) ? (TabView) tabItem : new TabView(this.getContext());
         tabView.setTab(tab);
         tabView.setFocusable(true);
@@ -657,9 +770,29 @@ public class JTabLayout extends HorizontalScrollView {
 
     private void configureTab(Tab tab, int position) {
         tab.setPosition(position);
+
         if (tab.getTextColor() == null) {
-            tab.setTextColor(this.mTabTextColors);
+            tab.setTextColor(this.tabTextColors);
         }
+
+        if (tab.getTabIconTint() == null) {
+            tab.setTabIconTint(this.tabIconTint);
+        }
+
+        if (tab.getTabIconTintMode() == null) {
+            tab.setTabIconTintMode(this.tabIconTintMode);
+        }
+
+        if (tab.getTabTextSize() == 0) {
+            tab.setTabTextSize(tabTextSize);
+        }
+
+        if (tab.getTabTextSize() == 0) {
+            tab.setTabBackgroundResId(tabBackgroundResId);
+        }
+
+        tab.setInlineLabel(inlineLabel);
+
         this.tabs.add(position, tab);
         int count = this.tabs.size();
 
@@ -693,7 +826,7 @@ public class JTabLayout extends HorizontalScrollView {
         if (child instanceof TabItem) {
             this.addTabFromItemView((TabItem) child);
         } else {
-            throw new IllegalArgumentException("Only TabItem instances can be added to TabLayout");
+            throw new IllegalArgumentException("Only TabChild instances can be added to TabLayout");
         }
     }
 
@@ -724,8 +857,8 @@ public class JTabLayout extends HorizontalScrollView {
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < this.slidingTabIndicator.getChildCount(); ++i) {
             View tabView = this.slidingTabIndicator.getChildAt(i);
-            if (tabView instanceof TabItem) {
-                ((TabItem) tabView).drawBackground(canvas);
+            if (tabView instanceof TabChild) {
+                ((TabChild) tabView).drawBackground(canvas);
             }
         }
 
@@ -771,9 +904,9 @@ public class JTabLayout extends HorizontalScrollView {
     private void removeTabViewAt(int position) {
         View view = this.slidingTabIndicator.getChildAt(position);
         this.slidingTabIndicator.removeViewAt(position);
-        if (view != null && view instanceof TabItem) {
-            ((TabItem) view).reset();
-            this.tabViewPool.release((TabItem) view);
+        if (view != null && view instanceof TabChild) {
+            ((TabChild) view).reset();
+            this.tabViewPool.release((TabChild) view);
         }
 
         this.requestLayout();
@@ -828,11 +961,23 @@ public class JTabLayout extends HorizontalScrollView {
 
     }
 
+    public void selectTab(int position) {
+        this.selectTab(position, true);
+    }
+
+    public void selectTab(int position, boolean isCallback) {
+        this.selectTab(tabs.get(position), isCallback);
+    }
+
     public void selectTab(Tab tab) {
         this.selectTab(tab, true);
     }
 
-    public void selectTab(Tab tab, boolean updateIndicator) {
+    public void selectTab(Tab tab, boolean isCallback) {
+        this.selectTab(tab, true, isCallback);
+    }
+
+    public void selectTab(Tab tab, boolean updateIndicator, boolean isCallback) {
         Tab currentTab = this.selectedTab;
         if (currentTab == tab) {
             if (currentTab != null) {
@@ -854,11 +999,11 @@ public class JTabLayout extends HorizontalScrollView {
             }
 
             this.selectedTab = tab;
-            if (currentTab != null) {
+            if (currentTab != null && isCallback) {
                 this.dispatchTabUnselected(currentTab);
             }
 
-            if (tab != null) {
+            if (tab != null && isCallback) {
                 this.dispatchTabSelected(tab);
             }
         }
@@ -1041,7 +1186,7 @@ public class JTabLayout extends HorizontalScrollView {
             JTabLayout tabLayout = this.tabLayoutRef.get();
             if (tabLayout != null && tabLayout.getSelectedTabPosition() != position && position < tabLayout.getTabCount()) {
                 boolean updateIndicator = this.scrollState == 0 || this.scrollState == 2 && this.previousScrollState == 0;
-                tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator);
+                tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator, true);
             }
 
         }
@@ -1184,8 +1329,8 @@ public class JTabLayout extends HorizontalScrollView {
             if (selectedTitle != null && selectedTitle.getWidth() > 0) {
                 left = selectedTitle.getLeft();
                 right = selectedTitle.getRight();
-                if (!JTabLayout.this.tabIndicatorFullWidth && selectedTitle instanceof TabItem) {
-                    this.calculateTabViewContentBounds((TabItem) selectedTitle, JTabLayout.this.tabViewContentBounds);
+                if (!JTabLayout.this.tabIndicatorFullWidth && selectedTitle instanceof TabChild) {
+                    this.calculateTabViewContentBounds((TabChild) selectedTitle, JTabLayout.this.tabViewContentBounds);
                     left = (int) JTabLayout.this.tabViewContentBounds.left;
                     right = (int) JTabLayout.this.tabViewContentBounds.right;
                 }
@@ -1194,37 +1339,39 @@ public class JTabLayout extends HorizontalScrollView {
                     View nextTitle = this.getChildAt(this.selectedPosition + 1);
                     int nextTitleLeft = nextTitle.getLeft();
                     int nextTitleRight = nextTitle.getRight();
-                    if (!JTabLayout.this.tabIndicatorFullWidth && nextTitle instanceof TabItem) {
-                        this.calculateTabViewContentBounds((TabItem) nextTitle, JTabLayout.this.tabViewContentBounds);
+                    if (!JTabLayout.this.tabIndicatorFullWidth && nextTitle instanceof TabChild) {
+                        this.calculateTabViewContentBounds((TabChild) nextTitle, JTabLayout.this.tabViewContentBounds);
                         nextTitleLeft = (int) JTabLayout.this.tabViewContentBounds.left;
                         nextTitleRight = (int) JTabLayout.this.tabViewContentBounds.right;
                     }
 
-                    float offR = selectionOffset * 2 - 1;
-                    float offL = selectionOffset * 2;
+                    if (tabIndicatorTransitionScroll) {
+                        float offR = selectionOffset * 2 - 1;
+                        float offL = selectionOffset * 2;
 
-                    if (selectedPosition + 1 < selectedPosition && selectionOffset > 0) {
-                        if (offR < 0) {
-                            offR = 0;
+                        if (selectedPosition + 1 < selectedPosition && selectionOffset > 0) {
+                            if (offR < 0) {
+                                offR = 0;
+                            }
+                            if (1 - offL < 0) {
+                                offL = 1;
+                            }
+                        } else {
+                            offL = selectionOffset * 2 - 1;
+                            offR = selectionOffset * 2;
+                            if (offL < 0) {
+                                offL = 0;
+                            }
+                            if (1 - offR < 0) {
+                                offR = 1;
+                            }
                         }
-                        if (1 - offL < 0) {
-                            offL = 1;
-                        }
+                        left += ((nextTitleLeft - left) * offL);
+                        right += ((nextTitleRight - right) * offR);
                     } else {
-                        offL = selectionOffset * 2 - 1;
-                        offR = selectionOffset * 2;
-                        if (offL < 0) {
-                            offL = 0;
-                        }
-                        if (1 - offR < 0) {
-                            offR = 1;
-                        }
+                        left = (int) (this.selectionOffset * (float) nextTitleLeft + (1.0F - this.selectionOffset) * (float) left);
+                        right = (int) (this.selectionOffset * (float) nextTitleRight + (1.0F - this.selectionOffset) * (float) right);
                     }
-                    left += ((nextTitleLeft - left) * offL);
-                    right += ((nextTitleRight - right) * offR);
-
-//                    left = (int) (this.selectionOffset * (float) nextTitleLeft + (1.0F - this.selectionOffset) * (float) left);
-//                    right = (int) (this.selectionOffset * (float) nextTitleRight + (1.0F - this.selectionOffset) * (float) right);
                 }
             } else {
                 right = -1;
@@ -1256,14 +1403,14 @@ public class JTabLayout extends HorizontalScrollView {
                 target.left = targetView.getLeft();
                 target.right = targetView.getRight();
 
-                if (!JTabLayout.this.tabIndicatorFullWidth && targetView instanceof TabItem) {
-                    this.calculateTabViewContentBounds((TabItem) targetView, JTabLayout.this.tabViewContentBounds);
+                if (!JTabLayout.this.tabIndicatorFullWidth && targetView instanceof TabChild) {
+                    this.calculateTabViewContentBounds((TabChild) targetView, JTabLayout.this.tabViewContentBounds);
                     target.left = (int) JTabLayout.this.tabViewContentBounds.left;
                     target.right = (int) JTabLayout.this.tabViewContentBounds.right;
                 }
 
                 if (!indicatorPoint.equals(target)) {
-                    ValueAnimator animator = this.indicatorAnimator = ValueAnimator.ofObject(new TransitionIndicatorEvaluator(), indicatorPoint, target);
+                    ValueAnimator animator = this.indicatorAnimator = ValueAnimator.ofObject(tabIndicatorTransitionScroll ? new TransitionIndicatorEvaluator() : new DefIndicatorEvaluator(), indicatorPoint, target);
                     animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
                     animator.setDuration((long) duration);
 //                    animator.setFloatValues(new float[]{0.0F, 1.0F});
@@ -1286,7 +1433,7 @@ public class JTabLayout extends HorizontalScrollView {
             }
         }
 
-        private void calculateTabViewContentBounds(TabItem tabView, RectF contentBounds) {
+        private void calculateTabViewContentBounds(TabChild tabView, RectF contentBounds) {
             if (tabIndicatorWidth > 0 || tabIndicatorWidthScale > 0) {
                 int left = tabView.getView().getLeft();
                 int right = tabView.getView().getRight();

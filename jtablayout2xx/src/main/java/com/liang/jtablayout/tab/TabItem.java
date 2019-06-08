@@ -1,27 +1,28 @@
 package com.liang.jtablayout.tab;
 
-
-import android.graphics.Canvas;
-import android.support.annotation.Nullable;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.TintTypedArray;
+import android.util.AttributeSet;
 import android.view.View;
 
-public interface TabItem {
+import com.liang.jtablayoutx.R;
 
-    void setContentDescription(CharSequence text);
+public class TabItem extends View {
+    public final CharSequence text;
+    public final Drawable icon;
 
-    CharSequence getContentDescription();
+    public TabItem(Context context) {
+        this(context, (AttributeSet) null);
+    }
 
-    void drawBackground(Canvas canvas);
-
-    void setTab(@Nullable Tab tab);
-
-    void reset();
-
-    void update();
-
-    void updateOrientation(boolean inline);
-
-    View getView();
-
-    int getContentWidth();
+    public TabItem(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.JTabItem,
+                0, 0);
+        this.text = typedArray.getText(R.styleable.JTabItem_android_text);
+        this.icon = typedArray.getDrawable(R.styleable.JTabItem_android_icon);
+        typedArray.recycle();
+    }
 }

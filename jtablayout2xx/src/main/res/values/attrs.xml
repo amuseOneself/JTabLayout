@@ -21,6 +21,7 @@
         </attr>
         <attr name="tabIndicatorAnimationDuration" format="integer" />
         <attr name="tabIndicatorFullWidth" format="boolean" />
+        <attr name="tabIndicatorTransitionScroll" format="boolean" />
         <attr name="tabMode">
             <enum name="scrollable" value="0" />
             <enum name="fixed" value="1" />
@@ -39,6 +40,7 @@
         <attr name="tabMaxWidth" format="dimension" />
         <attr name="tabTextColor" format="color|reference" />
         <attr name="tabTextSize" format="dimension" />
+        <attr name="tabText" format="string" />
         <attr name="tabPaddingStart" format="dimension" />
         <attr name="tabPaddingTop" format="dimension" />
         <attr name="tabPaddingEnd" format="dimension" />
@@ -55,6 +57,19 @@
         </attr>
         <attr name="tabRippleColor" format="color" />
         <attr name="tabUnboundedRipple" format="boolean" />
+
+        <attr name="tabIcon" format="reference" />
+
+        <attr name="tabTextColorTransition">
+            <enum name="normal" value="0" />
+            <enum name="shadow" value="1" />
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="JTabItem">
+        <attr name="android:text" />
+        <attr name="android:icon" />
     </declare-styleable>
 
 

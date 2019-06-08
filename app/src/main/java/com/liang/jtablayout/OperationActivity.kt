@@ -4,9 +4,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CompoundButton
 import android.widget.RadioGroup
+import com.liang.jtablayout.tab.Tab
 import com.liang.widget.JTabLayout
-import com.liang.jtab.indicator.JIndicator
-import com.liang.jtab.listener.OnTabSelectedListener
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.*
 
@@ -18,9 +17,6 @@ class OperationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_operation)
 
-        val indicator = JIndicator()
-        indicator.isTransitionScroll = true
-        jTabLayout.setIndicator(indicator)
         adapter = ViewPagerAdapter(this, views)
         ViewPager.adapter = adapter
         RadioGroup.check(R.id.RadioButton)
@@ -51,7 +47,7 @@ class OperationActivity : AppCompatActivity() {
             if (position.isEmpty()) {
                 return@setOnClickListener
             }
-            jTabLayout.hideBadgeMsg(Integer.parseInt(position))
+            jTabLayout.showBadgeMsg(Integer.parseInt(position), 0)
         }
     }
 
@@ -68,8 +64,8 @@ class OperationActivity : AppCompatActivity() {
         var inx = 0
         RadioGroup.setOnCheckedChangeListener { _: RadioGroup, i: Int ->
             when (i) {
-                R.id.RadioButton -> jTabLayout.setMode(JTabLayout.MODE_FIXED)
-                R.id.RadioButton1 -> jTabLayout.setMode(JTabLayout.MODE_SCROLLABLE)
+                R.id.RadioButton -> jTabLayout.tabMode = (JTabLayout.MODE_FIXED)
+                R.id.RadioButton1 -> jTabLayout.tabMode = (JTabLayout.MODE_SCROLLABLE)
             }
         }
         button.setOnClickListener {
@@ -78,10 +74,10 @@ class OperationActivity : AppCompatActivity() {
 
             if (position.isEmpty()) {
                 if (withViewPager) {
-                    views.add(title+inx)
+                    views.add(title + inx)
                     adapter?.notifyDataSetChanged();
                 } else {
-                    val tabView = jTabLayout.newTab().setTitle(title+inx);
+                    val tabView = jTabLayout.newTab().setText(title + inx);
                     jTabLayout.addTab(tabView)
                 }
                 inx++
@@ -92,13 +88,13 @@ class OperationActivity : AppCompatActivity() {
                     if (inx > views.size) {
                         return@setOnClickListener
                     }
-                    views.add(inx, title+inx)
+                    views.add(inx, title + inx)
                     adapter?.notifyDataSetChanged();
                 } else {
                     if (inx > jTabLayout.tabCount) {
                         return@setOnClickListener
                     }
-                    jTabLayout.addTab(jTabLayout.newTab().setTitle(title+inx), inx)
+                    jTabLayout.addTab(jTabLayout.newTab().setText(title + inx), inx)
                 }
             }
         }
@@ -114,16 +110,16 @@ class OperationActivity : AppCompatActivity() {
                 }
                 inx = 0
             } else {
-                if (withViewPager){
+                if (withViewPager) {
                     if (views.size > Integer.parseInt(position)) {
                         views.removeAt(Integer.parseInt(position))
                         adapter?.notifyDataSetChanged()
                         inx = views.size
                     }
-                }else{
+                } else {
                     if (jTabLayout.tabCount > Integer.parseInt(position)) {
                         jTabLayout.removeTabAt(Integer.parseInt(position))
-                        inx  = jTabLayout.tabCount
+                        inx = jTabLayout.tabCount
                     }
                 }
             }
@@ -134,18 +130,22 @@ class OperationActivity : AppCompatActivity() {
         }
 
 
-        jTabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
-            override fun onTabSelected(position: Int) {
-                textView.text = "onTabSelected position: $position"
+        jTabLayout.addOnTabSelectedListener(object : JTabLayout.OnTabSelectedListener {
+            override fun onTabSelected(var1: Tab<*>?) {
+                textView.text = "onTabSelected position: " + var1?.position
             }
 
-            override fun onTabReselected(position: Int) {
-                textView.text = "onTabReselected position: $position"
+            override fun onTabUnselected(var1: Tab<*>?) {
+                textView.text = "onTabUnselected position: " + var1?.position
+            }
+
+            override fun onTabReselected(var1: Tab<*>?) {
+                textView.text = "onTabReselected position: " + var1?.position
             }
         })
 
         button3.setOnClickListener {
-            jTabLayout.setCurrentItem(3)
+            jTabLayout.selectTab(3)
         }
     }
 }

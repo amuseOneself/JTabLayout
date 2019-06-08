@@ -1,17 +1,23 @@
-package com.liang.jtablayout.tab;
+package com.liang.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
-import android.support.annotation.Dimension;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.TooltipCompat;
-import android.text.Layout;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
@@ -19,39 +25,106 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.liang.jtablayout.tab.Tab;
+import com.liang.jtablayout.tab.TabChild;
+import com.liang.jtablayout.ripple.RippleUtils;
 import com.liang.jtablayoutx.R;
 
-public class TabView extends FrameLayout implements TabItem {
+
+public class TabView extends FrameLayout implements TabChild {
 
     private Tab tab;
     private TextView textView;
     private ImageView iconView;
+    private View badgeView;
+
     @Nullable
     private Drawable baseBackgroundDrawable;
-    private int defaultMaxLines = 2;
-    private FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+    private View tabView;
 
-    public TabView(Context context) {
-        super(context);
+    public TabView(@NonNull Context context) {
+        this(context, null);
+
+    }
+
+    public TabView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public TabView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         this.setFocusable(true);
         this.setClickable(true);
-        setBackgroundColor(Color.GREEN);
+
     }
 
     private void updateLayout() {
         removeAllViews();
-        View view = LayoutInflater.from(getContext()).inflate(
-                tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, this, true);
 
-        iconView = view.findViewById(R.id.tab_icon);
-        textView = view.findViewById(R.id.tab_title);
-//        badgeView = setTabBadgeView();
-//        addView(view);
+        tabView = setContentView();
+        if (tabView == null) {
+            tabView = LayoutInflater.from(getContext()).inflate(
+                    tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, this, true);
+        }
 
-        ViewCompat.setPaddingRelative(this, tab.parent.tabPaddingStart, tab.parent.tabPaddingTop, tab.parent.tabPaddingEnd, tab.parent.tabPaddingBottom);
+        iconView = setTabIconView();
+        textView = setTabTitleView();
+        badgeView = setTabBadgeView();
 
+        updateBackgroundDrawable(getContext());
         update();
+    }
+
+
+    @Override
+    public void updateBackgroundDrawable(Context context) {
+        if (tab.getTabBackgroundResId() != 0) {
+            this.baseBackgroundDrawable = AppCompatResources.getDrawable(context, tab.getTabBackgroundResId());
+            if (this.baseBackgroundDrawable != null && this.baseBackgroundDrawable.isStateful()) {
+                this.baseBackgroundDrawable.setState(this.getDrawableState());
+            }
+        } else {
+            this.baseBackgroundDrawable = null;
+        }
+
+        Drawable contentDrawable = new GradientDrawable();
+        ((GradientDrawable) contentDrawable).setColor(0);
+        Object background;
+        if (tab.getTabRippleColorStateList() != null) {
+            GradientDrawable maskDrawable = new GradientDrawable();
+            maskDrawable.setCornerRadius(1.0E-5F);
+            maskDrawable.setColor(-1);
+            ColorStateList rippleColor = RippleUtils.convertToRippleDrawableColor(tab.getTabRippleColorStateList());
+            if (Build.VERSION.SDK_INT >= 21) {
+                background = new RippleDrawable(rippleColor, tab.isUnboundedRipple() ? null : contentDrawable, tab.isUnboundedRipple() ? null : maskDrawable);
+            } else {
+                Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
+                DrawableCompat.setTintList(rippleDrawable, rippleColor);
+                background = new LayerDrawable(new Drawable[]{contentDrawable, rippleDrawable});
+            }
+        } else {
+            background = contentDrawable;
+        }
+
+        ViewCompat.setBackground(this, (Drawable) background);
+        tab.getParent().postInvalidate();
+    }
+
+    protected View setContentView() {
+        return null;
+    }
+
+    protected TextView setTabTitleView() {
+        return tabView.findViewById(R.id.tab_title);
+    }
+
+    protected ImageView setTabIconView() {
+        return tabView.findViewById(R.id.tab_icon);
+    }
+
+    protected BadgeView setTabBadgeView() {
+        return tabView.findViewById(R.id.tab_badgeView);
     }
 
     @Override
@@ -60,7 +133,6 @@ public class TabView extends FrameLayout implements TabItem {
             this.baseBackgroundDrawable.setBounds(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
             this.baseBackgroundDrawable.draw(canvas);
         }
-
     }
 
     @Override
@@ -74,7 +146,7 @@ public class TabView extends FrameLayout implements TabItem {
 
         if (changed) {
             this.invalidate();
-            tab.parent.invalidate();
+            tab.getParent().invalidate();
         }
     }
 
@@ -134,7 +206,7 @@ public class TabView extends FrameLayout implements TabItem {
 
     @Override
     public void setTab(@Nullable Tab tab) {
-        if (tab != null && tab != this.tab) {
+        if (tab != null) {
             this.tab = tab;
             updateLayout();
         }
@@ -150,20 +222,30 @@ public class TabView extends FrameLayout implements TabItem {
     public void update() {
         Tab tab = this.tab;
 
+        if (tab == null) {
+            throw new NullPointerException("Tab is null");
+        }
+
+        ViewCompat.setPaddingRelative(this, tab.getTabPaddingStart(), tab.getTabPaddingTop(), tab.getTabPaddingEnd(), tab.getTabPaddingBottom());
+
 //        TextViewCompat.setTextAppearance(this.textView, tab.parent.tabTextAppearance);
         if (textView != null) {
             if (tab.getTextColor() != null) {
                 this.textView.setTextColor(tab.getTextColor());
             }
+
+            if (tab.getTabTextSize() > 0) {
+                this.textView.setTextSize(tab.getTabTextSize());
+            }
         }
 
         updateTextAndIcon(this.textView, this.iconView);
 
-        if (tab != null && !TextUtils.isEmpty(tab.getContentDesc())) {
+        if (!TextUtils.isEmpty(tab.getContentDesc())) {
             this.setContentDescription(tab.getContentDesc());
         }
 
-        this.setSelected(tab != null && tab.isSelected());
+        this.setSelected(tab.isSelected());
     }
 
     @Override
@@ -183,13 +265,23 @@ public class TabView extends FrameLayout implements TabItem {
 
         Drawable normalIcon = tab != null ? tab.getNormalIcon() : null;
         Drawable selectedIcon = tab != null ? tab.getSelectedIcon() : null;
-        if (normalIcon == null && selectedIcon == null) {
-            iconView.setVisibility(GONE);
-            iconView.setImageDrawable(null);
-        } else {
-            iconView.setVisibility(VISIBLE);
-            iconView.setImageDrawable(iconView.isSelected() ? selectedIcon != null ? selectedIcon : normalIcon : normalIcon != null ? normalIcon : selectedIcon);
-            this.setVisibility(VISIBLE);
+        Drawable icon = tab != null && tab.getIcon() != null ? DrawableCompat.wrap(tab.getIcon()).mutate() : null;
+
+        if (iconView != null) {
+            if (normalIcon == null && selectedIcon == null && icon == null) {
+                iconView.setVisibility(GONE);
+                iconView.setImageDrawable(null);
+            } else if (normalIcon != null || selectedIcon != null) {
+                iconView.setVisibility(VISIBLE);
+                iconView.setImageDrawable(iconView.isSelected() ? selectedIcon != null ? selectedIcon : normalIcon : normalIcon != null ? normalIcon : selectedIcon);
+                this.setVisibility(VISIBLE);
+            } else {
+                iconView.setVisibility(VISIBLE);
+                DrawableCompat.setTintList(icon, tab.getTabIconTint());
+                if (tab.getTabIconTintMode() != null) {
+                    DrawableCompat.setTintMode(icon, tab.getTabIconTintMode());
+                }
+            }
         }
 
         CharSequence text = this.tab != null ? this.tab.getText() : null;
@@ -231,15 +323,21 @@ public class TabView extends FrameLayout implements TabItem {
         return right - left;
     }
 
+    @Override
+    public void showBadge(String msg) {
+        if (badgeView != null && badgeView instanceof BadgeView) {
+            ((BadgeView) badgeView).show(msg);
+        }
+    }
+
+    @Override
+    public void hideBadge() {
+        if (badgeView != null && badgeView instanceof BadgeView) {
+            ((BadgeView) badgeView).hide();
+        }
+    }
+
     public Tab getTab() {
         return this.tab;
-    }
-
-    private float approximateLineWidth(Layout layout, int line, float textSize) {
-        return layout.getLineWidth(line) * (textSize / layout.getPaint().getTextSize());
-    }
-
-    int dpToPx(@Dimension(unit = 0) int dps) {
-        return Math.round(this.getResources().getDisplayMetrics().density * (float) dps);
     }
 }

@@ -4,9 +4,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.ArrayList;
+import com.liang.widget.JTabLayout;
+
 import java.util.Arrays;
-import java.util.List;
 
 public class Tab2Activity extends AppCompatActivity {
 
@@ -22,6 +22,7 @@ public class Tab2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_tab2);
         tabLayout = findViewById(R.id.jTabLayout);
         viewPager = findViewById(R.id.viewPager);
+
         tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setText("娱乐"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setText("排名"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setText("消息"));
@@ -34,5 +35,7 @@ public class Tab2Activity extends AppCompatActivity {
         adapter = new ViewPagerAdapter(this, Arrays.asList(titles));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.selectTab(2);
     }
 }

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         badgeView = findViewById(R.id.badgeView);
-        badgeView.show("234");
+        badgeView.show("HOT");
 
     }
 }

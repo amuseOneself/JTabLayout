@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.liang.jtab.view.TabView;
 import com.liang.widget.BadgeView;
+import com.liang.widget.TabView;
 
 public class TabMenu extends TabView {
 
@@ -30,7 +30,7 @@ public class TabMenu extends TabView {
     }
 
     @Override
-    protected View initTabView() {
+    protected View setContentView() {
         tabView = LayoutInflater.from(getContext()).inflate(R.layout.tab_menul, null, true);
         return tabView;
     }

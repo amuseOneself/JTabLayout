@@ -10,36 +10,36 @@
         android:layout_height="30dp"
         android:layout_margin="16dp"
         android:background="@drawable/bg_tablayout"
-        app:jDividerColor="@android:color/holo_orange_dark"
-        app:jDividerHeight="40dp"
-        app:jDividerWidth="1dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:jTabMode="fixed"
-        app:jTabTextColor="@drawable/text_color_tab">
+        app:tabDividerColor="@android:color/holo_orange_dark"
+        app:tabDividerHeight="40dp"
+        app:tabDividerWidth="1dp"
+        app:tabMode="fixed"
+        app:tabTextColor="@drawable/text_color_tab">
 
         <com.liang.jtablayout.TabMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/tab_bgl"
-            app:jTabTitle="娱乐" />
+            app:tabItemBackground="@drawable/tab_bgl"
+            app:tabItemText="娱乐" />
 
         <com.liang.jtablayout.TabMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/tab_bgc"
-            app:jTabTitle="游戏" />
+            app:tabItemBackground="@drawable/tab_bgc"
+            app:tabItemText="游戏" />
 
         <com.liang.jtablayout.TabMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/tab_bgc"
-            app:jTabTitle="排名" />
+            app:tabItemBackground="@drawable/tab_bgc"
+            app:tabItemText="排名" />
 
         <com.liang.jtablayout.TabMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/tab_bgr"
-            app:jTabTitle="最新" />
+            app:tabItemBackground="@drawable/tab_bgr"
+            app:tabItemText="最新" />
 
     </com.liang.widget.JTabLayout>
 
@@ -55,9 +55,9 @@
         android:id="@+id/tabLayout2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:jItemLayoutOrientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/line1"
-        app:jTabTextColor="@drawable/text_color_tab" />
+        app:tabInlineLabel="true"
+        app:tabTextColor="@drawable/text_color_tab" />
 
     <View
         android:id="@+id/line2"
@@ -70,11 +70,11 @@
         android:id="@+id/tabLayout3"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:jDividerColor="@android:color/holo_orange_dark"
-        app:jDividerWidth="2dp"
         app:layout_constraintTop_toBottomOf="@id/line2"
-        app:jTabMode="fixed"
-        app:jTabTextColor="@drawable/text_color_tab" />
+        app:tabDividerColor="@android:color/holo_orange_dark"
+        app:tabDividerWidth="2dp"
+        app:tabMode="fixed"
+        app:tabTextColor="@drawable/text_color_tab" />
 
     <View
         android:id="@+id/line3"
@@ -87,12 +87,11 @@
         android:id="@+id/tabLayout4"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:jDividerColor="@android:color/holo_orange_dark"
-        app:jDividerWidth="1dp"
         app:layout_constraintTop_toBottomOf="@id/line3"
-        app:jTabMode="fixed"
-        app:jTabTextColor="@drawable/text_color_tab"
-        app:jTextBold="true" />
+        app:tabDividerColor="@android:color/holo_orange_dark"
+        app:tabDividerWidth="1dp"
+        app:tabMode="fixed"
+        app:tabTextColor="@drawable/text_color_tab" />
 
     <View
         android:id="@+id/line4"
@@ -118,12 +117,11 @@
         android:id="@+id/tabLayout5"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:jDividerColor="@android:color/holo_orange_dark"
-        app:jDividerWidth="1dp"
         app:layout_constraintTop_toBottomOf="@id/line5"
-        app:jTabMode="scrollable"
-        app:jTabTextColor="@drawable/text_color_tab"
-        app:jTextColorTransition="shadow" />
+        app:tabDividerColor="@android:color/holo_orange_dark"
+        app:tabDividerWidth="1dp"
+        app:tabMode="scrollable"
+        app:tabTextColor="@drawable/text_color_tab" />
 
     <View
         android:id="@+id/line6"
@@ -149,11 +147,10 @@
         android:id="@+id/tabLayout6"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:jItemLayoutOrientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:jTabTextColor="@drawable/text_color_tab" />
+        app:tabTextColor="@drawable/text_color_tab" />
 
 
 </android.support.constraint.ConstraintLayout>
