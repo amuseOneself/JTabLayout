@@ -31,4 +31,6 @@ public interface TabChild {
     void showBadge(String msg);
 
     void hideBadge();
+
+    void updateScaleAndColor(float offset);
 }

@@ -38,6 +38,7 @@ public class TabView extends FrameLayout implements TabChild {
     private TextView textView;
     private ImageView iconView;
     private View badgeView;
+    private View activeView;
 
     @Nullable
     private Drawable baseBackgroundDrawable;
@@ -67,7 +68,7 @@ public class TabView extends FrameLayout implements TabChild {
             tabView = LayoutInflater.from(getContext()).inflate(
                     tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, this, true);
         }
-
+        activeView = setActiveView();
         iconView = setTabIconView();
         textView = setTabTitleView();
         badgeView = setTabBadgeView();
@@ -76,6 +77,21 @@ public class TabView extends FrameLayout implements TabChild {
         update();
     }
 
+    private View setActiveView() {
+        return tabView.findViewById(R.id.tab);
+    }
+
+    protected View setContentView() {
+        return null;
+    }
+
+    protected TextView setTabTitleView() {
+        return tabView.findViewById(R.id.tab_title);
+    }
+
+    protected ImageView setTabIconView() {
+        return tabView.findViewById(R.id.tab_icon);
+    }
 
     @Override
     public void updateBackgroundDrawable(Context context) {
@@ -109,18 +125,6 @@ public class TabView extends FrameLayout implements TabChild {
 
         ViewCompat.setBackground(this, (Drawable) background);
         tab.getParent().postInvalidate();
-    }
-
-    protected View setContentView() {
-        return null;
-    }
-
-    protected TextView setTabTitleView() {
-        return tabView.findViewById(R.id.tab_title);
-    }
-
-    protected ImageView setTabIconView() {
-        return tabView.findViewById(R.id.tab_icon);
     }
 
     protected BadgeView setTabBadgeView() {
@@ -334,6 +338,14 @@ public class TabView extends FrameLayout implements TabChild {
     public void hideBadge() {
         if (badgeView != null && badgeView instanceof BadgeView) {
             ((BadgeView) badgeView).hide();
+        }
+    }
+
+    @Override
+    public void updateScaleAndColor(float offset) {
+        if (tabView != null && offset > 0) {
+            tabView.setScaleY(1.5f * offset);
+            tabView.setScaleX(1.5f * offset);
         }
     }
 
