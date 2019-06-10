@@ -17,29 +17,25 @@
         app:tabMode="fixed"
         app:tabTextColor="@drawable/text_color_tab">
 
-        <com.liang.jtablayout.TabMenu
+        <com.liang.jtablayout.tab.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabItemBackground="@drawable/tab_bgl"
-            app:tabItemText="娱乐" />
+            android:text="娱乐" />
 
-        <com.liang.jtablayout.TabMenu
+        <com.liang.jtablayout.tab.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabItemBackground="@drawable/tab_bgc"
-            app:tabItemText="游戏" />
+            android:text="游戏" />
 
-        <com.liang.jtablayout.TabMenu
+        <com.liang.jtablayout.tab.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabItemBackground="@drawable/tab_bgc"
-            app:tabItemText="排名" />
+            android:text="排名" />
 
-        <com.liang.jtablayout.TabMenu
+        <com.liang.jtablayout.tab.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabItemBackground="@drawable/tab_bgr"
-            app:tabItemText="最新" />
+            android:text="最新" />
 
     </com.liang.widget.JTabLayout>
 

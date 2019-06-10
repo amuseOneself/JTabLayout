@@ -32,6 +32,7 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -231,6 +232,8 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     void setScrollPosition(int position, float positionOffset, boolean updateSelectedText, boolean updateIndicatorPosition) {
+        Log.e("asdasdad", "position: " + position);
+        Log.e("asdasdad", "positionOffset: " + positionOffset);
         int roundedPosition = Math.round((float) position + positionOffset);
         if (roundedPosition >= 0 && roundedPosition < this.slidingTabIndicator.getChildCount()) {
             if (updateIndicatorPosition) {
@@ -246,6 +249,12 @@ public class JTabLayout extends HorizontalScrollView {
                 this.setSelectedTabView(roundedPosition);
             }
 
+            Log.e("asdasdad", "setScrollPosition: " + roundedPosition);
+
+            if (positionOffset > 0 && position + 1 < this.slidingTabIndicator.getChildCount()) {
+                ((TabChild) slidingTabIndicator.getChildAt(position)).updateScaleAndColor(Math.max(1f, 1.5f * (1.0f - positionOffset)));
+                ((TabChild) slidingTabIndicator.getChildAt(position + 1)).updateScaleAndColor(Math.max(1f, 1.5f * positionOffset));
+            }
         }
     }
 
@@ -956,6 +965,13 @@ public class JTabLayout extends HorizontalScrollView {
                 View child = this.slidingTabIndicator.getChildAt(i);
                 child.setSelected(i == position);
                 child.setActivated(i == position);
+//                if (i == position) {
+//                    child.setScaleX(1.5f);
+//                    child.setScaleY(1.5f);
+//                } else {
+//                    child.setScaleX(1.0f);
+//                    child.setScaleY(1.0f);
+//                }
             }
         }
 
