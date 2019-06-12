@@ -14,7 +14,7 @@ public class Tab2Activity extends AppCompatActivity {
     ViewPager viewPager;
     ViewPagerAdapter adapter;
 
-    private String[] titles = {"首页", "新闻", "影视歌曲", "民生", "手机电脑数码", "娱乐", "排名", "消息", "我的", "其他"};
+    private String[] titles = {"首页", "新闻", "影视歌曲", "民生", "数码", "娱乐", "排名", "消息", "我的", "其他"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

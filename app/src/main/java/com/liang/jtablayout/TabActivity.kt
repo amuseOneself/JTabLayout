@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_tab.*
 class TabActivity : AppCompatActivity() {
 
     private val titles4 = arrayOf("首页", "影视歌曲", "民生", "手机电脑数码", "其他")
-    private val titles5 = arrayOf("首页", "新闻", "影视歌曲", "民生", "手机电脑数码", "娱乐", "排名", "消息", "我的", "其他")
+    private val titles5 = arrayOf("首页", "新闻", "影视歌曲", "民生", "数码", "娱乐", "排名", "消息", "我的", "其他")
 
     private var adapter4: ViewPagerAdapter? = null
     private var adapter5: ViewPagerAdapter? = null
@@ -22,21 +22,20 @@ class TabActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tab)
 
         initTab1()
-//        initTab2()
-//        initTab3()
-//        initTab4()
-//        initTab5()
-//        initTab6()
-//        initViewPager()
+        initTab2()
+        initTab3()
+        initTab4()
+        initTab5()
+        initTab6()
+        initViewPager()
 
     }
 
     private fun initTab1() {
-//        tabLayout1.addTab(TabMenu(this).setTitle("娱乐").setBackgroundRes(R.drawable.tab_bgl))
-//        tabLayout1.addTab(TabMenu(this).setTitle("游戏").setBackgroundRes(R.drawable.tab_bgc))
-//        tabLayout1.addTab(TabMenu(this).setTitle("排名").setBackgroundRes(R.drawable.tab_bgc))
-//        tabLayout1.addTab(TabMenu(this).setTitle("最新").setBackgroundRes(R.drawable.tab_bgr))
-//        tabLayout1.setBadgeTextSize(10)
+        tabLayout1.addTab(tabLayout1.newTab().setText("娱乐").setTabBackgroundResId(R.drawable.tab_bgl))
+        tabLayout1.addTab(tabLayout1.newTab().setText("游戏").setTabBackgroundResId(R.drawable.tab_bgc))
+        tabLayout1.addTab(tabLayout1.newTab().setText("排名").setTabBackgroundResId(R.drawable.tab_bgc))
+        tabLayout1.addTab(tabLayout1.newTab().setText("最新").setTabBackgroundResId(R.drawable.tab_bgr))
         tabLayout1.showBadgeMsg(0, 8)
         tabLayout1.showBadgeMsg(2)
         tabLayout1.showBadgeMsg(3, "新")
@@ -48,10 +47,11 @@ class TabActivity : AppCompatActivity() {
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setText("消息"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setText("我的"))
 
-//        tabLayout2.setBadgeColor(0, Color.YELLOW)
-//        tabLayout2.setBadgeColor(1, Color.MAGENTA)
-//        tabLayout2.setBadgeTextColor(0, Color.RED)
-//        tabLayout2.setBadgeStroke(0, 3, Color.RED)
+        tabLayout2.setBadgeColor(0, Color.YELLOW)
+        tabLayout2.setBadgeColor(1, Color.MAGENTA)
+        tabLayout2.setBadgeTextColor(0, Color.RED)
+        tabLayout2.setBadgeStroke(0, 3, Color.RED)
+        tabLayout2.setBadgeTextSize(0, 10)
         tabLayout2.showBadgeMsg(0, "HOT !")
         tabLayout2.showBadgeMsg(1, "新")
         tabLayout2.showBadgeMsg(2, 952)

@@ -37,7 +37,7 @@ import com.liang.jtab.R;
 
 public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
-    private static final int DEF_PADDING = 2;
+    private int padding = 1;
     private int mStroke;
     private int mStrokeColor;
     private int mBackgroundColor;
@@ -73,11 +73,13 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         mStrokeColor = typedArray.getColor(R.styleable.JBadgeView_jStrokeColor, Color.WHITE);
         mStroke = typedArray.getDimensionPixelSize(R.styleable.JBadgeView_jStrokeWidth, dip2px(getContext(), 2));
         mBackgroundColor = typedArray.getColor(R.styleable.JBadgeView_jBackgroundColor, Color.RED);
+        typedArray.recycle();
         initBadge();
     }
 
     private void initBadge() {
         setGravity(Gravity.CENTER);
+        setVisibility(GONE);
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -92,15 +94,28 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
         });
     }
 
+    public void setPadding(int padding) {
+        this.padding = padding;
+    }
+
     private void refreshPadding() {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        final int defPadding = dip2px(getContext(), DEF_PADDING);
-        if (width > height) {
-            final int defLFPadding = dip2px(getContext(), DEF_PADDING * 3);
-            setPadding(defLFPadding, defPadding, defLFPadding, defPadding);
-        } else {
-            setPadding(defPadding, defPadding, defPadding, defPadding);
+        final int defPadding = dip2px(getContext(), padding);
+        final int length = getText().length();
+
+        if (length == 1) {
+            int mix = width - height;
+            int ipa = (int) Math.floor(mix / 2.0f);
+            if (mix < 0) {
+                setPadding(defPadding - ipa, defPadding, defPadding - ipa, defPadding);
+            } else {
+                setPadding(Math.max(getPaddingLeft(), defPadding), defPadding, Math.max(getPaddingRight(), defPadding), defPadding);
+            }
+        }
+
+        if (length > 1) {
+            setPadding((int) (defPadding + getTextSize() / 2), defPadding, (int) (defPadding + getTextSize() / 2), defPadding);
         }
     }
 
@@ -217,7 +232,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!canDrag){
+        if (!canDrag) {
             return false;
         }
 

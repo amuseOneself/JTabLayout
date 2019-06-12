@@ -32,5 +32,15 @@ public interface TabChild {
 
     void hideBadge();
 
-    void updateScaleAndColor(float offset);
+    void updateColor(float offset);
+
+    void updateScale(float scale);
+
+    void setBadgeTextColor(int color);
+
+    void setBadgeTextSize(float sp);
+
+    void setBadgeBackgroundColor(int color);
+
+    void setBadgeStroke(int width, int color);
 }

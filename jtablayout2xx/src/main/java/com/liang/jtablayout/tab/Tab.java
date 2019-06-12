@@ -38,6 +38,8 @@ public class Tab<T extends TabChild> {
     private int tabPaddingEnd;
     private int tabPaddingBottom;
 
+    private boolean tabTextBold;
+
     public Tab() {
     }
 
@@ -113,7 +115,7 @@ public class Tab<T extends TabChild> {
         return this;
     }
 
-    public Tab setTabPaddingStart(int tabPaddingStart, int tabPaddingTop, int tabPaddingEnd, int tabPaddingBottom) {
+    public Tab setTabPadding(int tabPaddingStart, int tabPaddingTop, int tabPaddingEnd, int tabPaddingBottom) {
         this.tabPaddingStart = tabPaddingStart;
         this.tabPaddingTop = tabPaddingTop;
         this.tabPaddingEnd = tabPaddingEnd;
@@ -384,4 +386,15 @@ public class Tab<T extends TabChild> {
         this.tabTextSize = 0;
     }
 
+    public Tab setTabTextBold(boolean isBold) {
+        this.tabTextBold = isBold;
+        this.updateView();
+        return this;
+    }
+
+    public boolean isTabTextBold() {
+        return tabTextBold;
+    }
 }
+
+

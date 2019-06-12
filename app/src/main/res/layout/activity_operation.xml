@@ -17,6 +17,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabDividerColor="@android:color/holo_orange_dark"
         app:tabDividerWidth="2dp"
+        app:tabIndicatorColor="@color/holo_red"
+        app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
         app:tabTextColor="@drawable/text_color_tab"
         app:tabTextSize="16sp" />

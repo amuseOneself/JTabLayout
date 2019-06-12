@@ -1,6 +1,6 @@
 package com.liang.jtablayout.indicator;
 
-public class TransitionIndicatorEvaluator extends IndicatorTypeEvaluator<IndicatorPoint> {
+public class TransitionIndicatorEvaluator extends IndicatorTypeEvaluator {
     @Override
     public IndicatorPoint evaluate(float fraction, IndicatorPoint startValue, IndicatorPoint endValue) {
         float fractionL;

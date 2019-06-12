@@ -15,27 +15,28 @@
         app:tabDividerHeight="40dp"
         app:tabDividerWidth="1dp"
         app:tabMode="fixed"
+        app:tabRippleColor="@color/holo_red"
         app:tabTextColor="@drawable/text_color_tab">
 
-        <com.liang.jtablayout.tab.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="娱乐" />
+        <!--<com.liang.jtablayout.tab.TabItem-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="娱乐" />-->
 
-        <com.liang.jtablayout.tab.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="游戏" />
+        <!--<com.liang.jtablayout.tab.TabItem-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="游戏" />-->
 
-        <com.liang.jtablayout.tab.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="排名" />
+        <!--<com.liang.jtablayout.tab.TabItem-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="排名" />-->
 
-        <com.liang.jtablayout.tab.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="最新" />
+        <!--<com.liang.jtablayout.tab.TabItem-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="最新" />-->
 
     </com.liang.widget.JTabLayout>
 
@@ -50,7 +51,7 @@
     <com.liang.widget.JTabLayout
         android:id="@+id/tabLayout2"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:tabInlineLabel="true"
         app:tabTextColor="@drawable/text_color_tab" />
@@ -65,7 +66,7 @@
     <com.liang.widget.JTabLayout
         android:id="@+id/tabLayout3"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@id/line2"
         app:tabDividerColor="@android:color/holo_orange_dark"
         app:tabDividerWidth="2dp"
@@ -82,10 +83,12 @@
     <com.liang.widget.JTabLayout
         android:id="@+id/tabLayout4"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@id/line3"
         app:tabDividerColor="@android:color/holo_orange_dark"
         app:tabDividerWidth="1dp"
+        app:tabIndicatorColor="@color/holo_red"
+        app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
         app:tabTextColor="@drawable/text_color_tab" />
 
@@ -112,11 +115,19 @@
     <com.liang.widget.JTabLayout
         android:id="@+id/tabLayout5"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@id/line5"
         app:tabDividerColor="@android:color/holo_orange_dark"
         app:tabDividerWidth="1dp"
+        app:tabTextColorTransitionScroll="true"
+        app:tabIndicator="@drawable/tab_indicator_bg"
+        app:tabIndicatorColor="@color/color_tab_bg"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="5dp"
+        app:tabIndicatorTransitionScroll="true"
+        app:tabIndicatorWidth="5dp"
         app:tabMode="scrollable"
+        app:tabScaleTransitionScroll="1.2"
         app:tabTextColor="@drawable/text_color_tab" />
 
     <View
@@ -142,7 +153,7 @@
     <com.liang.widget.JTabLayout
         android:id="@+id/tabLayout6"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -3,6 +3,7 @@ package com.liang.jtablayout;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.liang.widget.BadgeView;
@@ -40,7 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         badgeView = findViewById(R.id.badgeView);
-        badgeView.show("HOT");
+    }
 
+    public void show(View view) {
+        badgeView.show("8");
+
+        Log.e("show", "getPaddingLeft: " + badgeView.getPaddingLeft());
+        Log.e("show", "getPaddingTop: " + badgeView.getPaddingTop());
     }
 }

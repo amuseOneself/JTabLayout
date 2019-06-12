@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -18,6 +20,7 @@ import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
@@ -26,9 +29,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.liang.jtablayout.badge.Badge;
 import com.liang.jtablayout.tab.Tab;
 import com.liang.jtablayout.tab.TabChild;
 import com.liang.jtablayout.ripple.RippleUtils;
+import com.liang.jtablayout.utils.ColorUtils;
 import com.liang.jtablayoutx.R;
 
 
@@ -177,9 +182,6 @@ public class TabView extends FrameLayout implements TabChild {
             this.sendAccessibilityEvent(4);
         }
 
-        if (this.textView != null) {
-            this.textView.setSelected(selected);
-        }
 
         if (this.iconView != null) {
             this.iconView.setSelected(selected);
@@ -193,6 +195,12 @@ public class TabView extends FrameLayout implements TabChild {
             }
         }
 
+        if (this.textView != null) {
+            this.textView.setSelected(selected);
+            if (tab.isTabTextBold()) {
+                textView.setTypeface(Typeface.defaultFromStyle(isSelected() ? Typeface.BOLD : Typeface.NORMAL));
+            }
+        }
     }
 
     @Override
@@ -300,7 +308,9 @@ public class TabView extends FrameLayout implements TabChild {
                 textView.setVisibility(GONE);
                 textView.setText(null);
             }
-
+            if (tab.isTabTextBold()) {
+                textView.setTypeface(Typeface.defaultFromStyle(isSelected() ? Typeface.BOLD : Typeface.NORMAL));
+            }
         }
 
         CharSequence contentDesc = this.tab != null ? this.tab.getContentDesc() : null;
@@ -342,10 +352,42 @@ public class TabView extends FrameLayout implements TabChild {
     }
 
     @Override
-    public void updateScaleAndColor(float offset) {
-        if (tabView != null && offset > 0) {
-            tabView.setScaleY(1.5f * offset);
-            tabView.setScaleX(1.5f * offset);
+    public void updateColor(float offset) {
+        textView.setTextColor(ColorUtils.getColorFrom(tab.getTextColor().getColorForState(EMPTY_STATE_SET, Color.GRAY),
+                tab.getTextColor().getColorForState(SELECTED_STATE_SET, Color.GRAY), offset));
+    }
+
+    @Override
+    public void updateScale(float scale) {
+        setScaleX(scale);
+        setScaleY(scale);
+    }
+
+    @Override
+    public void setBadgeTextColor(int color) {
+        if (badgeView != null && badgeView instanceof Badge) {
+            ((Badge) badgeView).setBadgeTextColor(color);
+        }
+    }
+
+    @Override
+    public void setBadgeTextSize(float sp) {
+        if (badgeView != null && badgeView instanceof Badge) {
+            ((Badge) badgeView).setBadgeTextSize(sp);
+        }
+    }
+
+    @Override
+    public void setBadgeBackgroundColor(int color) {
+        if (badgeView != null && badgeView instanceof Badge) {
+            ((Badge) badgeView).setBadgeBackgroundColor(color);
+        }
+    }
+
+    @Override
+    public void setBadgeStroke(int width, int color) {
+        if (badgeView != null && badgeView instanceof Badge) {
+            ((Badge) badgeView).setBadgeStroke(width, color);
         }
     }
 
