@@ -247,7 +247,7 @@ public class TabView extends FrameLayout implements TabChild {
             }
 
             if (tab.getTabTextSize() > 0) {
-                this.textView.setTextSize(tab.getTabTextSize());
+                this.textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tab.getTabTextSize());
             }
         }
 

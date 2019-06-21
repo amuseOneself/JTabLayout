@@ -19,6 +19,7 @@
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="5dp"
+        app:tabIndicatorMargin="10dp"
         app:tabIndicatorWidthScale="0.8"
         app:tabInlineLabel="false"
         app:tabMode="scrollable"
@@ -26,6 +27,7 @@
         app:tabScaleTransitionScroll="1.5"
         app:tabTextBold="true"
         app:tabTextColor="@drawable/text_color_tab"
+        app:tabTextColorTransitionScroll="true"
         app:tabUnboundedRipple="false" />
 
     <android.support.v4.view.ViewPager

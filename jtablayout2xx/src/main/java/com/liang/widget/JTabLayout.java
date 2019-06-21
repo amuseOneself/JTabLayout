@@ -147,6 +147,7 @@ public class JTabLayout extends HorizontalScrollView {
     private int tabDividerColor;
 
     int tabIndicatorWidth;
+    int tabIndicatorMargin;
     float tabIndicatorWidthScale;
 
     public static final TimeInterpolator FAST_OUT_SLOW_IN_INTERPOLATOR = new FastOutSlowInInterpolator();
@@ -192,6 +193,7 @@ public class JTabLayout extends HorizontalScrollView {
         this.tabDividerColor = typedArray.getColor(R.styleable.JTabLayout_tabDividerColor, 0);
 
         this.tabIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabIndicatorWidth, 0);
+        this.tabIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabIndicatorMargin, 0);
         this.tabIndicatorWidthScale = typedArray.getFloat(R.styleable.JTabLayout_tabIndicatorWidthScale, 0);
 
         if (typedArray.hasValue(R.styleable.JTabLayout_tabTextColor)) {
@@ -255,7 +257,7 @@ public class JTabLayout extends HorizontalScrollView {
             this.scrollTo(this.calculateScrollXForTab(position, positionOffset), 0);
 
             if (updateSelectedText) {
-                this.setSelectedTabView(roundedPosition, false);
+                this.setSelectedTabView(roundedPosition, true);
             }
 
             if (positionOffset > 0 && position + 1 < this.slidingTabIndicator.getChildCount()) {
@@ -1086,10 +1088,10 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     private void setSelectedTabView(int position) {
-        setSelectedTabView(position, true);
+        setSelectedTabView(position, false);
     }
 
-    private void setSelectedTabView(int position, boolean update) {
+    private void setSelectedTabView(int position, boolean isViewpagerScroll) {
 
         if (selectedPosition == position) {
             return;
@@ -1100,10 +1102,15 @@ public class JTabLayout extends HorizontalScrollView {
 
         selectedPosition = position;
 
-        boolean isScale = tabScaleTransitionScroll > 1f;
+        if (isViewpagerScroll) {
+            updateTab(selectedChild, newChild, false, tabColorTransitionScroll);
+            return;
+        }
 
-        if (!update && !isScale && !tabColorTransitionScroll) {
-            updateTab(selectedChild, newChild, false);
+        final boolean isScale = tabScaleTransitionScroll > 1f;
+
+        if (!isScale && !tabColorTransitionScroll) {
+            updateTab(selectedChild, newChild, false, false);
             return;
         }
 
@@ -1130,16 +1137,27 @@ public class JTabLayout extends HorizontalScrollView {
                 if (selectedChild instanceof TabChild) {
 //                    selectedChild.setPivotX(100);
 //                    selectedChild.setPivotY(selectedChild.getBottom());
-                    ((TabChild) selectedChild).updateScale(selectedScale);
-                    ((TabChild) selectedChild).updateColor(selectedColor);
+                    if (isScale) {
+                        ((TabChild) selectedChild).updateScale(selectedScale);
+                    }
+
+                    if (tabColorTransitionScroll) {
+                        ((TabChild) selectedChild).updateColor(selectedColor);
+                    }
 
                 }
 
                 if (newChild instanceof TabChild) {
 //                    child.setPivotX(100);
 //                    child.setPivotY(child.getBottom());
-                    ((TabChild) newChild).updateScale(newScale);
-                    ((TabChild) newChild).updateColor(newColor);
+                    if (isScale) {
+                        ((TabChild) newChild).updateScale(newScale);
+                    }
+
+                    if (tabColorTransitionScroll) {
+                        ((TabChild) newChild).updateColor(newColor);
+                    }
+
                 }
 
             }
@@ -1153,12 +1171,12 @@ public class JTabLayout extends HorizontalScrollView {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                updateTab(selectedChild, newChild, true);
+                updateTab(selectedChild, newChild, isScale, tabColorTransitionScroll);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                updateTab(selectedChild, newChild, true);
+                updateTab(selectedChild, newChild, isScale, tabColorTransitionScroll);
             }
 
             @Override
@@ -1186,7 +1204,7 @@ public class JTabLayout extends HorizontalScrollView {
 
     }
 
-    private void updateTab(View selectedChild, View newChild, boolean isScale) {
+    private void updateTab(View selectedChild, View newChild, boolean isScale, boolean isColorTransitionScroll) {
 
         if (selectedChild != null) {
             selectedChild.setSelected(false);
@@ -1204,7 +1222,7 @@ public class JTabLayout extends HorizontalScrollView {
                 ((TabChild) selectedChild).updateScale(1.0f);
             }
 
-            if (tabColorTransitionScroll) {
+            if (isColorTransitionScroll) {
                 ((TabChild) selectedChild).updateColor(.0f);
             }
         }
@@ -1214,7 +1232,7 @@ public class JTabLayout extends HorizontalScrollView {
                 ((TabChild) newChild).updateScale(tabScaleTransitionScroll);
             }
 
-            if (tabColorTransitionScroll) {
+            if (isColorTransitionScroll) {
                 ((TabChild) newChild).updateColor(1.0f);
             }
         }
@@ -1227,6 +1245,12 @@ public class JTabLayout extends HorizontalScrollView {
     public void selectTab(int position, boolean isCallback) {
         if (position < tabs.size()) {
             this.selectTab(tabs.get(position), isCallback);
+        }
+    }
+
+    public void selectTab(int position, boolean updateIndicator, boolean isCallback) {
+        if (position < tabs.size()) {
+            this.selectTab(tabs.get(position), updateIndicator, isCallback);
         }
     }
 
@@ -1748,20 +1772,20 @@ public class JTabLayout extends HorizontalScrollView {
             int indicatorBottom = 0;
             switch (JTabLayout.this.tabIndicatorGravity) {
                 case 0:
-                    indicatorTop = this.getHeight() - indicatorHeight;
-                    indicatorBottom = this.getHeight();
+                    indicatorTop = this.getHeight() - indicatorHeight - tabIndicatorMargin;
+                    indicatorBottom = this.getHeight() - tabIndicatorMargin;
                     break;
                 case 1:
                     indicatorTop = (this.getHeight() - indicatorHeight) / 2;
                     indicatorBottom = (this.getHeight() + indicatorHeight) / 2;
                     break;
                 case 2:
-                    indicatorTop = 0;
+                    indicatorTop = tabIndicatorMargin;
                     indicatorBottom = indicatorHeight;
                     break;
                 case 3:
-                    indicatorTop = 0;
-                    indicatorBottom = this.getHeight();
+                    indicatorTop = tabIndicatorMargin;
+                    indicatorBottom = this.getHeight() - tabIndicatorMargin;
             }
 
             if (indicatorPoint.left >= 0 && indicatorPoint.right > indicatorPoint.left) {
