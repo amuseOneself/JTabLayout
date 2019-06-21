@@ -2,7 +2,7 @@ apply plugin: 'com.novoda.bintray-release'
 
 def groupName = 'com.liang.jtab'//组名
 def artifactName = 'jtablayout'//项目名
-def version = '2.0.2'
+def version = '2.0.3'
 def libDesc = 'Oh hi,this is a nice description for a project,right?'
 def website_Git = 'https://github.com/18317084205/JTabLayout'
 def bintray_user = '15191851980'
