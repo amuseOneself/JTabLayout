@@ -33,6 +33,7 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -243,7 +244,6 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     void setScrollPosition(int position, float positionOffset, boolean updateSelectedText, boolean updateIndicatorPosition) {
-
         int roundedPosition = Math.round((float) position + positionOffset);
         if (roundedPosition >= 0 && roundedPosition < this.slidingTabIndicator.getChildCount()) {
             if (updateIndicatorPosition) {
@@ -260,19 +260,38 @@ public class JTabLayout extends HorizontalScrollView {
                 this.setSelectedTabView(roundedPosition, true);
             }
 
-            if (positionOffset > 0 && position + 1 < this.slidingTabIndicator.getChildCount()) {
-                if (tabScaleTransitionScroll > 1) {
-                    float scale = tabScaleTransitionScroll - 1.0f;
-                    ((TabChild) slidingTabIndicator.getChildAt(position)).updateScale(1.0f + scale * (1.0f - positionOffset));
-                    ((TabChild) slidingTabIndicator.getChildAt(position + 1)).updateScale(1.0f + scale * positionOffset);
-                }
+            if (roundedPosition >= 0 && roundedPosition < this.slidingTabIndicator.getChildCount()) {
+                if (positionOffset > 0 && position + 1 < this.slidingTabIndicator.getChildCount()) {
+                    if (tabScaleTransitionScroll > 1) {
+                        float scale = tabScaleTransitionScroll - 1.0f;
+                        ((TabChild) slidingTabIndicator.getChildAt(position)).updateScale(1.0f + scale * (1.0f - positionOffset));
+                        ((TabChild) slidingTabIndicator.getChildAt(position + 1)).updateScale(1.0f + scale * positionOffset);
+                    }
 
-                if (tabColorTransitionScroll) {
-                    ((TabChild) slidingTabIndicator.getChildAt(position)).updateColor(1.0f - positionOffset);
-                    ((TabChild) slidingTabIndicator.getChildAt(position + 1)).updateColor(positionOffset);
+                    if (tabColorTransitionScroll) {
+                        ((TabChild) slidingTabIndicator.getChildAt(position)).updateColor(1.0f - positionOffset);
+                        ((TabChild) slidingTabIndicator.getChildAt(position + 1)).updateColor(positionOffset);
+                    }
                 }
             }
         }
+    }
+
+    void updateScaleOrColorPosition(int position, float positionOffset) {
+        if (position < 0 || position > getTabCount()) {
+            return;
+        }
+
+        if (selectedTab != null && position == selectedTab.getPosition()) {
+            return;
+        }
+
+        if (selectedTab != null && selectedTab.getPosition() > -1) {
+            ((TabChild) slidingTabIndicator.getChildAt(selectedTab.getPosition())).updateScale(1.0f);
+        }
+
+        float scale = tabScaleTransitionScroll - 1.0f;
+        ((TabChild) slidingTabIndicator.getChildAt(position)).updateScale(1.0f + scale * positionOffset);
     }
 
     /**
@@ -1144,7 +1163,6 @@ public class JTabLayout extends HorizontalScrollView {
                     if (tabColorTransitionScroll) {
                         ((TabChild) selectedChild).updateColor(selectedColor);
                     }
-
                 }
 
                 if (newChild instanceof TabChild) {
@@ -1281,6 +1299,8 @@ public class JTabLayout extends HorizontalScrollView {
                 if (newPosition != -1) {
                     this.setSelectedTabView(newPosition);
                 }
+
+                this.updateScaleOrColorPosition(newPosition, 1f);
             }
 
             this.selectedTab = tab;

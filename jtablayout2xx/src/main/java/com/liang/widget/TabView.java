@@ -20,6 +20,7 @@ import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
