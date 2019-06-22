@@ -97,6 +97,10 @@ public class JTabLayout extends HorizontalScrollView {
     public static final int INDICATOR_GRAVITY_CENTER = 1;
     public static final int INDICATOR_GRAVITY_TOP = 2;
     public static final int INDICATOR_GRAVITY_STRETCH = 3;
+
+    public static final int INDICATOR_TIER_BACK = 0;
+    public static final int INDICATOR_TIER_FRONT = 1;
+
     private final ArrayList<Tab<TabChild>> tabs;
     private final boolean tabTextBold;
     private Tab<TabChild> selectedTab;
@@ -146,6 +150,7 @@ public class JTabLayout extends HorizontalScrollView {
     private int tabDividerHeight;
     private int tabDividerColor;
 
+    int tabIndicatorTier;
     int tabIndicatorWidth;
     int tabIndicatorMargin;
     float tabIndicatorWidthScale;
@@ -192,6 +197,7 @@ public class JTabLayout extends HorizontalScrollView {
         this.tabDividerHeight = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabDividerHeight, -1);
         this.tabDividerColor = typedArray.getColor(R.styleable.TabLayout_tabDividerColor, 0);
 
+        this.tabIndicatorTier = typedArray.getInt(R.styleable.TabLayout_tabIndicatorTier, 0);
         this.tabIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorWidth, 0);
         this.tabIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorMargin, 0);
         this.tabIndicatorWidthScale = typedArray.getFloat(R.styleable.TabLayout_tabIndicatorWidthScale, 0);
@@ -240,6 +246,11 @@ public class JTabLayout extends HorizontalScrollView {
 
     public void setSelectedTabIndicatorColor(@ColorInt int color) {
         this.slidingTabIndicator.setSelectedIndicatorColor(color);
+    }
+
+    public void setTabIndicatorTier(int tabIndicatorTier) {
+        this.tabIndicatorTier = tabIndicatorTier;
+        ViewCompat.postInvalidateOnAnimation(this.slidingTabIndicator);
     }
 
     /**
@@ -1773,9 +1784,14 @@ public class JTabLayout extends HorizontalScrollView {
         }
 
         public void draw(Canvas canvas) {
-            super.draw(canvas);
             drawDivider(canvas);
-            drawIndicator(canvas);
+            if (tabIndicatorTier == INDICATOR_TIER_BACK) {
+                drawIndicator(canvas);
+                super.draw(canvas);
+            } else {
+                super.draw(canvas);
+                drawIndicator(canvas);
+            }
         }
 
         private void drawDivider(Canvas canvas) {

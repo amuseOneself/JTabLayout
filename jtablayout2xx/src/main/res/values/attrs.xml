@@ -5,6 +5,10 @@
         <attr name="tabIndicatorWidth" format="dimension" />
         <attr name="tabIndicatorWidthScale" format="float" />
         <attr name="tabIndicatorHeight" format="dimension" />
+        <attr name="tabIndicatorTier">
+            <enum name="back" value="0" />
+            <enum name="front" value="1" />
+        </attr>
 
         <attr name="tabContentStart" format="dimension" />
         <attr name="tabBackground" format="reference" />
