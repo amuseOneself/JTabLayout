@@ -5,6 +5,8 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import com.liang.jtablayout.indicator.JIndicator
+import com.liang.jtablayout.utils.DensityUtils
 import kotlinx.android.synthetic.main.activity_tab.*
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -59,6 +61,13 @@ class TabActivity : AppCompatActivity() {
     }
 
     private fun initTab3() {
+        val indicator = JIndicator()
+        indicator.color = Color.RED
+        indicator.height = DensityUtils.dip2px(this, 3f)
+        indicator.width = DensityUtils.dip2px(this, 20f)
+        indicator.setRadius(DensityUtils.dip2px(this, 2f))
+        tabLayout3.setIndicator(indicator)
+
         tabLayout3.addTab(tabLayout3.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setText("娱乐"))
         tabLayout3.addTab(tabLayout3.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setText("排名"))
         tabLayout3.addTab(tabLayout3.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setText("消息"))

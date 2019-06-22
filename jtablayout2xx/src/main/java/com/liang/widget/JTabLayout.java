@@ -33,7 +33,6 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -44,13 +43,12 @@ import android.widget.LinearLayout;
 import com.liang.jtablayout.adapter.TabAdapter;
 import com.liang.jtablayout.indicator.DefIndicatorEvaluator;
 import com.liang.jtablayout.indicator.IndicatorPoint;
-import com.liang.jtablayout.indicator.TabScaleEvaluator;
+import com.liang.jtablayout.indicator.Indicator;
 import com.liang.jtablayout.indicator.TransitionIndicatorEvaluator;
 import com.liang.jtablayout.tab.Tab;
 import com.liang.jtablayout.tab.TabChild;
 import com.liang.jtablayout.tab.TabItem;
 import com.liang.jtablayout.utils.ColorUtils;
-import com.liang.jtablayout.utils.DensityUtils;
 import com.liang.jtablayout.utils.MaterialResources;
 import com.liang.jtablayout.utils.ViewUtils;
 import com.liang.jtablayoutx.R;
@@ -225,6 +223,18 @@ public class JTabLayout extends HorizontalScrollView {
         Resources res = this.getResources();
         this.scrollableTabMinWidth = res.getDimensionPixelSize(R.dimen.design_tab_scrollable_min_width);
         this.applyModeAndGravity();
+    }
+
+    public void setIndicator(@NonNull Indicator indicator) {
+        this.tabIndicatorWidth = indicator.getWidth();
+        this.tabIndicatorMargin = indicator.getMargin();
+        this.tabIndicatorWidthScale = indicator.getWidthScale();
+        this.tabIndicatorFullWidth = indicator.isFullWidth();
+        this.tabIndicatorGravity = indicator.getGravity();
+        this.tabIndicatorTransitionScroll = indicator.isTransitionScroll();
+        this.tabSelectedIndicator = indicator.getIndicator();
+        this.slidingTabIndicator.setSelectedIndicatorHeight(indicator.getHeight());
+        this.slidingTabIndicator.setSelectedIndicatorColor(indicator.getColor());
     }
 
     public void setSelectedTabIndicatorColor(@ColorInt int color) {
@@ -1811,7 +1821,7 @@ public class JTabLayout extends HorizontalScrollView {
             if (indicatorPoint.left >= 0 && indicatorPoint.right > indicatorPoint.left) {
                 Drawable selectedIndicator = DrawableCompat.wrap(JTabLayout.this.tabSelectedIndicator != null ? JTabLayout.this.tabSelectedIndicator : this.defaultSelectionIndicator);
                 selectedIndicator.setBounds((int) indicatorPoint.left, indicatorTop, (int) indicatorPoint.right, indicatorBottom);
-                if (this.selectedIndicatorPaint != null) {
+                if (this.selectedIndicatorPaint != null && this.selectedIndicatorPaint.getColor() != 0) {
                     if (Build.VERSION.SDK_INT == 21) {
                         selectedIndicator.setColorFilter(this.selectedIndicatorPaint.getColor(), android.graphics.PorterDuff.Mode.SRC_IN);
                     } else {
