@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="JTabLayout">
+    <declare-styleable name="TabLayout">
         <attr name="tabIndicatorColor" format="color" />
         <attr name="tabIndicatorWidth" format="dimension" />
         <attr name="tabIndicatorWidthScale" format="float" />
@@ -72,12 +72,12 @@
 
     </declare-styleable>
 
-    <declare-styleable name="JTabItem">
+    <declare-styleable name="TabItem">
         <attr name="android:text" />
         <attr name="android:icon" />
     </declare-styleable>
 
-    <declare-styleable name="JBadgeView">
+    <declare-styleable name="BadgeView">
         <attr name="badgeStrokeColor" format="color" />
         <attr name="badgeStrokeWidth" format="dimension" />
         <attr name="badgeBackgroundColor" format="color" />

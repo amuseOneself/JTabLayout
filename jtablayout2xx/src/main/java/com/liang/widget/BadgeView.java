@@ -69,11 +69,11 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView imple
 
     public BadgeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.JBadgeView,
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BadgeView,
                 defStyleAttr, 0);
-        mStrokeColor = typedArray.getColor(R.styleable.JBadgeView_badgeStrokeColor, Color.WHITE);
-        mStroke = typedArray.getDimensionPixelSize(R.styleable.JBadgeView_badgeStrokeWidth, dip2px(getContext(), 1));
-        mBackgroundColor = typedArray.getColor(R.styleable.JBadgeView_badgeBackgroundColor, Color.RED);
+        mStrokeColor = typedArray.getColor(R.styleable.BadgeView_badgeStrokeColor, Color.WHITE);
+        mStroke = typedArray.getDimensionPixelSize(R.styleable.BadgeView_badgeStrokeWidth, dip2px(getContext(), 1));
+        mBackgroundColor = typedArray.getColor(R.styleable.BadgeView_badgeBackgroundColor, Color.RED);
         typedArray.recycle();
         initBadge();
     }

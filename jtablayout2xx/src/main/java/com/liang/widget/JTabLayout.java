@@ -173,51 +173,51 @@ public class JTabLayout extends HorizontalScrollView {
         this.slidingTabIndicator = new SlidingTabIndicator(context);
         super.addView(this.slidingTabIndicator, 0, new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.JTabLayout,
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabLayout,
                 defStyleAttr, 0);
 
-        this.slidingTabIndicator.setSelectedIndicatorHeight(typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabIndicatorHeight, -1));
-        this.slidingTabIndicator.setSelectedIndicatorColor(typedArray.getColor(R.styleable.JTabLayout_tabIndicatorColor, 0));
-        this.setSelectedTabIndicator(MaterialResources.getDrawable(context, typedArray, R.styleable.JTabLayout_tabIndicator));
-        this.setSelectedTabIndicatorGravity(typedArray.getInt(R.styleable.JTabLayout_tabIndicatorGravity, 0));
-        this.setTabIndicatorFullWidth(typedArray.getBoolean(R.styleable.JTabLayout_tabIndicatorFullWidth, true));
-        this.tabPaddingStart = this.tabPaddingTop = this.tabPaddingEnd = this.tabPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabPadding, 0);
-        this.tabPaddingStart = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabPaddingStart, this.tabPaddingStart);
-        this.tabPaddingTop = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabPaddingTop, this.tabPaddingTop);
-        this.tabPaddingEnd = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabPaddingEnd, this.tabPaddingEnd);
-        this.tabPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabPaddingBottom, this.tabPaddingBottom);
+        this.slidingTabIndicator.setSelectedIndicatorHeight(typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));
+        this.slidingTabIndicator.setSelectedIndicatorColor(typedArray.getColor(R.styleable.TabLayout_tabIndicatorColor, 0));
+        this.setSelectedTabIndicator(MaterialResources.getDrawable(context, typedArray, R.styleable.TabLayout_tabIndicator));
+        this.setSelectedTabIndicatorGravity(typedArray.getInt(R.styleable.TabLayout_tabIndicatorGravity, 0));
+        this.setTabIndicatorFullWidth(typedArray.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, true));
+        this.tabPaddingStart = this.tabPaddingTop = this.tabPaddingEnd = this.tabPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPadding, 0);
+        this.tabPaddingStart = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingStart, this.tabPaddingStart);
+        this.tabPaddingTop = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingTop, this.tabPaddingTop);
+        this.tabPaddingEnd = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingEnd, this.tabPaddingEnd);
+        this.tabPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingBottom, this.tabPaddingBottom);
 
-        this.tabDividerWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabDividerWidth, 0);
-        this.tabDividerHeight = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabDividerHeight, -1);
-        this.tabDividerColor = typedArray.getColor(R.styleable.JTabLayout_tabDividerColor, 0);
+        this.tabDividerWidth = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabDividerWidth, 0);
+        this.tabDividerHeight = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabDividerHeight, -1);
+        this.tabDividerColor = typedArray.getColor(R.styleable.TabLayout_tabDividerColor, 0);
 
-        this.tabIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabIndicatorWidth, 0);
-        this.tabIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabIndicatorMargin, 0);
-        this.tabIndicatorWidthScale = typedArray.getFloat(R.styleable.JTabLayout_tabIndicatorWidthScale, 0);
+        this.tabIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorWidth, 0);
+        this.tabIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorMargin, 0);
+        this.tabIndicatorWidthScale = typedArray.getFloat(R.styleable.TabLayout_tabIndicatorWidthScale, 0);
 
-        if (typedArray.hasValue(R.styleable.JTabLayout_tabTextColor)) {
-            tabTextColors = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabTextColor);
+        if (typedArray.hasValue(R.styleable.TabLayout_tabTextColor)) {
+            tabTextColors = MaterialResources.getColorStateList(context, typedArray, R.styleable.TabLayout_tabTextColor);
         }
 
-        this.tabTextSize = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabTextSize, 0);
-        this.tabIconTint = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabIconTint);
-        this.tabIconTintMode = ViewUtils.parseTintMode(typedArray.getInt(R.styleable.JTabLayout_tabIconTintMode, -1), (android.graphics.PorterDuff.Mode) null);
-        this.tabIndicatorFullWidth = typedArray.getBoolean(R.styleable.JTabLayout_tabIndicatorFullWidth, false);
-        this.tabIndicatorTransitionScroll = typedArray.getBoolean(R.styleable.JTabLayout_tabIndicatorTransitionScroll, false);
-        this.tabScaleTransitionScroll = typedArray.getFloat(R.styleable.JTabLayout_tabScaleTransitionScroll, 1.0f);
-        this.tabColorTransitionScroll = typedArray.getBoolean(R.styleable.JTabLayout_tabTextColorTransitionScroll, false);
-        this.tabTextBold = typedArray.getBoolean(R.styleable.JTabLayout_tabTextBold, false);
+        this.tabTextSize = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabTextSize, 0);
+        this.tabIconTint = MaterialResources.getColorStateList(context, typedArray, R.styleable.TabLayout_tabIconTint);
+        this.tabIconTintMode = ViewUtils.parseTintMode(typedArray.getInt(R.styleable.TabLayout_tabIconTintMode, -1), (android.graphics.PorterDuff.Mode) null);
+        this.tabIndicatorFullWidth = typedArray.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, false);
+        this.tabIndicatorTransitionScroll = typedArray.getBoolean(R.styleable.TabLayout_tabIndicatorTransitionScroll, false);
+        this.tabScaleTransitionScroll = typedArray.getFloat(R.styleable.TabLayout_tabScaleTransitionScroll, 1.0f);
+        this.tabColorTransitionScroll = typedArray.getBoolean(R.styleable.TabLayout_tabTextColorTransitionScroll, false);
+        this.tabTextBold = typedArray.getBoolean(R.styleable.TabLayout_tabTextBold, false);
 
-        this.tabRippleColorStateList = MaterialResources.getColorStateList(context, typedArray, R.styleable.JTabLayout_tabRippleColor);
-        this.tabIndicatorAnimationDuration = typedArray.getInt(R.styleable.JTabLayout_tabIndicatorAnimationDuration, 300);
-        this.requestedTabMinWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabMinWidth, -1);
-        this.requestedTabMaxWidth = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabMaxWidth, -1);
-        this.tabBackgroundResId = typedArray.getResourceId(R.styleable.JTabLayout_tabBackground, 0);
-        this.contentInsetStart = typedArray.getDimensionPixelSize(R.styleable.JTabLayout_tabContentStart, 0);
-        this.mode = typedArray.getInt(R.styleable.JTabLayout_tabMode, 1);
-        this.tabGravity = typedArray.getInt(R.styleable.JTabLayout_tabGravity, 0);
-        this.inlineLabel = typedArray.getBoolean(R.styleable.JTabLayout_tabInlineLabel, false);
-        this.unboundedRipple = typedArray.getBoolean(R.styleable.JTabLayout_tabUnboundedRipple, false);
+        this.tabRippleColorStateList = MaterialResources.getColorStateList(context, typedArray, R.styleable.TabLayout_tabRippleColor);
+        this.tabIndicatorAnimationDuration = typedArray.getInt(R.styleable.TabLayout_tabIndicatorAnimationDuration, 300);
+        this.requestedTabMinWidth = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, -1);
+        this.requestedTabMaxWidth = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabMaxWidth, -1);
+        this.tabBackgroundResId = typedArray.getResourceId(R.styleable.TabLayout_tabBackground, 0);
+        this.contentInsetStart = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabContentStart, 0);
+        this.mode = typedArray.getInt(R.styleable.TabLayout_tabMode, 1);
+        this.tabGravity = typedArray.getInt(R.styleable.TabLayout_tabGravity, 0);
+        this.inlineLabel = typedArray.getBoolean(R.styleable.TabLayout_tabInlineLabel, false);
+        this.unboundedRipple = typedArray.getBoolean(R.styleable.TabLayout_tabUnboundedRipple, false);
         typedArray.recycle();
 
         Resources res = this.getResources();

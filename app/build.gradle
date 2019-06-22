@@ -29,6 +29,7 @@ dependencies {
 //    implementation project(':jtablayout_lib')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation project(path: ':jtablayout2xx')
+    implementation 'com.android.support:design:27.1.1'
 //    implementation 'com.liang.jtab:jtablayout:1.1.6'
 }
 
