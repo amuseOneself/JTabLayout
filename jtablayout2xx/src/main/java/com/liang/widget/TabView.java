@@ -44,7 +44,6 @@ public class TabView extends FrameLayout implements TabChild {
     private TextView textView;
     private ImageView iconView;
     private View badgeView;
-    private View activeView;
 
     @Nullable
     private Drawable baseBackgroundDrawable;
@@ -72,13 +71,13 @@ public class TabView extends FrameLayout implements TabChild {
         tabView = setContentView();
         if (tabView == null) {
             tabView = LayoutInflater.from(getContext()).inflate(
-                    tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, this, true);
+                    tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, null, true);
         }
-        activeView = setActiveView();
         iconView = setTabIconView();
         textView = setTabTitleView();
         badgeView = setTabBadgeView();
 
+        addView(tabView);
         updateBackgroundDrawable(getContext());
         update();
     }
