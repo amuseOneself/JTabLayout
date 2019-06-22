@@ -131,15 +131,15 @@ class OperationActivity : AppCompatActivity() {
 
 
         jTabLayout.addOnTabSelectedListener(object : JTabLayout.OnTabSelectedListener {
-            override fun onTabSelected(var1: Tab<*>?) {
+            override fun onTabSelected(var1: Tab<*>) {
                 textView.text = "onTabSelected position: " + var1?.position
             }
 
-            override fun onTabUnselected(var1: Tab<*>?) {
+            override fun onTabUnselected(var1: Tab<*>) {
                 textView.text = "onTabUnselected position: " + var1?.position
             }
 
-            override fun onTabReselected(var1: Tab<*>?) {
+            override fun onTabReselected(var1: Tab<*>) {
                 textView.text = "onTabReselected position: " + var1?.position
             }
         })

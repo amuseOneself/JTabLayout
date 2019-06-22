@@ -109,8 +109,8 @@ class TabActivity : AppCompatActivity() {
         tabLayout6.showBadgeMsg(3)
 
         tabLayout6.addOnTabSelectedListener(object : JTabLayout.OnTabSelectedListener {
-            override fun onTabSelected(var1: Tab<*>?) {
-                val p = var1?.position!!
+            override fun onTabSelected(var1: Tab<*>) {
+                val p = var1.position
                 if (p % 2 != 0) {
                     tabLayout2.setTabTextColors(Color.YELLOW, Color.RED)
                     tabLayout3.setSelectedTabIndicatorColor(Color.YELLOW)
@@ -118,14 +118,13 @@ class TabActivity : AppCompatActivity() {
                     tabLayout2.setTabTextColors(Color.BLUE, Color.GREEN)
                     tabLayout3.setSelectedTabIndicatorColor(Color.GREEN)
                 }
+            }
+
+            override fun onTabUnselected(var1: Tab<*>) {
 
             }
 
-            override fun onTabUnselected(var1: Tab<*>?) {
-
-            }
-
-            override fun onTabReselected(var1: Tab<*>?) {
+            override fun onTabReselected(var1: Tab<*>) {
             }
 
         })
