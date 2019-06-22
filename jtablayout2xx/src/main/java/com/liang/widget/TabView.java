@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
@@ -44,6 +45,8 @@ public class TabView extends FrameLayout implements TabChild {
     private TextView textView;
     private ImageView iconView;
     private View badgeView;
+    private FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
     @Nullable
     private Drawable baseBackgroundDrawable;
@@ -71,13 +74,13 @@ public class TabView extends FrameLayout implements TabChild {
         tabView = setContentView();
         if (tabView == null) {
             tabView = LayoutInflater.from(getContext()).inflate(
-                    tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, null, true);
+                    tab.getInline() ? R.layout.tab_item_horizontal : R.layout.tab_item_vertical, null);
         }
         iconView = setTabIconView();
         textView = setTabTitleView();
         badgeView = setTabBadgeView();
-
-        addView(tabView);
+        params.gravity = Gravity.CENTER;
+        addView(tabView, params);
         updateBackgroundDrawable(getContext());
         update();
     }

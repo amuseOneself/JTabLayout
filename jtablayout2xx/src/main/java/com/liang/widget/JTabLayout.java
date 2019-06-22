@@ -1362,10 +1362,10 @@ public class JTabLayout extends HorizontalScrollView {
         if (this.mode == 0) {
             View selectedChild = this.slidingTabIndicator.getChildAt(position);
             View nextChild = position + 1 < this.slidingTabIndicator.getChildCount() ? this.slidingTabIndicator.getChildAt(position + 1) : null;
-            int selectedWidth = selectedChild != null ? selectedChild.getWidth() + tabDividerWidth : 0;
-            int nextWidth = nextChild != null ? nextChild.getWidth() + tabDividerWidth : 0;
-            int scrollBase = selectedChild.getLeft() + selectedWidth / 2 - this.getWidth() / 2;
-            int scrollOffset = (int) ((float) (selectedWidth + nextWidth) * 0.5F * positionOffset);
+            int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
+            int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
+            int scrollBase = selectedChild.getLeft() - tabDividerWidth / 2 + (selectedWidth + tabDividerWidth) / 2 - this.getWidth() / 2;
+            int scrollOffset = (int) ((float) (selectedWidth + nextWidth + tabDividerWidth * 2) * 0.5F * positionOffset);
             return ViewCompat.getLayoutDirection(this) == 0 ? scrollBase + scrollOffset : scrollBase - scrollOffset;
         } else {
             return 0;

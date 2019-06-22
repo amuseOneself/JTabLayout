@@ -45,7 +45,7 @@ public class TabMenu extends TabView {
 
     @Override
     protected ImageView setTabIconView() {
-        return null;
+        return tabView.findViewById(R.id.navigation_icon);
     }
 
     @Override
