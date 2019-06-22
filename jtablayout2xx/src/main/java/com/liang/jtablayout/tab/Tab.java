@@ -74,8 +74,9 @@ public class Tab<T extends TabChild> {
         return tabItem;
     }
 
-    public void setTabItem(T tabItem) {
+    public Tab setTabItem(T tabItem) {
         this.tabItem = tabItem;
+        return this;
     }
 
     public int getPosition() {

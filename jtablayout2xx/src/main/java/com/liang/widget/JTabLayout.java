@@ -33,6 +33,7 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -509,11 +510,17 @@ public class JTabLayout extends HorizontalScrollView {
 
     @NonNull
     public Tab newTab() {
+        return newTab(null);
+    }
+
+    @NonNull
+    public Tab newTab(TabChild child) {
         Tab tab = this.createTabFromPool();
         tab.setParent(this);
-        tab.setTabItem(this.createTabView(tab));
+        tab.setTabItem(this.createTabView(tab, child));
         return tab;
     }
+
 
     protected Tab createTabFromPool() {
         Tab tab = tabPool.acquire();
@@ -690,9 +697,9 @@ public class JTabLayout extends HorizontalScrollView {
         this.setTabTextColors(ColorUtils.createColorStateList(normalColor, selectedColor));
     }
 
-    public void setTabTextSize(float tabTextSize) {
+    public void setTabTextSize(int px) {
         if (this.tabTextSize != tabTextSize) {
-            this.tabTextSize = (int) tabTextSize;
+            this.tabTextSize = px;
             this.updateAllTabs();
         }
     }
@@ -892,36 +899,31 @@ public class JTabLayout extends HorizontalScrollView {
 
     private void updateAllTabs() {
         int i = 0;
-
         for (int z = this.tabs.size(); i < z; ++i) {
-            if (tabs.get(i).getTextColor() == null) {
-                tabs.get(i).setTextColor(this.tabTextColors);
-            }
-
-            if (tabs.get(i).getTextColor() == null) {
-                tabs.get(i).setTabIconTint(this.tabIconTint);
-            }
-
-            if (tabs.get(i).getTabTextSize() == 0) {
-                tabs.get(i).setTabTextSize(this.tabTextSize);
-            }
+            tabs.get(i).setTextColor(this.tabTextColors);
+            tabs.get(i).setTabIconTint(this.tabIconTint);
+            tabs.get(i).setTabTextSize(this.tabTextSize);
         }
-
     }
 
-    private TabView createTabView(@NonNull Tab tab) {
-        TabChild tabItem = this.tabViewPool != null ? this.tabViewPool.acquire() : null;
-        TabView tabView = (tabItem instanceof TabView) ? (TabView) tabItem : new TabView(this.getContext());
-        tabView.setTab(tab);
-        tabView.setFocusable(true);
-        tabView.setMinimumWidth(this.getTabMinWidth());
-        if (TextUtils.isEmpty(tab.getContentDesc())) {
-            tabView.setContentDescription(tab.getText());
+    private TabChild createTabView(@NonNull Tab tab, TabChild child) {
+        TabChild tabItem;
+        if (child == null) {
+            TabChild tabChild = this.tabViewPool != null ? this.tabViewPool.acquire() : null;
+            tabItem = (tabChild instanceof TabView) ? (TabView) tabChild : new TabView(this.getContext());
         } else {
-            tabView.setContentDescription(tab.getContentDesc());
+            tabItem = child;
         }
 
-        return tabView;
+        tabItem.setTab(tab);
+        tabItem.getView().setFocusable(true);
+        tabItem.getView().setMinimumWidth(this.getTabMinWidth());
+        if (TextUtils.isEmpty(tab.getContentDesc())) {
+            tabItem.setContentDescription(tab.getText());
+        } else {
+            tabItem.setContentDescription(tab.getContentDesc());
+        }
+        return tabItem;
     }
 
     private void configureTab(Tab tab, int position) {
@@ -1828,7 +1830,6 @@ public class JTabLayout extends HorizontalScrollView {
                         DrawableCompat.setTint(selectedIndicator, this.selectedIndicatorPaint.getColor());
                     }
                 }
-
                 selectedIndicator.draw(canvas);
             }
         }
@@ -1838,11 +1839,11 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     public interface BaseOnTabSelectedListener<T extends Tab> {
-        void onTabSelected(T var1);
+        void onTabSelected(@NonNull T var1);
 
-        void onTabUnselected(T var1);
+        void onTabUnselected(@NonNull T var1);
 
-        void onTabReselected(T var1);
+        void onTabReselected(@NonNull T var1);
     }
 
     @Retention(RetentionPolicy.SOURCE)

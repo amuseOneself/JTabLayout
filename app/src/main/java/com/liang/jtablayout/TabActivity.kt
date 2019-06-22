@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import com.liang.jtablayout.indicator.JIndicator
+import com.liang.jtablayout.tab.Tab
 import com.liang.jtablayout.utils.DensityUtils
+import com.liang.widget.JTabLayout
 import kotlinx.android.synthetic.main.activity_tab.*
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -44,7 +46,7 @@ class TabActivity : AppCompatActivity() {
     }
 
     private fun initTab2() {
-        tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setText("娱乐"))
+        tabLayout2.addTab(tabLayout2.newTab(TabMenu(this)).setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setText("娱乐"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setText("排名"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setText("消息"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setText("我的"))
@@ -86,7 +88,7 @@ class TabActivity : AppCompatActivity() {
 
         tabLayout4.getTabAt(1)?.setTextColor(Color.GRAY, Color.MAGENTA)
 
-        tabLayout4.setTabTextSize(15f)
+        tabLayout4.setTabTextSize(DensityUtils.sp2px(this, 15f))
 
         tabLayout4.showBadgeMsg(8)
 
@@ -105,6 +107,28 @@ class TabActivity : AppCompatActivity() {
         tabLayout6.showBadgeMsg(0, "NEW")
         tabLayout6.showBadgeMsg(2, 5)
         tabLayout6.showBadgeMsg(3)
+
+        tabLayout6.addOnTabSelectedListener(object : JTabLayout.OnTabSelectedListener {
+            override fun onTabSelected(var1: Tab<*>?) {
+                val p = var1?.position!!
+                if (p % 2 != 0) {
+                    tabLayout2.setTabTextColors(Color.YELLOW, Color.RED)
+                    tabLayout3.setSelectedTabIndicatorColor(Color.YELLOW)
+                } else {
+                    tabLayout2.setTabTextColors(Color.BLUE, Color.GREEN)
+                    tabLayout3.setSelectedTabIndicatorColor(Color.GREEN)
+                }
+
+            }
+
+            override fun onTabUnselected(var1: Tab<*>?) {
+
+            }
+
+            override fun onTabReselected(var1: Tab<*>?) {
+            }
+
+        })
     }
 
     private fun initViewPager() {

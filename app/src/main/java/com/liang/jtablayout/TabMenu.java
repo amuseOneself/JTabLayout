@@ -31,7 +31,7 @@ public class TabMenu extends TabView {
 
     @Override
     protected View setContentView() {
-        tabView = LayoutInflater.from(getContext()).inflate(R.layout.tab_menul, null, true);
+        tabView = LayoutInflater.from(getContext()).inflate(R.layout.tab_menul, this, true);
         return tabView;
     }
 
