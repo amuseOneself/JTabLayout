@@ -23,14 +23,14 @@ public class Tab2Activity extends AppCompatActivity {
         tabLayout = findViewById(R.id.jTabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setText("娱乐"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setText("排名"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setText("消息"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setText("我的"));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setText("娱乐"));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setText("排名"));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setText("消息"));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setText("我的"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setTitle("娱乐"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setTitle("排名"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setTitle("消息"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setTitle("我的"));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setTitle("娱乐"));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setTitle("排名"));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setTitle("消息"));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setTitle("我的"));
 
         adapter = new ViewPagerAdapter(this, Arrays.asList(titles));
         viewPager.setAdapter(adapter);

@@ -4,8 +4,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CompoundButton
 import android.widget.RadioGroup
-import com.liang.jtablayout.tab.Tab
 import com.liang.widget.JTabLayout
+import com.liang.jtablayout.tab.Tab
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.*
 
@@ -77,7 +77,7 @@ class OperationActivity : AppCompatActivity() {
                     views.add(title + inx)
                     adapter?.notifyDataSetChanged();
                 } else {
-                    val tabView = jTabLayout.newTab().setText(title + inx);
+                    val tabView = jTabLayout.newTab().setTitle(title + inx);
                     jTabLayout.addTab(tabView)
                 }
                 inx++
@@ -94,7 +94,7 @@ class OperationActivity : AppCompatActivity() {
                     if (inx > jTabLayout.tabCount) {
                         return@setOnClickListener
                     }
-                    jTabLayout.addTab(jTabLayout.newTab().setText(title + inx), inx)
+                    jTabLayout.addTab(jTabLayout.newTab().setTitle(title + inx), inx)
                 }
             }
         }
@@ -131,15 +131,15 @@ class OperationActivity : AppCompatActivity() {
 
 
         jTabLayout.addOnTabSelectedListener(object : JTabLayout.OnTabSelectedListener {
-            override fun onTabSelected(var1: Tab<*>) {
+            override fun onTabSelected(var1: Tab) {
                 textView.text = "onTabSelected position: " + var1?.position
             }
 
-            override fun onTabUnselected(var1: Tab<*>) {
+            override fun onTabUnselected(var1: Tab) {
                 textView.text = "onTabUnselected position: " + var1?.position
             }
 
-            override fun onTabReselected(var1: Tab<*>) {
+            override fun onTabReselected(var1: Tab) {
                 textView.text = "onTabReselected position: " + var1?.position
             }
         })
