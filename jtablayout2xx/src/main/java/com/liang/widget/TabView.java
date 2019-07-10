@@ -2,6 +2,7 @@ package com.liang.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -21,6 +22,7 @@ import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +34,8 @@ import android.widget.TextView;
 import com.liang.jtablayout.badge.Badge;
 import com.liang.jtablayout.ripple.RippleUtils;
 import com.liang.jtablayout.utils.ColorUtils;
+import com.liang.jtablayout.utils.MaterialResources;
+import com.liang.jtablayout.utils.ViewUtils;
 import com.liang.jtablayoutx.R;
 import com.liang.jtablayout.tab.Tab;
 
@@ -82,6 +86,32 @@ public class TabView extends FrameLayout implements Tab {
         super(context, attrs, defStyleAttr);
         this.setFocusable(true);
         this.setClickable(true);
+
+        initAttrs(context, attrs);
+    }
+
+    private void initAttrs(@NonNull Context context, @Nullable AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabItem,
+                0, 0);
+        this.title = typedArray.getText(R.styleable.TabItem_android_title);
+        this.icon = typedArray.getDrawable(R.styleable.TabItem_android_icon);
+        this.tabTitleSize = typedArray.getDimensionPixelSize(R.styleable.TabItem_android_textSize, 0);
+        this.tabIconTint = MaterialResources.getColorStateList(context, typedArray, R.styleable.TabItem_android_icon);
+        this.tabIconTintMode = ViewUtils.parseTintMode(typedArray.getInt(R.styleable.TabItem_android_tintMode, -1), null);
+        this.tabRippleColorStateList = MaterialResources.getColorStateList(context, typedArray, R.styleable.TabItem_rippleColor);
+        this.unboundedRipple = typedArray.getBoolean(R.styleable.TabItem_unboundedRipple, false);
+        this.tabPaddingStart = this.tabPaddingTop = this.tabPaddingEnd = this.tabPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.TabItem_android_padding, 0);
+        this.tabPaddingStart = typedArray.getDimensionPixelSize(R.styleable.TabItem_android_paddingStart, this.tabPaddingStart);
+        this.tabPaddingTop = typedArray.getDimensionPixelSize(R.styleable.TabItem_android_paddingTop, this.tabPaddingTop);
+        this.tabPaddingEnd = typedArray.getDimensionPixelSize(R.styleable.TabItem_android_paddingEnd, this.tabPaddingEnd);
+        this.tabPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.TabItem_android_paddingBottom, this.tabPaddingBottom);
+        this.tabBackgroundResId = typedArray.getResourceId(R.styleable.TabItem_android_background, 0);
+
+        if (typedArray.hasValue(R.styleable.TabItem_android_textColor)) {
+            titleColor = MaterialResources.getColorStateList(context, typedArray, R.styleable.TabItem_android_textColor);
+        }
+
+        typedArray.recycle();
     }
 
 
@@ -167,7 +197,7 @@ public class TabView extends FrameLayout implements Tab {
 
     @Override
     public Tab setIcon(int icon) {
-        Drawable drawable = ContextCompat.getDrawable(this.getContext(), icon);
+        Drawable drawable = ContextCompat.getDrawable(getContext(), icon);
         return setIcon(drawable);
     }
 
@@ -259,6 +289,7 @@ public class TabView extends FrameLayout implements Tab {
     @Override
     public Tab setTabTextSize(float sizePx) {
         this.tabTitleSize = sizePx;
+        updateView();
         return this;
     }
 
@@ -270,6 +301,7 @@ public class TabView extends FrameLayout implements Tab {
     @Override
     public Tab setTabTextBold(boolean isBold) {
         this.tabTextBold = isBold;
+        updateView();
         return this;
     }
 
@@ -308,6 +340,7 @@ public class TabView extends FrameLayout implements Tab {
         this.tabPaddingTop = tabPaddingTop;
         this.tabPaddingEnd = tabPaddingEnd;
         this.tabPaddingBottom = tabPaddingBottom;
+        updateView();
         return this;
     }
 
@@ -399,6 +432,7 @@ public class TabView extends FrameLayout implements Tab {
                 if (getTabIconTintMode() != null) {
                     DrawableCompat.setTintMode(icon, getTabIconTintMode());
                 }
+                iconView.setImageDrawable(icon);
             }
         }
 

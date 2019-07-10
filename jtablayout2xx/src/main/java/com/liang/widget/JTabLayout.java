@@ -33,7 +33,6 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -47,7 +46,6 @@ import com.liang.jtablayout.indicator.IndicatorPoint;
 import com.liang.jtablayout.indicator.Indicator;
 import com.liang.jtablayout.indicator.TransitionIndicatorEvaluator;
 import com.liang.jtablayout.tab.Tab;
-import com.liang.jtablayout.tab.TabItem;
 import com.liang.jtablayout.utils.ColorUtils;
 import com.liang.jtablayout.utils.MaterialResources;
 import com.liang.jtablayout.utils.ViewUtils;
@@ -87,7 +85,7 @@ public class JTabLayout extends HorizontalScrollView {
     static final int FIXED_WRAP_GUTTER_MIN = 16;
     private static final int INVALID_WIDTH = -1;
     private static final int ANIMATION_DURATION = 300;
-    private static final Pools.Pool<Tab> tabPool = new Pools.SynchronizedPool<>(16);
+    //    private static final Pools.Pool<Tab> tabPool = new Pools.SynchronizedPool<>(16);
     public static final int MODE_SCROLLABLE = 0;
     public static final int MODE_FIXED = 1;
     public static final int GRAVITY_FILL = 0;
@@ -307,10 +305,7 @@ public class JTabLayout extends HorizontalScrollView {
             return;
         }
 
-        Log.e("tab", "position: " + position);
         if (selectedTab != null && selectedTab.getPosition() > -1) {
-            Log.e("tab", "selectedTab: " + selectedTab.getPosition());
-
             ((Tab) slidingTabIndicator.getChildAt(selectedTab.getPosition())).updateScale(1.0f);
         }
 
@@ -472,23 +467,6 @@ public class JTabLayout extends HorizontalScrollView {
         }
     }
 
-    private void addTabFromItemView(@NonNull TabItem item) {
-        Tab tab = this.newTab();
-        if (item.text != null) {
-            tab.setTitle(item.text);
-        }
-
-        if (item.icon != null) {
-            tab.setIcon(item.icon);
-        }
-
-        if (!TextUtils.isEmpty(item.getContentDescription())) {
-            tab.setContentDescription(item.getContentDescription());
-        }
-
-        this.addTab(tab);
-    }
-
     /**
      * @deprecated
      */
@@ -520,22 +498,22 @@ public class JTabLayout extends HorizontalScrollView {
 
     @NonNull
     public Tab newTab() {
-        Tab tab = this.createTabFromPool();
+        Tab tab = this.createTabView();
         return tab;
     }
 
 
-    protected Tab createTabFromPool() {
-        Tab tab = tabPool.acquire();
-        if (tab == null) {
-            tab = createTabView();
-        }
-        return tab;
-    }
+//    protected Tab createTabFromPool() {
+//        Tab tab = tabPool.acquire();
+//        if (tab == null) {
+//            tab = createTabView();
+//        }
+//        return tab;
+//    }
 
-    protected boolean releaseFromTabPool(Tab tab) {
-        return tabPool.release(tab);
-    }
+//    protected boolean releaseFromTabPool(Tab tab) {
+//        return tabPool.release(tab);
+//    }
 
     public int getTabCount() {
         return this.tabs.size();
@@ -560,7 +538,8 @@ public class JTabLayout extends HorizontalScrollView {
         Tab removedTab = this.tabs.remove(position);
         if (removedTab != null) {
             removedTab.reset();
-            this.releaseFromTabPool(removedTab);
+            removedTab = null;
+//            this.releaseFromTabPool(removedTab);
         }
 
         int newTabCount = this.tabs.size();
@@ -586,7 +565,8 @@ public class JTabLayout extends HorizontalScrollView {
             Tab tab = (Tab) i.next();
             i.remove();
             tab.reset();
-            this.releaseFromTabPool(tab);
+            tab = null;
+//            this.releaseFromTabPool(tab);
         }
 
         this.selectedTab = null;
@@ -882,7 +862,7 @@ public class JTabLayout extends HorizontalScrollView {
             for (curItem = 0; curItem < adapterCount; ++curItem) {
                 if (pagerAdapter instanceof TabAdapter) {
                     Tab tab = ((TabAdapter) pagerAdapter).getTab(curItem);
-                    this.addTab(tab, false);
+                    this.addTab(tab.setTitle(this.pagerAdapter.getPageTitle(curItem)), false);
                 } else {
                     this.addTab(this.newTab().setTitle(this.pagerAdapter.getPageTitle(curItem)), false);
                 }
@@ -988,8 +968,8 @@ public class JTabLayout extends HorizontalScrollView {
     }
 
     private void addViewInternal(View child) {
-        if (child instanceof TabItem) {
-            this.addTabFromItemView((TabItem) child);
+        if (child instanceof Tab) {
+            this.addTab((Tab) child);
         } else {
             throw new IllegalArgumentException("Only Tab instances can be added to TabLayout");
         }
@@ -1069,11 +1049,12 @@ public class JTabLayout extends HorizontalScrollView {
     private void removeTabViewAt(int position) {
         View view = this.slidingTabIndicator.getChildAt(position);
         this.slidingTabIndicator.removeViewAt(position);
-        if (view != null && view instanceof Tab) {
+        if (view instanceof Tab) {
             ((Tab) view).reset();
-            this.tabViewPool.release((TabView) view);
         }
-
+//        if (view instanceof TabView) {
+//            this.tabViewPool.release((TabView) view);
+//        }
         this.requestLayout();
     }
 
@@ -1861,12 +1842,4 @@ public class JTabLayout extends HorizontalScrollView {
     public @interface Mode {
     }
 
-
-    private float lerp(float startValue, float endValue, float fraction) {
-        return startValue + fraction * (endValue - startValue);
-    }
-
-    private int lerp(int startValue, int endValue, float fraction) {
-        return startValue + Math.round(fraction * (float) (endValue - startValue));
-    }
 }

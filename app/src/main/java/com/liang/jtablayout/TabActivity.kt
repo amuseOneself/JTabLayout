@@ -36,17 +36,17 @@ class TabActivity : AppCompatActivity() {
     }
 
     private fun initTab1() {
-        tabLayout1.addTab(tabLayout1.newTab().setTitle("娱乐").setTabBackgroundResId(R.drawable.tab_bgl))
-        tabLayout1.addTab(tabLayout1.newTab().setTitle("游戏").setTabBackgroundResId(R.drawable.tab_bgc))
-        tabLayout1.addTab(tabLayout1.newTab().setTitle("排名").setTabBackgroundResId(R.drawable.tab_bgc))
-        tabLayout1.addTab(tabLayout1.newTab().setTitle("最新").setTabBackgroundResId(R.drawable.tab_bgr))
+//        tabLayout1.addTab(tabLayout1.newTab().setTitle("娱乐").setTabBackgroundResId(R.drawable.tab_bgl))
+//        tabLayout1.addTab(tabLayout1.newTab().setTitle("游戏").setTabBackgroundResId(R.drawable.tab_bgc))
+//        tabLayout1.addTab(tabLayout1.newTab().setTitle("排名").setTabBackgroundResId(R.drawable.tab_bgc))
+//        tabLayout1.addTab(tabLayout1.newTab().setTitle("最新").setTabBackgroundResId(R.drawable.tab_bgr))
         tabLayout1.showBadgeMsg(0, 8)
         tabLayout1.showBadgeMsg(2)
         tabLayout1.showBadgeMsg(3, "新")
     }
 
     private fun initTab2() {
-        tabLayout2.addTab(TabMenu(this).setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setTitle("娱乐"))
+        tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_hall_normal, R.mipmap.tab_icon_hall_press).setTitle("娱乐"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_record_normal, R.mipmap.tab_icon_record_press).setTitle("排名"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_chat_normal, R.mipmap.tab_icon_chat_press).setTitle("消息"))
         tabLayout2.addTab(tabLayout2.newTab().setIcon(R.mipmap.tab_icon_user_normal, R.mipmap.tab_icon_user_press).setTitle("我的"))

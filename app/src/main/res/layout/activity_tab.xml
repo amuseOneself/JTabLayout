@@ -14,29 +14,39 @@
         app:tabDividerColor="@android:color/holo_orange_dark"
         app:tabDividerHeight="40dp"
         app:tabDividerWidth="1dp"
-        app:tabMode="fixed"
-        app:tabRippleColor="@color/holo_red"
-        app:tabTextColor="@drawable/text_color_tab">
+        app:tabMode="fixed">
 
-        <!--<com.liang.jtablayout.tab.TabItem-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="娱乐" />-->
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgl"
+            app:rippleColor="@color/holo_red"
+            android:textColor="@drawable/text_color_tab"
+            android:title="娱乐" />
 
-        <!--<com.liang.jtablayout.tab.TabItem-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="游戏" />-->
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgc"
+            app:rippleColor="#68C402"
+            android:textColor="@drawable/text_color_tab"
+            android:title="游戏" />
 
-        <!--<com.liang.jtablayout.tab.TabItem-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="排名" />-->
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgc"
+            app:rippleColor="#46D1D1"
+            android:textColor="@drawable/text_color_tab"
+            android:title="排名" />
 
-        <!--<com.liang.jtablayout.tab.TabItem-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="最新" />-->
+        <com.liang.jtablayout.TabMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_bgr"
+            app:rippleColor="#022926"
+            android:textColor="@drawable/text_color_tab"
+            android:title="最新" />
 
     </com.liang.widget.JTabLayout>
 
@@ -119,7 +129,6 @@
         app:layout_constraintTop_toBottomOf="@id/line5"
         app:tabDividerColor="@android:color/holo_orange_dark"
         app:tabDividerWidth="80dp"
-        app:tabTextColorTransitionScroll="true"
         app:tabIndicator="@drawable/tab_indicator_bg"
         app:tabIndicatorColor="@color/color_tab_bg"
         app:tabIndicatorFullWidth="false"
@@ -128,7 +137,8 @@
         app:tabIndicatorWidth="5dp"
         app:tabMode="scrollable"
         app:tabScaleTransitionScroll="1.2"
-        app:tabTextColor="@drawable/text_color_tab" />
+        app:tabTextColor="@drawable/text_color_tab"
+        app:tabTextColorTransitionScroll="true" />
 
     <View
         android:id="@+id/line6"

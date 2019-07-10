@@ -8,7 +8,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
@@ -20,8 +19,7 @@
             android:id="@+id/navigation_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center"
             android:gravity="center" />
     </FrameLayout>
 

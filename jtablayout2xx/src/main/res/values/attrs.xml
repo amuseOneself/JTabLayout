@@ -49,7 +49,6 @@
         <attr name="tabMaxWidth" format="dimension" />
         <attr name="tabTextColor" format="color|reference" />
         <attr name="tabTextSize" format="dimension" />
-        <attr name="tabText" format="string" />
         <attr name="tabPaddingStart" format="dimension" />
         <attr name="tabPaddingTop" format="dimension" />
         <attr name="tabPaddingEnd" format="dimension" />
@@ -77,8 +76,33 @@
     </declare-styleable>
 
     <declare-styleable name="TabItem">
-        <attr name="android:text" />
+        <attr name="android:title" />
         <attr name="android:icon" />
+        <attr name="android:iconTint" format="color" />
+
+        <attr name="android:tintMode">
+            <enum name="src_over" value="3" />
+            <enum name="src_in" value="5" />
+            <enum name="src_atop" value="9" />
+            <enum name="multiply" value="14" />
+            <enum name="screen" value="15" />
+            <enum name="add" value="16" />
+        </attr>
+
+        <attr name="android:textColor" format="color|reference" />
+        <attr name="android:textSize" format="dimension" />
+
+        <attr name="android:paddingStart" format="dimension" />
+        <attr name="android:paddingTop" format="dimension" />
+        <attr name="android:paddingEnd" format="dimension" />
+        <attr name="android:paddingBottom" format="dimension" />
+        <attr name="android:padding" format="dimension" />
+
+        <attr name="rippleColor" format="color" />
+        <attr name="unboundedRipple" format="boolean" />
+
+        <attr name="android:background" format="reference" />
+
     </declare-styleable>
 
     <declare-styleable name="BadgeView">
