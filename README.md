@@ -12,12 +12,18 @@
   d. ![常用的效果](https://upload-images.jianshu.io/upload_images/6853660-30a4d6c8eb9662c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
  
   e. ![常用的效果](https://upload-images.jianshu.io/upload_images/6853660-937353369ef5712a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  
+  f.![自定义效果](https://upload-images.jianshu.io/upload_images/6853660-1bf243455157407a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 项目中使用
 
   使用TabLayout请参考[Android快速开发库之TabLayout](https://www.jianshu.com/p/eb1329c5438b "简书").
 
-## 最新版本
+## 历史版本
+### 2.1.1
+  满足项目中使用的一些新效果以及小问题的修正（Item大小渐变等）
+### 2.0.0
+  扩展自官方api28中的TabLayout
 ### 1.2.1
   优化分隔线
 ### 1.2.0
