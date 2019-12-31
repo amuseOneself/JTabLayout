@@ -1,1 +1,1 @@
-include ':app', ':jtablayout_lib', ':jtablayout2xx'
+include ':app', ':jtablayout_lib', ':jtablayout2xx', ':tablayout3x', ':tab3xdemo'

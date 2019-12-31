@@ -11,9 +11,12 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/jtablayout2xx" />
             <option value="$PROJECT_DIR$/jtablayout_lib" />
+            <option value="$PROJECT_DIR$/tab3xdemo" />
+            <option value="$PROJECT_DIR$/tablayout3x" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -131,7 +131,7 @@ public class JTabLayout extends HorizontalScrollView {
     boolean tabColorTransitionScroll;
     private boolean unboundedRipple;
     private BaseOnTabSelectedListener selectedListener;
-    private final ArrayList<BaseOnTabSelectedListener> selectedListeners;
+    private final ArrayList selectedListeners;
     private BaseOnTabSelectedListener currentVpSelectedListener;
     private ValueAnimator scrollAnimator;
     private ValueAnimator scaleAnimator;
