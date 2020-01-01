@@ -1,6 +1,7 @@
 package com.liang.widget
 
 import android.content.Context
+import android.support.v4.util.Pools
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -18,7 +19,6 @@ import com.liang.tablayout3x.R
 class TabLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-
     companion object {
         const val Horizontal = 0
         const val Vertical = 1
@@ -27,6 +27,7 @@ class TabLayout @JvmOverloads constructor(
         const val Flow = 2
     }
 
+    private val tabPool: Pools.Pool<Tab> = Pools.SynchronizedPool(16)
     var orientation: Int = Horizontal
     var tabLayoutMode = Linear
 
@@ -66,15 +67,17 @@ class TabLayout @JvmOverloads constructor(
         }
     }
 
+    class Tab{}
+
     abstract class LayoutManager(protected val tabLayout: TabLayout) {
         init {
             tabLayout.removeAllViews()
-            tabLayout.addView(getSlidingLayout(), getTabLayoutParams())
+            tabLayout.addView(getSlidingLayout())
         }
 
         abstract fun getTabLayoutParams(): ViewGroup.LayoutParams
 
-        abstract fun getSlidingLayout(): View
+        protected abstract fun getSlidingLayout(): View
 
         abstract fun addView(view: View, layoutParams: ViewGroup.LayoutParams)
 

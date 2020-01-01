@@ -29,11 +29,11 @@ class LinearLayoutManager(tabLayout: TabLayout) : TabLayout.LayoutManager(tabLay
             addView(slidingLinearTabLayout.apply {
                 //                minimumHeight = tabLayout.minimumHeight
                 orientation = tabLayout.orientation
-            }, ViewGroup.LayoutParams(-2, -2))
+            })
         }
 
     override fun addView(view: View, layoutParams: ViewGroup.LayoutParams) {
-        slidingLinearTabLayout.addView(view, layoutParams)
+        slidingLinearTabLayout.addView(view)
     }
 
     private inner class SlidingLinearTabLayout(context: Context) : LinearLayout(context) {
