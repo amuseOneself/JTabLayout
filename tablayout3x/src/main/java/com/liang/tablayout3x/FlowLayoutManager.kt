@@ -5,16 +5,13 @@ import android.view.ViewGroup
 import com.liang.widget.TabLayout
 
 
-class FlowLayoutManager(parent: TabLayout) : TabLayout.LayoutManager(parent) {
-    override fun getTabLayoutParams(): ViewGroup.LayoutParams {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getSlidingLayout(): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun addView(view: View, layoutParams: ViewGroup.LayoutParams) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-}
+//class FlowLayoutManager(parent: TabLayout) : TabLayout.LayoutManager() {
+//
+//    override fun getSlidingLayout(): View {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
+//
+//    override fun addView(view: View, position: Int) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
+//}
