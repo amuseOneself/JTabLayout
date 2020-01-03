@@ -1,19 +1,20 @@
 package com.liang.utils
 
-import android.animation.TimeInterpolator
 import android.support.v4.view.animation.FastOutLinearInInterpolator
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v4.view.animation.LinearOutSlowInInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import kotlin.math.roundToInt
 
 object AnimationUtils {
-    val LINEAR_INTERPOLATOR: TimeInterpolator = LinearInterpolator()
-    val FAST_OUT_SLOW_IN_INTERPOLATOR: TimeInterpolator = FastOutSlowInInterpolator()
-    val FAST_OUT_LINEAR_IN_INTERPOLATOR: TimeInterpolator = FastOutLinearInInterpolator()
-    val LINEAR_OUT_SLOW_IN_INTERPOLATOR: TimeInterpolator = LinearOutSlowInInterpolator()
-    val DECELERATE_INTERPOLATOR: TimeInterpolator = DecelerateInterpolator()
+    val linearInterpolator = LinearInterpolator()
+    val fastOutSlowInInterpolator = FastOutSlowInInterpolator()
+    val fastOutLinearInInterpolator = FastOutLinearInInterpolator()
+    val linearOutSlowInInterpolator = LinearOutSlowInInterpolator()
+    val decelerateInterpolator = DecelerateInterpolator()
+    val accelerateDecelerateInterpolator = AccelerateDecelerateInterpolator()
 
     fun lerp(
         startValue: Float,

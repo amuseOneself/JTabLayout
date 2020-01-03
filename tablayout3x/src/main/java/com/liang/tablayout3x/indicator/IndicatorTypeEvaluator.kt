@@ -1,35 +1,35 @@
 package com.liang.tablayout3x.indicator
 
 import android.animation.TypeEvaluator
+import android.graphics.Rect
 
-abstract class IndicatorTypeEvaluator : TypeEvaluator<IndicatorPoint>
+abstract class IndicatorTypeEvaluator : TypeEvaluator<Rect>
 
 class DefIndicatorEvaluator : IndicatorTypeEvaluator() {
 
     override fun evaluate(
         fraction: Float,
-        startValue: IndicatorPoint,
-        endValue: IndicatorPoint
-    ): IndicatorPoint {
+        startValue: Rect,
+        endValue: Rect
+    ): Rect {
         val left = startValue.left + fraction * (endValue.left - startValue.left)
         val right = startValue.right + fraction * (endValue.right - startValue.right)
-        val indicatorPoint = IndicatorPoint()
-        indicatorPoint.left = left
-        indicatorPoint.right = right
-        return indicatorPoint
+        val top = startValue.top + fraction * (endValue.top - startValue.top)
+        val bottom = startValue.bottom + fraction * (endValue.bottom - startValue.bottom)
+        return Rect(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
     }
 }
-
 
 class TransitionIndicatorEvaluator : IndicatorTypeEvaluator() {
     override fun evaluate(
         fraction: Float,
-        startValue: IndicatorPoint,
-        endValue: IndicatorPoint
-    ): IndicatorPoint {
+        startValue: Rect,
+        endValue: Rect
+    ): Rect {
         var fractionL: Float
         var fractionR: Float
-        if (startValue.left < endValue.left) {
+
+        if (startValue.left < endValue.left || startValue.top < endValue.top) {
             fractionL = fraction * 2 - 1
             fractionR = fraction * 2
             if (fractionL < 0) {
@@ -48,11 +48,11 @@ class TransitionIndicatorEvaluator : IndicatorTypeEvaluator() {
                 fractionL = 1f
             }
         }
+
         val left = startValue.left + fractionL * (endValue.left - startValue.left)
         val right = startValue.right + fractionR * (endValue.right - startValue.right)
-        val indicatorPoint = IndicatorPoint()
-        indicatorPoint.left = left
-        indicatorPoint.right = right
-        return indicatorPoint
+        val top = startValue.top + fractionL * (endValue.top - startValue.top)
+        val bottom = startValue.bottom + fractionR * (endValue.bottom - startValue.bottom)
+        return Rect(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
     }
 }

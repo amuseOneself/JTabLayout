@@ -14,10 +14,9 @@ import com.liang.utils.AnimationUtils
 import com.liang.widget.TabLayout
 import kotlin.math.roundToInt
 
-
 class LinearLayoutManager @JvmOverloads constructor(
     private val context: Context,
-    private val orientation: Int = TabLayout.Horizontal,
+    val orientation: Int = TabLayout.Horizontal,
     private val mode: Int = TabLayout.ModeFixed
 ) : TabLayout.LayoutManager() {
 
@@ -30,7 +29,7 @@ class LinearLayoutManager @JvmOverloads constructor(
     private val scrollAnimator by lazy {
         ValueAnimator().apply {
             duration = tabLayout.tabAnimationDuration
-            interpolator = AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR
+            interpolator = AnimationUtils.accelerateDecelerateInterpolator
         }
     }
 
@@ -103,7 +102,6 @@ class LinearLayoutManager @JvmOverloads constructor(
         }
     }
 
-
     private fun calculateScrollYForTab(position: Int, offset: Float): Int {
         return if (mode == 0) {
             val selectedChild = this.slidingLinearTabLayout.getChildAt(position)
@@ -115,7 +113,6 @@ class LinearLayoutManager @JvmOverloads constructor(
             if (ViewCompat.getLayoutDirection(tabLayout) == 0) (scrollBase + scrollOffset).roundToInt() else (scrollBase - scrollOffset).roundToInt()
         } else 0
     }
-
 
     private fun animateToTab(position: Int, horizontalView: HorizontalScrollView) {
         val startScrollX: Int = horizontalView.scrollX
@@ -161,7 +158,6 @@ class LinearLayoutManager @JvmOverloads constructor(
 
             when (contentTabLayout) {
                 is ScrollView -> {
-                    animateToTab(position, contentTabLayout as ScrollView)
                     (contentTabLayout as ScrollView).scrollTo(
                         0,
                         calculateScrollYForTab(position, offset)
@@ -169,7 +165,6 @@ class LinearLayoutManager @JvmOverloads constructor(
 
                 }
                 is HorizontalScrollView -> {
-                    animateToTab(position, contentTabLayout as HorizontalScrollView)
                     (contentTabLayout as HorizontalScrollView).scrollTo(
                         calculateScrollXForTab(
                             position,
@@ -200,7 +195,7 @@ class LinearLayoutManager @JvmOverloads constructor(
         ViewCompat.postInvalidateOnAnimation(slidingLinearTabLayout)
     }
 
-    private inner class HorizontalScrollView(context: Context?) :
+    private inner class HorizontalScrollView(context: Context) :
         android.widget.HorizontalScrollView(context) {
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -223,8 +218,7 @@ class LinearLayoutManager @JvmOverloads constructor(
         }
     }
 
-
-    private inner class ScrollView(context: Context?) : android.widget.ScrollView(context) {
+    private inner class ScrollView(context: Context) : android.widget.ScrollView(context) {
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             if (childCount == 1) {
@@ -247,7 +241,7 @@ class LinearLayoutManager @JvmOverloads constructor(
         }
     }
 
-
+    @SuppressLint("NewApi")
     private inner class SlidingLinearTabLayout(context: Context) : LinearLayout(context) {
 
         override fun onLayout(
@@ -293,12 +287,11 @@ class LinearLayoutManager @JvmOverloads constructor(
         }
 
         init {
-            setBackgroundResource(android.R.color.holo_blue_dark)
             setWillNotDraw(false)
             gravity = Gravity.CENTER
+            clipToOutline = tabLayout.tabUseClipToOutline
         }
     }
-
 
     private fun createLayoutParamsForTabs(): LinearLayout.LayoutParams {
         val lp = if (orientation == TabLayout.Horizontal) LinearLayout.LayoutParams(
@@ -327,8 +320,6 @@ class LinearLayoutManager @JvmOverloads constructor(
                 lp.weight = 0.0f
             }
         }
-
     }
-
 
 }

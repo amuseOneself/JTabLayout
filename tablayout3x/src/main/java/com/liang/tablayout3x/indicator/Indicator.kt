@@ -1,5 +1,6 @@
 package com.liang.tablayout3x.indicator
 
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 
 abstract class Indicator {
@@ -66,14 +67,44 @@ abstract class Indicator {
 
 
 class IndicatorPoint {
+
     @JvmField
     var left = 0f
     @JvmField
     var right = 0f
+    @JvmField
+    var top = 0f
+    @JvmField
+    var bottom = 0f
+
+    companion object {
+        fun create(rectF: RectF) = IndicatorPoint().apply {
+            left = rectF.left
+            right = rectF.right
+            top = rectF.top
+            bottom = rectF.bottom
+        }
+    }
+
+    fun set(point: IndicatorPoint): IndicatorPoint = this.apply {
+        left = point.left
+        right = point.right
+        top = point.top
+        bottom = point.bottom
+    }
+
     override fun equals(other: Any?): Boolean {
         if (other !is IndicatorPoint) {
             return false
         }
-        return other.left == left || other.right == right
+        return (other.left == left && other.top == top) || (other.bottom == bottom && other.right == right)
+    }
+
+    override fun hashCode(): Int {
+        var result = left.hashCode()
+        result = 31 * result + right.hashCode()
+        result = 31 * result + top.hashCode()
+        result = 31 * result + bottom.hashCode()
+        return result
     }
 }

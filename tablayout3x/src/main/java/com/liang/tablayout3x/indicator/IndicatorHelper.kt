@@ -4,22 +4,27 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.graphics.Canvas
-import android.graphics.RectF
+import android.graphics.PorterDuff
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
+import android.support.v4.graphics.drawable.DrawableCompat
+import com.liang.tablayout3x.LinearLayoutManager
 import com.liang.tablayout3x.Tab
 import com.liang.utils.AnimationUtils
-import com.liang.utils.dpToPx
 import com.liang.widget.TabLayout
 
 
 class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
 
-    private val indicatorPoint = IndicatorPoint()
+    private val indicatorPoint = Rect()
     private var indicatorAnimator: ValueAnimator? = null
     private val tabLayout by lazy { layoutManager.tabLayout }
     private val tabChildContent by lazy { layoutManager.tabChildContent }
-    var selectedPosition = -1
-    var selectionOffset = 0f
-
+    private var selectedPosition = -1
+    private var selectionOffset = 0f
+    //    private val tabContentBounds = Rect()
     private fun cancelAnimator() {
         indicatorAnimator?.let {
             if (it.isRunning) {
@@ -30,37 +35,95 @@ class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
 
     private fun calculateTabViewContentBounds(
         tab: Tab,
-        contentBounds: RectF
+        contentBounds: Rect
     ) {
         if (tabLayout.tabIndicatorWidth > 0 || tabLayout.tabIndicatorWidthScale > 0) {
             val left: Int = tab.view.left
             val right: Int = tab.view.right
-            val tabWidth = right - left
+            val top: Int = tab.view.top
+            var tabWidth = right - left
+
+            if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) {
+                val bottom: Int = tab.view.bottom
+                tabWidth = bottom - top
+            }
+
             tabLayout.tabIndicatorWidth =
                 tabWidth.coerceAtMost(if (tabLayout.tabIndicatorWidth > 0) tabLayout.tabIndicatorWidth else (tabWidth * tabLayout.tabIndicatorWidthScale).toInt())
+
             val tabIndicatorInt = 0.coerceAtLeast(tabWidth - tabLayout.tabIndicatorWidth) / 2
-            val contentLeftBounds = left + tabIndicatorInt
-            val contentRightBounds = contentLeftBounds + tabLayout.tabIndicatorWidth
-            contentBounds[contentLeftBounds.toFloat(), 0.0f, contentRightBounds.toFloat()] =
-                0.0f
-        } else {
-            var tabViewContentWidth: Int = tab.contentWidth
-            if (tabViewContentWidth < tabLayout.context.dpToPx(24f)) {
-                tabViewContentWidth = tabLayout.context.dpToPx(24f)
+
+            if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) {
+                val contentTopBounds = top + tabIndicatorInt
+                val contentBottomBounds = contentTopBounds + tabLayout.tabIndicatorWidth
+                contentBounds[0, contentTopBounds, 0] = contentBottomBounds
+            } else {
+                val contentLeftBounds = left + tabIndicatorInt
+                val contentRightBounds = contentLeftBounds + tabLayout.tabIndicatorWidth
+                contentBounds[contentLeftBounds, 0, contentRightBounds] = 0
             }
+        } else {
+            val tabViewContentWidth: Int =
+                if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) tab.contentHeight else tab.contentWidth
+
             val tabViewCenter: Int =
-                (tab.view.left + tab.view.right) / 2
+                if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) (tab.view.top + tab.view.bottom) / 2 else (tab.view.left + tab.view.right) / 2
             val contentLeftBounds = tabViewCenter - tabViewContentWidth / 2
             val contentRightBounds = tabViewCenter + tabViewContentWidth / 2
-            contentBounds[contentLeftBounds.toFloat(), 0.0f, contentRightBounds.toFloat()] =
-                0.0f
+
+            if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) {
+                contentBounds[0, contentLeftBounds, 0] = contentRightBounds
+            } else {
+                contentBounds[contentLeftBounds, 0, contentRightBounds] = 0
+            }
         }
     }
 
-    private fun setIndicatorPosition(left: Float, right: Float) {
-        if (left != indicatorPoint.left || right != indicatorPoint.right) {
-            indicatorPoint.left = left
-            indicatorPoint.right = right
+    private fun measure(selectedIndicator: Drawable) {
+        var indicatorHeight = selectedIndicator.intrinsicHeight
+
+        if (tabLayout.tabIndicatorHeight > 0) {
+            indicatorHeight = tabLayout.tabIndicatorHeight
+        }
+
+        if (tabLayout.tabIndicatorFullHeight) {
+            indicatorHeight = if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) tabLayout.width else tabLayout.height
+        }
+
+        var indicatorStart = 0
+        var indicatorEnd = 0
+
+        val tabLayoutWidth =
+            if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) tabLayout.width else tabLayout.height
+
+        when (tabLayout.tabIndicatorGravity) {
+            TabLayout.IndicatorGravityEnd -> {
+                indicatorStart = tabLayoutWidth - indicatorHeight - tabLayout.tabIndicatorMargin
+                indicatorEnd = indicatorStart + indicatorHeight
+            }
+            TabLayout.IndicatorGravityCenter -> {
+                indicatorStart = (tabLayoutWidth - indicatorHeight) / 2
+                indicatorEnd = (tabLayoutWidth + indicatorHeight) / 2
+            }
+            TabLayout.IndicatorGravityStart -> {
+                indicatorStart = tabLayout.tabIndicatorMargin
+                indicatorEnd = indicatorStart + indicatorHeight
+            }
+        }
+
+        if (layoutManager is LinearLayoutManager && layoutManager.orientation == 1) {
+            indicatorPoint.left = indicatorStart
+            indicatorPoint.right = indicatorEnd
+        } else {
+            indicatorPoint.top = indicatorStart
+            indicatorPoint.bottom = indicatorEnd
+        }
+
+    }
+
+    private fun setIndicatorPosition(rect: Rect) {
+        if (rect != indicatorPoint) {
+            indicatorPoint.set(rect)
             layoutManager.postInvalidateOnAnimation()
         }
     }
@@ -78,16 +141,16 @@ class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
         if (targetView == null) {
             updateIndicatorPosition()
         } else {
-            val target = IndicatorPoint()
-            target.left = targetView.left.toFloat()
-            target.right = targetView.right.toFloat()
+            val target = Rect()
+            target.left = targetView.left
+            target.right = targetView.right
+            target.top = targetView.top
+            target.bottom = targetView.bottom
             if (!tabLayout.tabIndicatorFullWidth && targetView is Tab) {
                 calculateTabViewContentBounds(
                     (targetView as Tab),
-                    tabLayout.tabViewContentBounds
+                    target
                 )
-                target.left = tabLayout.tabViewContentBounds.left
-                target.right = tabLayout.tabViewContentBounds.right
             }
             if (indicatorPoint != target) {
                 indicatorAnimator = ValueAnimator.ofObject(
@@ -95,11 +158,11 @@ class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
                     indicatorPoint,
                     target
                 ).apply {
-                    this.interpolator = AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR
+                    this.interpolator = AnimationUtils.accelerateDecelerateInterpolator
                     this.duration = duration
                     this.addUpdateListener { animator ->
-                        val p: IndicatorPoint = animator.animatedValue as IndicatorPoint
-                        setIndicatorPosition(p.left, p.right)
+                        val p = animator.animatedValue as Rect
+                        setIndicatorPosition(p)
                     }
                     this.addListener(object : AnimatorListenerAdapter() {
                         override fun onAnimationEnd(animator: Animator) {
@@ -115,19 +178,19 @@ class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
 
     private fun updateIndicatorPosition() {
         val selectedTab = tabChildContent.getChildAt(selectedPosition)
-        var left: Int
-        var right: Int
+        val target = Rect()
         if (selectedTab != null && selectedTab.width > 0) {
-            left = selectedTab.left
-            right = selectedTab.right
+            target.left = selectedTab.left
+            target.right = selectedTab.right
+            target.top = selectedTab.top
+            target.bottom = selectedTab.bottom
             if (!tabLayout.tabIndicatorFullWidth && selectedTab is Tab) {
                 calculateTabViewContentBounds(
                     (selectedTab as Tab),
-                    tabLayout.tabViewContentBounds
+                    target
                 )
-                left = tabLayout.tabViewContentBounds.left.toInt()
-                right = tabLayout.tabViewContentBounds.right.toInt()
             }
+
             if (selectionOffset > 0.0f && selectedPosition < tabChildContent.childCount - 1) {
                 val nextTitle = tabChildContent.getChildAt(selectedPosition + 1)
                 var nextTitleLeft = nextTitle.left
@@ -135,10 +198,10 @@ class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
                 if (!tabLayout.tabIndicatorFullWidth && nextTitle is Tab) {
                     calculateTabViewContentBounds(
                         (nextTitle as Tab),
-                        tabLayout.tabViewContentBounds
+                        target
                     )
-                    nextTitleLeft = tabLayout.tabViewContentBounds.left.toInt()
-                    nextTitleRight = tabLayout.tabViewContentBounds.right.toInt()
+                    nextTitleLeft = target.left
+                    nextTitleRight = target.right
                 }
                 if (tabLayout.tabIndicatorTransitionScroll) {
                     var offR = selectionOffset * 2 - 1
@@ -160,63 +223,46 @@ class IndicatorHelper(private val layoutManager: TabLayout.LayoutManager) {
                             offR = 1f
                         }
                     }
-                    left += ((nextTitleLeft - left) * offL).toInt()
-                    right += ((nextTitleRight - right) * offR).toInt()
+                    target.left += ((nextTitleLeft - target.left) * offL).toInt()
+                    target.right += ((nextTitleRight - target.right) * offR).toInt()
                 } else {
-                    left =
-                        (selectionOffset * nextTitleLeft.toFloat() + (1.0f - selectionOffset) * left.toFloat()).toInt()
-                    right =
-                        (selectionOffset * nextTitleRight.toFloat() + (1.0f - selectionOffset) * right.toFloat()).toInt()
+                    target.left =
+                        (selectionOffset * nextTitleLeft.toFloat() + (1.0f - selectionOffset) * target.left.toFloat()).toInt()
+                    target.right =
+                        (selectionOffset * nextTitleRight.toFloat() + (1.0f - selectionOffset) * target.right.toFloat()).toInt()
                 }
             }
         } else {
-            right = -1
-            left = -1
+            target.right = -1
+            target.left = -1
         }
 
-        setIndicatorPosition(left.toFloat(), right.toFloat())
+        setIndicatorPosition(target)
     }
 
     fun drawIndicator(canvas: Canvas) {
-        val selectedIndicator = tabLayout.tabSelectedIndicator
-        selectedIndicator?.let { indicator ->
-            var indicatorHeight = indicator.intrinsicHeight
-
-            if (tabLayout.tabIndicatorHeight > 0) {
-                indicatorHeight = tabLayout.tabIndicatorHeight
-            }
-
-            var indicatorTop = 0
-            var indicatorBottom = 0
-            when (tabLayout.tabIndicatorGravity) {
-                0 -> {
-                    indicatorTop = tabLayout.height - indicatorHeight - tabLayout.tabIndicatorMargin
-                    indicatorBottom = tabLayout.height - tabLayout.tabIndicatorMargin
-                }
-                1 -> {
-                    indicatorTop = (tabLayout.height - indicatorHeight) / 2
-                    indicatorBottom = (tabLayout.height + indicatorHeight) / 2
-                }
-                2 -> {
-                    indicatorTop = tabLayout.tabIndicatorMargin
-                    indicatorBottom = indicatorHeight
-                }
-                3 -> {
-                    indicatorTop = tabLayout.tabIndicatorMargin
-                    indicatorBottom = tabLayout.height - tabLayout.tabIndicatorMargin
-                }
-            }
-
-            if (indicatorPoint.left >= 0 && indicatorPoint.right > indicatorPoint.left) {
-                indicator.setBounds(
-                    indicatorPoint.left.toInt(),
-                    indicatorTop,
-                    indicatorPoint.right.toInt(),
-                    indicatorBottom
+        val selectedIndicator = tabLayout.tabIndicator ?: GradientDrawable()
+        if (tabLayout.tabIndicatorColor != 0) {
+            if (Build.VERSION.SDK_INT == 21) {
+                selectedIndicator.setColorFilter(
+                    tabLayout.tabIndicatorColor,
+                    PorterDuff.Mode.SRC_IN
                 )
-
-                indicator.draw(canvas)
+            } else {
+                DrawableCompat.setTint(
+                    selectedIndicator,
+                    tabLayout.tabIndicatorColor
+                )
             }
+        }
+
+        measure(selectedIndicator)
+
+        if ((indicatorPoint.left >= 0 && indicatorPoint.right > indicatorPoint.left)
+            || (indicatorPoint.top >= 0 && indicatorPoint.bottom > indicatorPoint.top)
+        ) {
+            selectedIndicator.bounds = indicatorPoint
+            selectedIndicator.draw(canvas)
         }
     }
 

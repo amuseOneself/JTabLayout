@@ -93,6 +93,26 @@ open class TabView @JvmOverloads constructor(
             return right - left
         }
 
+    override val contentHeight: Int
+        get() {
+            var initialized = false
+            var top = 0
+            var bottom = 0
+            val var4 = arrayOf(textView, iconView, badgeView)
+            val var5 = var4.size
+
+            for (var6 in 0 until var5) {
+                val view = var4[var6]
+                if (view != null && view.visibility == 0) {
+                    top = if (initialized) top.coerceAtMost(view.top) else view.top
+                    bottom = if (initialized) bottom.coerceAtLeast(view.bottom) else view.bottom
+                    initialized = true
+                }
+            }
+
+            return bottom - top
+        }
+
     override var title: CharSequence? = null
         set(value) {
             field = value

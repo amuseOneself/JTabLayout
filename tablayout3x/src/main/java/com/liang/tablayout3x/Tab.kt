@@ -13,6 +13,8 @@ import com.liang.widget.TabLayout
 
 
 interface Tab {
+
+    val contentHeight: Int
     val contentWidth: Int
 
     var title: CharSequence?

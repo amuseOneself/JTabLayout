@@ -1,15 +1,27 @@
 package com.liang.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.RectF
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.support.annotation.ColorInt
+import android.support.annotation.ColorRes
+import android.support.annotation.DrawableRes
 import android.support.v4.util.Pools
+import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.liang.tablayout3x.ItemDecoration
 import com.liang.tablayout3x.R
 import com.liang.tablayout3x.Tab
+import com.liang.utils.createColorStateList
+import com.liang.utils.getColorStateList
+import com.liang.utils.getDrawable
+import com.liang.utils.parseTintMode
 
 
 /**
@@ -25,16 +37,16 @@ class TabLayout @JvmOverloads constructor(
         const val ModeFixed = 1
         const val IndicatorTierBackground = 0
         const val IndicatorTierForeground = 1
+        const val IndicatorGravityStart = 0
+        const val IndicatorGravityEnd = 1
+        const val IndicatorGravityCenter = 2
     }
 
-    var tabIndicatorGravity = 0
-    var tabSelectedIndicator: Drawable? = null
+    var tabUseClipToOutline: Boolean = false
     private val tabs = arrayListOf<Tab>()
     private val tabPool: Pools.Pool<Tab> = Pools.SynchronizedPool(16)
     private val selectedListeners by lazy { arrayListOf<BaseOnTabSelectedListener>() }
     private var selectedTab: Tab? = null
-
-    var orientation: Int = Horizontal
 
     var layoutManager: LayoutManager? = null
         set(value) {
@@ -44,34 +56,266 @@ class TabLayout @JvmOverloads constructor(
             }
         }
 
-    var tabIndicatorFullWidth = false
+    var tabIndicatorGravity = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
+
+    var tabIndicator: Drawable? = null
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
+
+    var tabIndicatorFullWidth = true
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
+
+    var tabIndicatorFullHeight = true
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
 
     var tabAnimationDuration = 300L
 
-    val tabViewContentBounds = RectF()
-
     var tabIndicatorTier = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
 
     var tabIndicatorWidth = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
 
-    var tabIndicatorHeight = 0
+    var tabIndicatorHeight = 10
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
 
     var tabIndicatorMargin = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
 
-    var tabIndicatorWidthScale = 0f
+    var tabIndicatorWidthScale = 0.5f
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
 
     var tabIndicatorTransitionScroll = false
+
+    var tabIndicatorColor = Color.BLUE
+        set(value) {
+            if (field != value) {
+                field = value
+                layoutManager?.postInvalidateOnAnimation()
+            }
+        }
+
+
+    private var contentInsetStart = 0
+
+    var tabScaleTransitionScroll = 0f
+    var tabColorTransitionScroll = false
+    var unboundedRipple = false
+        set(value) {
+            if (field != value) {
+                field = value
+                tabs.forEach {
+                    it.tabUnboundedRipple = field
+                }
+            }
+        }
+
+    var tabTextColors: ColorStateList? = null
+        set(value) {
+            if (field != value) {
+                field = value
+                tabs.forEach {
+                    it.tabTitleColors = field
+                }
+            }
+        }
+
+    private var tabIconTintMode: PorterDuff.Mode? = null
+
+    var tabIconTint: ColorStateList? = null
+        set(value) {
+            if (field != value) {
+                field = value
+                tabs.forEach {
+                    it.tabIconTint = field
+                }
+            }
+        }
+    var tabRippleColor: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                tabs.forEach {
+                    it.tabRippleColor = field
+                }
+            }
+        }
+
+    var tabTextSize = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                tabs.forEach {
+                    it.tabTitleSize = field.toFloat()
+                }
+            }
+        }
+
+    private var tabBackgroundResId = 0
+    private var tabPaddingStart = 0
+    private var tabPaddingTop = 0
+    private var tabPaddingEnd = 0
+    private var tabPaddingBottom = 0
+    private var tabTextBold = false
+
+    var inlineLabel: Boolean = false
+        set(value) {
+            if (field != value) {
+                field = value
+                tabs.forEach {
+                    it.inlineLabel = field
+                }
+            }
+        }
+
+    private var tabDividerWidth = 0
+    private var tabDividerHeight = 0
+    private var tabDividerColor = 0
+
+    private var itemDecoration: ItemDecoration? = null
+
+    fun addOnTabSelectedListener(listener: OnTabSelectedListener) {
+        if (!selectedListeners.contains(listener)) {
+            selectedListeners.add(listener)
+        }
+    }
+
+    fun removeOnTabSelectedListener(listener: OnTabSelectedListener) {
+        selectedListeners.remove(listener)
+    }
+
+    fun clearOnTabSelectedListeners() {
+        selectedListeners.clear()
+    }
+
 
     init {
         initAttrs(attrs, defStyleAttr)
     }
 
-
+    @SuppressLint("NewApi")
     private fun initAttrs(attrs: AttributeSet?, defStyleAttr: Int) {
         val typedArray =
             context.obtainStyledAttributes(attrs, R.styleable.TabLayout, defStyleAttr, 0)
 
-        orientation = typedArray.getInt(R.styleable.TabLayout_android_orientation, Horizontal)
+        this.tabIndicatorHeight =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1)
+        this.tabIndicatorColor = typedArray.getColor(R.styleable.TabLayout_tabIndicatorColor, 0)
+        this.tabIndicator = context.getDrawable(typedArray, R.styleable.TabLayout_tabIndicator)
+        this.tabIndicatorGravity = typedArray.getInt(R.styleable.TabLayout_tabIndicatorGravity, 1)
+        this.tabIndicatorTier = typedArray.getInt(R.styleable.TabLayout_tabIndicatorTier, 0)
+        this.tabIndicatorWidth =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorWidth, 0)
+        this.tabIndicatorMargin =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorMargin, 0)
+        this.tabIndicatorWidthScale =
+            typedArray.getFloat(R.styleable.TabLayout_tabIndicatorWidthScale, 0f)
+        this.tabIndicatorFullWidth =
+            typedArray.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, false)
+        this.tabIndicatorFullHeight =
+            typedArray.getBoolean(R.styleable.TabLayout_tabIndicatorFullHeight, false)
+        this.tabIndicatorTransitionScroll =
+            typedArray.getBoolean(R.styleable.TabLayout_tabIndicatorTransitionScroll, false)
+
+        this.clipToOutline = typedArray.getBoolean(R.styleable.TabLayout_useClipToOutline, false)
+        this.tabUseClipToOutline =
+            typedArray.getBoolean(R.styleable.TabLayout_tabUseClipToOutline, false)
+        this.tabAnimationDuration =
+            typedArray.getInt(R.styleable.TabLayout_tabAnimationDuration, 300).toLong()
+        this.tabPaddingStart = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPadding, 0)
+            .also { tabPaddingBottom = it }.also { tabPaddingEnd = it }
+            .also { tabPaddingTop = it }
+        this.tabPaddingStart =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingStart, tabPaddingStart)
+        this.tabPaddingTop =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingTop, tabPaddingTop)
+        this.tabPaddingEnd =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingEnd, tabPaddingEnd)
+        this.tabPaddingBottom = typedArray.getDimensionPixelSize(
+            R.styleable.TabLayout_tabPaddingBottom,
+            tabPaddingBottom
+        )
+        if (typedArray.hasValue(R.styleable.TabLayout_tabTextColor)) {
+            this.tabTextColors =
+                context.getColorStateList(typedArray, R.styleable.TabLayout_tabTextColor)
+        }
+
+        this.tabTextSize = typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabTextSize, 0)
+        this.tabIconTint = context.getColorStateList(typedArray, R.styleable.TabLayout_tabIconTint)
+        this.tabIconTintMode = parseTintMode(
+            typedArray.getInt(R.styleable.TabLayout_tabIconTintMode, -1),
+            null as PorterDuff.Mode?
+        )
+        this.tabScaleTransitionScroll =
+            typedArray.getFloat(R.styleable.TabLayout_tabScaleTransitionScroll, 1.0f)
+        this.tabColorTransitionScroll =
+            typedArray.getBoolean(R.styleable.TabLayout_tabTextColorTransitionScroll, false)
+        this.tabTextBold = typedArray.getBoolean(R.styleable.TabLayout_tabTextBold, false)
+        this.tabRippleColor = typedArray.getColor(R.styleable.TabLayout_tabRippleColor, 0)
+        this.tabBackgroundResId = typedArray.getResourceId(R.styleable.TabLayout_tabBackground, 0)
+        this.contentInsetStart =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabContentStart, 0)
+        this.inlineLabel = typedArray.getBoolean(R.styleable.TabLayout_tabInlineLabel, false)
+        this.unboundedRipple =
+            typedArray.getBoolean(R.styleable.TabLayout_tabUnboundedRipple, false)
+
+        this.tabDividerWidth =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabDividerWidth, 0)
+        this.tabDividerHeight =
+            typedArray.getDimensionPixelSize(R.styleable.TabLayout_tabDividerHeight, 0)
+        this.tabDividerColor = typedArray.getColor(R.styleable.TabLayout_tabDividerColor, 0)
+
+        this.itemDecoration = if (tabDividerWidth > 0) TabView.DefItemDecoration(
+            tabDividerWidth,
+            tabDividerHeight
+        ).apply {
+            color = tabDividerColor
+        } else null
 
         typedArray.recycle()
 
@@ -81,20 +325,162 @@ class TabLayout @JvmOverloads constructor(
     private fun initTabLayoutManager(layoutManager: LayoutManager?) {
         removeAllViews()
         layoutManager?.init(this)
-        super.addView(layoutManager?.slidingTabLayout)
-//        layoutManager = when (tabLayoutMode) {
-//            Grid -> GridLayoutManager(this)
-//            Flow -> FlowLayoutManager(this)
-//            else -> LinearLayoutManager(this)
-//        }
+        super.addView(layoutManager?.slidingTabLayout,LayoutParams(-2,-2))
+    }
 
-//        repeat(100) {
-//            layoutManager.addView(TextView(context).apply {
-//                text = "addView: $it"
-//                gravity = Gravity.CENTER
-//                setBackgroundResource(android.R.color.holo_orange_dark)
-//            }, LayoutParams(300, 200))
-//        }
+
+    /**
+     * Show Badge
+     *
+     * @param position
+     */
+    fun showBadgeMsg(position: Int) {
+        showBadgeMsg(position, "", true)
+    }
+
+    /**
+     * Show Badge
+     *
+     * @param position
+     * @param count
+     */
+    fun showBadgeMsg(position: Int, count: Int) {
+        showBadgeMsg(position, count.toString() + "", count > 0)
+    }
+
+    fun showBadgeMsg(position: Int, msg: String) {
+        showBadgeMsg(position, msg, msg.trim { it <= ' ' }.isNotEmpty())
+    }
+
+    /**
+     * Show Badge
+     *
+     * @param position
+     * @param msg
+     * @param showDot
+     */
+    fun showBadgeMsg(
+        position: Int,
+        msg: String?,
+        showDot: Boolean
+    ) {
+        tabs.forEach {
+            if (showDot) {
+                it.showBadge(msg)
+            } else {
+                it.hideBadge()
+            }
+        }
+    }
+
+    /**
+     * Setting the font color of Badge
+     *
+     * @param color
+     */
+    fun setBadgeTextColor(@ColorInt color: Int) {
+        tabs.forEach {
+            setBadgeTextColor(it.position, color)
+        }
+    }
+
+    /**
+     * Set the font color of the specified Badge
+     *
+     * @param position
+     * @param color
+     */
+    fun setBadgeTextColor(position: Int, @ColorInt color: Int) {
+        val tab: Tab? = tabs[position]
+        tab?.setBadgeTextColor(color)
+    }
+
+    /**
+     * Set the font size of the specified Badge
+     *
+     * @param position
+     * @param textSize
+     */
+    fun setBadgeTextSize(position: Int, textSize: Int) {
+        val tab: Tab? = tabs[position]
+        tab?.setBadgeTextSize(textSize.toFloat())
+    }
+
+    fun setBadgeTextSize(textSize: Int) {
+        tabs.forEach {
+            setBadgeTextSize(it.position, textSize)
+        }
+    }
+
+    /**
+     * Setting the background color of Badge
+     *
+     * @param color
+     */
+    fun setBadgeColor(@ColorInt color: Int) {
+        tabs.forEach {
+            setBadgeColor(it.position, color)
+        }
+    }
+
+    /**
+     * Set the background color of the specified Badge
+     *
+     * @param position
+     * @param color
+     */
+    fun setBadgeColor(position: Int, @ColorInt color: Int) {
+        val tab: Tab? = tabs[position]
+        tab?.setBadgeBackgroundColor(color)
+    }
+
+    /**
+     * Set the border and color of the Badge
+     *
+     * @param width
+     * @param color
+     */
+    fun setBadgeStroke(width: Int, @ColorInt color: Int) {
+        tabs.forEach {
+            setBadgeStroke(it.position, width, color)
+        }
+    }
+
+    /**
+     * Set the border and color of the specified Badge
+     *
+     * @param width
+     * @param color
+     */
+    fun setBadgeStroke(position: Int, width: Int, @ColorInt color: Int) {
+        val tab: Tab? = tabs[position]
+        if (tab is Tab) {
+            tab.setBadgeStroke(width, color)
+        }
+    }
+
+    fun setTabTextColors(normalColor: Int, selectedColor: Int) {
+        this.tabTextColors = createColorStateList(normalColor, selectedColor)
+    }
+
+
+    fun setTabIconTintResource(@ColorRes iconTintResourceId: Int) {
+        this.tabIconTint = AppCompatResources.getColorStateList(
+            this.context,
+            iconTintResourceId
+        )
+    }
+
+
+    fun setTabRippleColorResource(@ColorRes tabRippleColorId: Int) {
+        this.tabRippleColor = resources.getColor(tabRippleColorId)
+    }
+
+    fun setTabIndicator(@DrawableRes tabSelectedIndicatorResourceId: Int) {
+        this.tabIndicator = AppCompatResources.getDrawable(
+            this.context,
+            tabSelectedIndicatorResourceId
+        )
     }
 
     @JvmOverloads
@@ -109,6 +495,35 @@ class TabLayout @JvmOverloads constructor(
 
     private fun configureTab(tab: Tab, position: Int) {
         tab.position = position
+
+        tab.tabTitleColors = tab.tabTitleColors ?: tabTextColors
+
+        tab.tabIconTint = tab.tabIconTint ?: tabIconTint
+
+        tab.tabIconTintMode = tab.tabIconTintMode ?: tabIconTintMode
+
+        tab.tabTitleSize = if (tab.tabTitleSize != 0f) tab.tabTitleSize else tabTextSize.toFloat()
+
+        tab.tabBackgroundResId =
+            if (tab.tabBackgroundResId != 0) tab.tabBackgroundResId else tabBackgroundResId
+
+        tab.tabRippleColor = if (tab.tabRippleColor != 0) tab.tabRippleColor else tabRippleColor
+
+        tab.inlineLabel = inlineLabel
+
+        tab.isTabTitleBold = tabTextBold
+
+        tab.setTabPadding(
+            tabPaddingStart,
+            tabPaddingTop,
+            tabPaddingEnd,
+            tabPaddingBottom
+        )
+
+        if (position > 0) {
+            tab.tabDecoration = tab.tabDecoration ?: itemDecoration
+        }
+
         tabs.add(position, tab)
         for (i in position + 1 until tabs.size) {
             tabs[i].position = i
@@ -121,7 +536,6 @@ class TabLayout @JvmOverloads constructor(
             tab.position
         )
     }
-
 
     fun removeTab(tab: Tab) {
         require(!(tab.tabLayout !== this)) { "Tab does not belong to this TabLayout." }
@@ -187,6 +601,10 @@ class TabLayout @JvmOverloads constructor(
 
     fun getSelectedTabPosition(): Int {
         return selectedTab?.position ?: -1
+    }
+
+    override fun getChildAt(index: Int): View? {
+        return layoutManager?.getChildAt(index)?.view
     }
 
     @JvmOverloads
