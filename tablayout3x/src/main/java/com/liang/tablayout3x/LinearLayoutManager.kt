@@ -15,9 +15,9 @@ import com.liang.widget.TabLayout
 import kotlin.math.roundToInt
 
 class LinearLayoutManager @JvmOverloads constructor(
-    private val context: Context,
-    val orientation: Int = TabLayout.Horizontal,
-    private val mode: Int = TabLayout.ModeFixed
+        private val context: Context,
+        val orientation: Int = TabLayout.Horizontal,
+        private val mode: Int = TabLayout.ModeFixed
 ) : TabLayout.LayoutManager() {
 
     private lateinit var contentTabLayout: View
@@ -55,7 +55,10 @@ class LinearLayoutManager @JvmOverloads constructor(
         slidingLinearTabLayout.addView(view, createLayoutParamsForTabs())
     }
 
-    override fun getChildAt(position: Int): Tab = slidingLinearTabLayout.getChildAt(position) as Tab
+    override fun getChildAt(position: Int): Tab? {
+        val child = slidingLinearTabLayout.getChildAt(position)
+        return if (child is Tab) child else null
+    }
 
     override fun removeViewAt(position: Int) {
         slidingLinearTabLayout.removeViewAt(position)
@@ -78,14 +81,14 @@ class LinearLayoutManager @JvmOverloads constructor(
                 }
             }
             this.slidingLinearTabLayout.animateIndicatorToPosition(
-                position,
-                tabLayout.tabAnimationDuration
+                    position,
+                    tabLayout.tabAnimationDuration
             )
         } else {
             setScrollPosition(
-                position, 0.0f,
-                updateSelectedText = true,
-                updateIndicatorPosition = true
+                    position, 0.0f,
+                    updateSelectedText = true,
+                    updateIndicatorPosition = true
             )
         }
     }
@@ -139,17 +142,17 @@ class LinearLayoutManager @JvmOverloads constructor(
     }
 
     override fun setScrollPosition(
-        position: Int,
-        offset: Float,
-        updateSelectedText: Boolean,
-        updateIndicatorPosition: Boolean
+            position: Int,
+            offset: Float,
+            updateSelectedText: Boolean,
+            updateIndicatorPosition: Boolean
     ) {
         val roundedPosition = (position.toFloat() + offset).roundToInt()
         if (roundedPosition >= 0 && roundedPosition < this.slidingLinearTabLayout.childCount) {
             if (updateIndicatorPosition) {
                 this.slidingLinearTabLayout.setIndicatorPositionFromTabPosition(
-                    position,
-                    offset
+                        position,
+                        offset
                 )
             }
             if (scrollAnimator.isRunning) {
@@ -159,17 +162,17 @@ class LinearLayoutManager @JvmOverloads constructor(
             when (contentTabLayout) {
                 is ScrollView -> {
                     (contentTabLayout as ScrollView).scrollTo(
-                        0,
-                        calculateScrollYForTab(position, offset)
+                            0,
+                            calculateScrollYForTab(position, offset)
                     )
 
                 }
                 is HorizontalScrollView -> {
                     (contentTabLayout as HorizontalScrollView).scrollTo(
-                        calculateScrollXForTab(
-                            position,
-                            offset
-                        ), 0
+                            calculateScrollXForTab(
+                                    position,
+                                    offset
+                            ), 0
                     )
                 }
             }
@@ -196,7 +199,7 @@ class LinearLayoutManager @JvmOverloads constructor(
     }
 
     private inner class HorizontalScrollView(context: Context) :
-        android.widget.HorizontalScrollView(context) {
+            android.widget.HorizontalScrollView(context) {
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             if (childCount == 1) {
@@ -204,13 +207,13 @@ class LinearLayoutManager @JvmOverloads constructor(
                 var remeasure = false
                 when (mode) {
                     TabLayout.ModeScrollable -> remeasure =
-                        child.measuredWidth < measuredWidth
+                            child.measuredWidth < measuredWidth
                     TabLayout.ModeFixed -> remeasure =
-                        child.measuredWidth != measuredWidth
+                            child.measuredWidth != measuredWidth
                 }
                 if (remeasure) {
                     val childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        measuredWidth, MeasureSpec.EXACTLY
+                            measuredWidth, MeasureSpec.EXACTLY
                     )
                     child.measure(childWidthMeasureSpec, heightMeasureSpec)
                 }
@@ -226,14 +229,14 @@ class LinearLayoutManager @JvmOverloads constructor(
                 var remeasure = false
                 when (mode) {
                     TabLayout.ModeScrollable -> remeasure =
-                        child.measuredHeight < measuredHeight
+                            child.measuredHeight < measuredHeight
                     TabLayout.ModeFixed -> remeasure =
-                        child.measuredHeight != measuredHeight
+                            child.measuredHeight != measuredHeight
                 }
 
                 if (remeasure) {
                     val childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        measuredHeight, MeasureSpec.EXACTLY
+                            measuredHeight, MeasureSpec.EXACTLY
                     )
                     child.measure(widthMeasureSpec, childHeightMeasureSpec)
                 }
@@ -245,11 +248,11 @@ class LinearLayoutManager @JvmOverloads constructor(
     private inner class SlidingLinearTabLayout(context: Context) : LinearLayout(context) {
 
         override fun onLayout(
-            changed: Boolean,
-            l: Int,
-            t: Int,
-            r: Int,
-            b: Int
+                changed: Boolean,
+                l: Int,
+                t: Int,
+                r: Int,
+                b: Int
         ) {
             super.onLayout(changed, l, t, r, b)
             indicatorHelper.refresh()
@@ -295,8 +298,8 @@ class LinearLayoutManager @JvmOverloads constructor(
 
     private fun createLayoutParamsForTabs(): LinearLayout.LayoutParams {
         val lp = if (orientation == TabLayout.Horizontal) LinearLayout.LayoutParams(
-            -2,
-            -1
+                -2,
+                -1
         ) else LinearLayout.LayoutParams(-1, -2)
         updateTabViewLayoutParams(lp)
         return lp

@@ -693,7 +693,7 @@ class TabLayout @JvmOverloads constructor(
             this.tabLayout = tabLayout
         }
 
-        abstract fun getChildAt(position: Int): Tab
+        abstract fun getChildAt(position: Int): Tab?
 
         abstract fun removeViewAt(position: Int)
 

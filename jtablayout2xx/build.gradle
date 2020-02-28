@@ -25,4 +25,4 @@ dependencies {
     compileOnly 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 
-apply from: "bintrayUpload.gradle"
+//apply from: "bintrayUpload.gradle"
